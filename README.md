@@ -4,6 +4,12 @@ This is the repository for your team project in the **Dallas Software Developers
 
 ## 🚀 Getting Started
 
+Your cohort leads are:
+
+- Miguel Chateloin (@migsch on Discord)
+
+Your JIRA project is located here: https://dsd-cohort-summer-2025.atlassian.net/jira/software/projects/CHRT/boards/1
+
 Make sure to read these guidelines so you're set up for success:
 
 - [JIRA Ticket Writing Guidelines](../../wiki/JIRA-Ticket-Writing-Guidelines)
