@@ -5,9 +5,9 @@ This is the repository for your team project in the **Dallas Software Developers
 ## 🚀 Getting Started
 
 Make sure to read these guidelines so you're set up for success: 
-- [Code Review Process Guidelines](../../wiki/Code-Review-Process-Guidelines)
+- [JIRA-Ticket-Writing-Guidelines](../../wiki/JIRA-Ticket-Writing-Guidelines)
 - [Version Control Workflow Guidelines](../../wiki/Version-Control-Workflow-Guidelines)
-- 
+- [Code Review Process Guidelines](../../wiki/Code-Review-Process-Guidelines)
 
 ## Prerequisites
 
