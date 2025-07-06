@@ -4,8 +4,10 @@ This is the repository for your team project in the **Dallas Software Developers
 
 ## 🚀 Getting Started
 
-Make sure to read these guideliens so you're set up for success: 
-- [Code-Review-Process-Guidelines](../../wiki/Code-Review-Process-Guidelines)
+Make sure to read these guidelines so you're set up for success: 
+- [Code Review Process Guidelines](../../wiki/Code-Review-Process-Guidelines)
+- [Version Control Workflow Guidelines](../../wiki/Version-Control-Workflow-Guidelines)
+- 
 
 ## Prerequisites
 
