@@ -27,3 +27,12 @@ git clone https://github.com/your-org/dsd-cohort-summer-2025.git
 cd dsd-cohort-summer-2025
 npm install  # or pip install -r requirements.txt
 ```
+
+## Running
+
+Finally, include steps to run the software
+
+```bash
+# Example
+npm start # or some other startup command(s)
+```
