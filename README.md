@@ -1,6 +1,6 @@
 # dsd-cohort-summer-2025
 
-This is the repository for your team project in the **Dallas Software Developers Group (DSD) Summer 2025 Cohort**. It's your responsibility to maintain this README file as you start to define your problem space, and technology stack. It's also important that you read [the wiki](../..wiki) for guidelines on how to contribute to this project.
+This is the repository for your team project in the **Dallas Software Developers Group (DSD) Summer 2025 Cohort**. It's your responsibility to maintain this README file as you start to define your problem space, and technology stack. It's also important that you read [the wiki](../../wiki) for guidelines on how to contribute to this project.
 
 ## Prerequisites
 
