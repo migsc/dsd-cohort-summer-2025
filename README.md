@@ -8,9 +8,12 @@ Your cohort leads are:
 
 - Miguel Chateloin (@migsch on Discord)
 
-Your JIRA project is located here: https://dsd-cohort-summer-2025.atlassian.net/jira/software/projects/CHRT/boards/1
+Your tickets are managed in Jira. The two most important interfaces are:
 
-Make sure to read these guidelines so you're set up for success:
+- **The board** where you'll see your currently assigned tickets for your 1-week sprints: https://dsd-cohort-summer-2025.atlassian.net/jira/software/projects/CHRT/boards/1
+- **The backlog** where you'll see all the tickets at once that have been created for the project: https://dsd-cohort-summer-2025.atlassian.net/jira/software/projects/CHRT/boards/1/backlog 
+
+It will be up to you to create Jira tickets, commit your code, and handle pull requests. Make sure to read these guidelines so you're set up for success:
 
 - [JIRA Ticket Writing Guidelines](../../wiki/JIRA-Ticket-Writing-Guidelines)
 - [Version Control Workflow Guidelines](../../wiki/Version-Control-Workflow-Guidelines)
