@@ -57,6 +57,13 @@ cd dsd-cohort-summer-2025
 npm install
 ```
 
+3. Add environment variables:
+
+```bash
+cp apps/web/.env.example apps/web/.env # Web application
+cp apps/server/.env.example apps/server/.env # Api Server
+```
+
 ## Database Setup
 
 This project uses MongoDB with Prisma ORM.
@@ -66,7 +73,8 @@ This project uses MongoDB with Prisma ORM.
 
 3. Generate the Prisma client and push the schema:
 ```bash
-npm run db:push
+npm run db:generate # Generate Prisma client
+npm run db:push # Push schema changes to database
 ```
 
 ## Running
