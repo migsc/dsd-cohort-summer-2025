@@ -19,9 +19,9 @@
         "name": "next"
       }
     ],
+    "baseUrl": "src",
 	"paths": {
-		"@/*": ["./src/*"]
-		,
+		"@/*": ["*"],
 		"prisma": ["node_modules/prisma"]
 	},
   },
