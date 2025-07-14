@@ -12,15 +12,15 @@ export default function Dashboard() {
 
   const privateData = useQuery(trpc.privateData.queryOptions());
 
-  useEffect(() => {
-    if (!session && !isPending) {
-      router.push("/login");
-    }
-  }, [session, isPending]);
+  // useEffect(() => {
+  //   if (!session && !isPending) {
+  //     router.push("/login");
+  //   }
+  // }, [session, isPending]);
 
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
+  // if (isPending) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div>

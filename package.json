@@ -18,7 +18,9 @@
     "db:migrate": "turbo -F server db:migrate",
     "prepare": "if [ \"$CI\" != \"true\" ] && [ \"$CI\" != \"1\" ]; then husky install; fi"
   },
-  "dependencies": {},
+  "dependencies": {
+    "husky": "^9.1.7"
+  },
   "devDependencies": {
     "turbo": "^2.5.4"
   },
