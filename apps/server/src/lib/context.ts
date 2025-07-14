@@ -1,13 +1,14 @@
-import type { NextRequest } from "next/server";
+import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
+import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "./auth";
 
-export async function createContext(req: NextRequest) {
-  const session = await auth.api.getSession({
-    headers: req.headers,
-  });
-  return {
-    session,
-  };
+export async function createContext(opts: CreateExpressContextOptions) {
+	const session = await auth.api.getSession({
+		headers: fromNodeHeaders(opts.req.headers),
+	});
+	return {
+		session,
+	};
 }
 
 

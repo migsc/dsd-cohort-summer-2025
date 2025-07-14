@@ -1,28 +1,40 @@
 {
   "name": "server",
-  "version": "0.1.0",
-  "private": true,
+  "main": "src/index.ts",
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "build": "tsc && tsc-alias",
+    "check-types": "tsc --noEmit",
+    "compile": "npm run build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
+    "dev": "npm run --hot src/index.ts",
+    "start": "npm run dist/src/index.js",
     "db:push": "prisma db push --schema ./prisma/schema",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate --schema ./prisma/schema",
     "db:migrate": "prisma migrate dev"
   },
+  "prisma": {
+    "schema": "./schema"
+  },
   "dependencies": {
-    "next": "15.3.0",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.4.7",
+    "zod": "^4.0.2",
     "@trpc/server": "^11.4.2",
     "@trpc/client": "^11.4.2",
+    "express": "^5.1.0",
+    "cors": "^2.8.5",
     "@prisma/client": "^6.9.0",
     "better-auth": "^1.2.10"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "typescript": "^5",
+    "tsc-alias": "^1.8.11",
+    "typescript": "^5.8.2",
+    "@types/express": "^5.0.1",
+    "@types/cors": "^2.8.17",
+    "@types/bun": "^1.2.6",
     "prisma": "^6.9.0"
+  },
+  "turbo": {
+    "outputs": ["dist/**"]
   }
 }
