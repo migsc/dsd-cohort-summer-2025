@@ -9,3 +9,8 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model Health {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  status Boolean
+}

@@ -397,7 +397,8 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  Health: 'Health'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification"
+    modelProps: "user" | "session" | "account" | "verification" | "health"
     txIsolationLevel: never
   }
   model: {
@@ -713,6 +714,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Health: {
+      payload: Prisma.$HealthPayload<ExtArgs>
+      fields: Prisma.HealthFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HealthFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HealthFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>
+        }
+        findFirst: {
+          args: Prisma.HealthFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HealthFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>
+        }
+        findMany: {
+          args: Prisma.HealthFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>[]
+        }
+        create: {
+          args: Prisma.HealthCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>
+        }
+        createMany: {
+          args: Prisma.HealthCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.HealthDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>
+        }
+        update: {
+          args: Prisma.HealthUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>
+        }
+        deleteMany: {
+          args: Prisma.HealthDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HealthUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.HealthUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HealthPayload>
+        }
+        aggregate: {
+          args: Prisma.HealthAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHealth>
+        }
+        groupBy: {
+          args: Prisma.HealthGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HealthGroupByOutputType>[]
+        }
+        findRaw: {
+          args: Prisma.HealthFindRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        aggregateRaw: {
+          args: Prisma.HealthAggregateRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        count: {
+          args: Prisma.HealthCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HealthCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -786,6 +861,14 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const HealthScalarFieldEnum = {
+  id: 'id',
+  status: 'status'
+} as const
+
+export type HealthScalarFieldEnum = (typeof HealthScalarFieldEnum)[keyof typeof HealthScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -936,6 +1019,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
+  health?: Prisma.HealthOmit
 }
 
 /* Types for Logging */
