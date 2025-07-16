@@ -61,3 +61,7 @@ dev-dist
 .dev.vars*
 
 .open-next
+
+
+# Dependencies
+prisma/generated
