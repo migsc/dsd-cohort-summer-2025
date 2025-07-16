@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Health {
+model Service {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   status Boolean
 }

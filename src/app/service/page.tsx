@@ -1,6 +1,6 @@
 import prisma from "prisma";
 
-export default async function Health() {
+export default async function Service() {
 	let health;
 	try {
 		health = await prisma.health.findMany();
