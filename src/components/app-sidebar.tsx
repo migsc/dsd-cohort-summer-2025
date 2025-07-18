@@ -1,4 +1,4 @@
-import { Calendar, Home, CreditCard, Settings } from "lucide-react"
+import { Calendar, Home, CreditCard, Settings, LogOut } from "lucide-react"
 
 import {
   Sidebar,
@@ -11,11 +11,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-// Menu items.
+// Menu items if logged in
 const items = [
   {
     title: "Service Catalog",
-    url: "./service",
+    url: "./dummy",
     icon: Home,
   },
   {
@@ -33,14 +33,19 @@ const items = [
     url: "#",
     icon: Settings,
   },
+  {
+    title: "Logout",
+    url: "/",
+    icon: LogOut,
+  },
 ]
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>CleanHub Client Portal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

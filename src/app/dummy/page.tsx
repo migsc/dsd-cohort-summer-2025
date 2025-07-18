@@ -85,7 +85,7 @@ const services = [
 // Page to display services
 export default function OurServices() {
     return (
-        <section className='mx-3 sm:mx-10'>
+        <section className='mx-1 sm:mx-10'>
             <h1 className='text-center font-bold text-3xl mb-4'>Our Services</h1>
             {/* Business Description - will be configured by business this is just a default for now */}
             <p className='text-center mb-10'>
