@@ -4,7 +4,7 @@ import ServicesGrid from '@/components/ui/servicesgrid';
 // ***THIS DATA WILL COME FROM DATABASE INSTEAD OF BEING MANUALLY INPUT***
 const services = [
     {
-        key:'0',
+        _id:'0',
         name: 'Standard House Cleaning',
         desc: 'Regular maintenance cleaning including dusting, vacuuming, mopping, bathroom and kitchen cleaning. Perfect for ongoing home maintenance.',
         durationMin: 1.5,
@@ -15,7 +15,7 @@ const services = [
         priceUnit: '$'
     },
     {
-        key:'1',
+        _id:'1',
         name: 'Deep Cleaning',
         desc: 'Intensive top-to-bottom cleaning including baseboards, light fixtures, inside appliances, and areas typically missed in regular cleaning. Ideal for first-time clients or seasonal refresh.',
         durationMin: 3,
@@ -26,7 +26,7 @@ const services = [
         priceUnit: '$'
     },
     {
-        key:'2',
+        _id:'2',
         name: 'Move-in/Move-out Cleaning',
         desc: 'Comprehensive cleaning of empty property including inside cabinets, drawers, closets, and all surfaces. Ensures property is pristine for new occupants.',
         durationMin: 2,
@@ -37,7 +37,7 @@ const services = [
         priceUnit: '$'
     },
     {
-        key:'3',
+        _id:'3',
         name: 'Window Cleaning',
         desc: 'Interior and exterior window cleaning including screens, sills, and frames. Makes homes brighter and improves curb appeal.',
         durationMin: 1,
@@ -48,7 +48,7 @@ const services = [
         priceUnit: '$'
     },
     {
-        key:'4',
+        _id:'4',
         name: 'Pressure Washing',
         desc: 'High-pressure cleaning of exterior surfaces including driveways, sidewalks, decks, patios, and house siding. Removes dirt, mold, and grime.',
         durationMin: 1,
@@ -59,7 +59,7 @@ const services = [
         priceUnit: '$'
     },
     {
-        key:'5',
+        _id:'5',
         name: 'Furniture Assembly',
         desc: 'Professional assembly of furniture from retailers like IKEA, Amazon, or Wayfair. Includes tools, hardware check, and cleanup of packaging materials. Price and duration is per piece of furniture.',
         durationMin: 1/2,
@@ -70,7 +70,7 @@ const services = [
         priceUnit: '$'
     },
     {
-        key:'6',
+        _id:'6',
         name: 'Gutter Cleaning',
         desc: 'Removal of leaves, debris, and blockages from gutters and downspouts. Includes inspection for damage and proper water flow testing.',
         durationMin: 1,
