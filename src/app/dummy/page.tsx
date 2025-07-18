@@ -1,4 +1,4 @@
-import ServicesGrid from '@/components/ui/servicesgrid';
+import ServicesGrid from '@/components/ui/custom/servicesgrid';
 
 // Array of service objects and the data they need to have
 // ***THIS DATA WILL COME FROM DATABASE INSTEAD OF BEING MANUALLY INPUT***
