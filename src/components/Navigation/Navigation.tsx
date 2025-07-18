@@ -30,10 +30,10 @@ export default function Navigation() {
 					Service
 				</a>
 				<a
-					href="./services"
+					href="./dummy"
 					className="text-white bg-red-400 p-1 rounded-xs hover:bg-red-200 transition-all ease-in-out duration-200 hover:text-black"
 				>
-					Our Services
+					Service Catalog
 				</a>
 			</div>
 		</div>

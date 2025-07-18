@@ -20,10 +20,10 @@ export interface ServiceCardProps {
     priceMin: number;
     priceMax: number;
     priceUnit: string;
-    bookingLink: string;
 };
 
-export function ServiceCard({ key, name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax, priceUnit, bookingLink }: ServiceCardProps) {
+// ServiceCard Component used to make individual cards
+export function ServiceCard({ key, name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax, priceUnit }: ServiceCardProps) {
     return (
         <Card>
             <CardHeader>
@@ -40,13 +40,15 @@ export function ServiceCard({ key, name, desc, durationMin, durationMax, duratio
             </CardContent>
             <CardFooter>
                 <Button asChild>
-                    <Link href={bookingLink}>Book Now</Link>
+                    {/* *** ADD SLUG FOR SPECIFIC SERVICE. I.E., /book/deep-clean *** */}
+                    <Link href='/book'>Book Now</Link>
                 </Button>
             </CardFooter>
         </Card>
     )
 };
 
+// ServicesGrid Component. Accepts an array of services (objects) and maps each service to a ServiceCard
 export default function ServicesGrid({ services }: {services: any}) {
 return (
         <section className='grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
@@ -62,7 +64,6 @@ return (
                 priceMin={service.priceMin}
                 priceMax={service.priceMax}
                 priceUnit={service.priceUnit}
-                bookingLink={service.bookingLink}
                 ></ServiceCard>
             ))}
         </section>
