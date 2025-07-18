@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 23, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/apps/server/src/middleware.ts"],"sourcesContent":["import { NextResponse } from \"next/server\";\r\n\r\nexport function middleware() {\r\n  const res = NextResponse.next()\r\n\r\n  res.headers.append('Access-Control-Allow-Credentials', \"true\")\r\n  res.headers.append('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || \"\")\r\n  res.headers.append('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')\r\n  res.headers.append(\r\n    'Access-Control-Allow-Headers',\r\n    'Content-Type, Authorization'\r\n  )\r\n\r\n  return res\r\n}\r\n\r\nexport const config = {\r\n  matcher: '/:path*',\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;AAAA;;AAEO,SAAS;IACd,MAAM,MAAM,6LAAA,CAAA,eAAY,CAAC,IAAI;IAE7B,IAAI,OAAO,CAAC,MAAM,CAAC,oCAAoC;IACvD,IAAI,OAAO,CAAC,MAAM,CAAC,+BAA+B,QAAQ,GAAG,CAAC,WAAW,IAAI;IAC7E,IAAI,OAAO,CAAC,MAAM,CAAC,gCAAgC;IACnD,IAAI,OAAO,CAAC,MAAM,CAChB,gCACA;IAGF,OAAO;AACT;AAEO,MAAM,SAAS;IACpB,SAAS;AACX"}}]
+}
