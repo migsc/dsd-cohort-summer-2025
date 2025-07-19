@@ -1,4 +1,7 @@
 "use client";
+import { Button } from "@/components/ui/button"
+import { SquareChevronRight } from "lucide-react";
+
 
 
 
@@ -26,7 +29,7 @@ export default function Home() {
 					<h1 className="text-6xl font-black mb-5 mt-3">Your assistant who manages your customers cleaning needs.</h1>
 					<p className="max-w-[700px] leading-8 mb-5">Our app is a comprehensive software platform that empowers cleaning businesses to launch and manage their operations online. From initial setup to customer bookings and payment processing, we provide everything cleaning professionals need to run their business efficiently.</p>
 
-					<button className="p-4 rounded-xl border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started Managing Your Business <img src="" alt="" /></button>
+					<Button className="p-4 rounded-xl border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started Managing Your Business <SquareChevronRight /></Button>
 				</div>
 				{/* large logo */}
 				<div className="w-1/2 h-full max-w-[900px]">
