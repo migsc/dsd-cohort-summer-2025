@@ -2,13 +2,16 @@ import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod/v4";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Loader from "../loader";
 
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
+import { ChevronLeftCircleIcon } from "lucide-react";
 
 export default function SignInForm({
   onSwitchToSignUp,
@@ -54,7 +57,15 @@ export default function SignInForm({
 
   return (
     <div className="mx-auto w-full mt-10 max-w-md p-6 animate-in fade-in-0 slide-in-from-bottom-20 duration-800">
-      <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+      <div className="mb-6 flex items-center justify-between align-middle">
+        <Link href="/" className={cn("max-w-30 center", buttonVariants({
+          variant: "link",
+        }))}>
+          <ChevronLeftCircleIcon className="h-6 w-6" />
+          <span className="sr-only">Back to home</span>
+        </Link>
+          <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+      </div>
 
       <form
         onSubmit={(e) => {
