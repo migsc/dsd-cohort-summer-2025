@@ -14,7 +14,7 @@ export default function Navigation() {
 					Home
 				</Link>
 				<Link
-					href="./dashboard"
+					href="./business/dashboard"
 					className="text-white bg-red-400 p-1 rounded-xs hover:bg-red-200 transition-all ease-in-out duration-200 hover:text-black"
 				>
 					Business Portal
@@ -26,13 +26,13 @@ export default function Navigation() {
 					Login Page
 				</Link>
 				<Link
-					href="./service"
+					href="./customer/service"
 					className="text-white bg-red-400 p-1 rounded-xs hover:bg-red-200 transition-all ease-in-out duration-200 hover:text-black"
 				>
 					Service
 				</Link>
 				<Link
-					href="./dummy"
+					href="./customer/dummy"
 					className="text-white bg-red-400 p-1 rounded-xs hover:bg-red-200 transition-all ease-in-out duration-200 hover:text-black"
 				>
 					Service Catalog
