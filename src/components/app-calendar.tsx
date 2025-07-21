@@ -4,10 +4,12 @@ import { Calendar } from "react-big-calendar";
 import localizer from "@/lib/calendar-localizer";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-type CalendarEvent = {
+export type CalendarEvent = {
   title: string;
   start: Date;
   end: Date;
+  location: string;
+  contact: string;
   allDay?: boolean;
 };
 
