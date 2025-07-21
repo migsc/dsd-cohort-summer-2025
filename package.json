@@ -7,8 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
 		"db:push": "npx prisma db push --schema ./prisma/schema",
 		"db:studio": "npx prisma studio",
 		"db:generate": "npx prisma generate --schema ./prisma/schema",
@@ -29,6 +29,7 @@
 		"prisma": "^6.11.1",
 		"radix-ui": "^1.4.2",
 		"react": "^19.0.0",
+		"react-big-calendar": "^1.19.4",
 		"react-dom": "^19.0.0",
 		"sonner": "^2.0.5",
 		"tailwind-merge": "^3.3.1",
@@ -36,14 +37,30 @@
 		"zod": "^3.25.67"
 	},
 	"devDependencies": {
-		"husky": "^9.1.7",
 		"@tailwindcss/postcss": "^4.1.10",
+		"@types/moment": "^2.13.0",
 		"@types/node": "^20",
 		"@types/react": "^19",
+		"@types/react-big-calendar": "^1.16.2",
 		"@types/react-dom": "^19",
-    "prettier": "^3.0.0",
-    "prettier-plugin-tailwindcss": "^0.5.0",
+		"husky": "^9.1.7",
+		"prettier": "^3.0.0",
+		"prettier-plugin-tailwindcss": "^0.5.0",
 		"tailwindcss": "^4.1.10",
 		"typescript": "^5"
-	}
+	},
+	"version": "1.0.0",
+	"description": "**Project**: Home Cleaning & Maintenance Management System",
+	"main": "commitlint.config.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/migsc/dsd-cohort-summer-2025.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/migsc/dsd-cohort-summer-2025/issues"
+	},
+	"homepage": "https://github.com/migsc/dsd-cohort-summer-2025#readme"
 }
