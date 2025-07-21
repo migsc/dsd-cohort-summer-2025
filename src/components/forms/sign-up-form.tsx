@@ -60,14 +60,7 @@ export default function SignUpForm({
 
   return (
     <div className="mx-auto w-full mt-10 max-w-md p-6 animate-in fade-in-0 slide-in-from-bottom-20 duration-800">
-      <div className="mb-6 flex items-center justify-between align-middle">
-        <Link href="/" className={buttonVariants({ variant: "link" })}>
-          <ChevronLeftCircleIcon className="h-6 w-6" />
-          <span className="sr-only">Back to home</span>
-        </Link>
-        <h1 className="mb-6 text-center text-3xl font-bold">Create Account</h1>
-      </div>
-
+      <h1 className="mb-6 text-center text-3xl font-bold">Create Account</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
