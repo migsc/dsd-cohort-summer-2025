@@ -2,7 +2,7 @@ import { Calendar, CreditCard, Settings, LogOut, Users, FolderKanban } from "luc
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
-export const businessItems = [
+const businessItems = [
   {
     title: "Calendar",
     url: "#",

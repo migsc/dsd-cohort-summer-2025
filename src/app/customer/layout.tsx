@@ -2,7 +2,7 @@ import { Calendar, Home, CreditCard, Settings, LogOut } from "lucide-react"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
-export const customerItems = [
+const customerItems = [
   {
     title: "Service Catalog",
     url: "./dummy",
