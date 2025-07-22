@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 // props to be passed into ServiceCard
 export interface ServiceCardProps {
-    // _id: string;
+    _id: string;
     name: string;
     desc: string;
     durationMin: number;
@@ -21,11 +21,6 @@ export interface ServiceCardProps {
     priceMax: number;
     priceUnit: string;
 };
-
-// Add interface that includes _id to use in ServicesGrid as a key prop
-export interface ServiceWithId extends ServiceCardProps {
-    _id: string;
-}
 
 // ServiceCard Component used to make individual cards
 export function ServiceCard({ name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax, priceUnit }: ServiceCardProps) {
@@ -54,22 +49,13 @@ export function ServiceCard({ name, desc, durationMin, durationMax, durationUnit
 };
 
 // ServicesGrid Component. Accepts an array of services (objects) and maps each service to a ServiceCard
-export default function ServicesGrid({ services }: {services: ServiceWithId[]}) {
+export default function ServicesGrid({ services }: {services: ServiceCardProps[]}) {
 return (
         <section className='grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
             {/* *** LOOP THROUGH SERVICES FROM DATABASE     */}
-            {services.map((service: ServiceWithId) => (
+            {services.map((service: ServiceCardProps) => (
                 <div key={service._id}>
-                    <ServiceCard 
-                    name={service.name}
-                    desc={service.desc}
-                    durationMin={service.durationMin}
-                    durationMax={service.durationMax}
-                    durationUnits={service.durationUnits}
-                    priceMin={service.priceMin}
-                    priceMax={service.priceMax}
-                    priceUnit={service.priceUnit}
-                    />
+                    <ServiceCard {...service} />
                 </div>
             ))}
         </section>
