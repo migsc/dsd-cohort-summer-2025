@@ -17,7 +17,7 @@ type SidebarItem = {
 }
 
 interface AppSidebarProps {
-  items: SidebarItem[]
+  items: SidebarItem[] 
   title?: string
 }
 
