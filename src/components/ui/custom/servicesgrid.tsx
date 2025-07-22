@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 
-// props to be passed into ServiceCard
 export interface ServiceCardProps {
     _id: string;
     name: string;
