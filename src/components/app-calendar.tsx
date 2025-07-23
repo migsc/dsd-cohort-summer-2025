@@ -3,6 +3,7 @@ import React from "react";
 import { Calendar } from "react-big-calendar";
 import localizer from "@/lib/calendar-localizer";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "@/styles/calendar.css";
 
 export type CalendarEvent = {
   title: string;

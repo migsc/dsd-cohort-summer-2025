@@ -1,6 +1,5 @@
 import React from "react";
 import AppCalendar, { type CalendarEvent } from "@/components/app-calendar";
-//import type { CalendarEvent } from "@/components/app-calendar";
 
 const tempEvents: CalendarEvent[] = [
   {
