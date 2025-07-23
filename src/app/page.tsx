@@ -8,7 +8,7 @@ import Navigation from "@/components/navigation";
 export default function Home(){
 	const router = useRouter();
 	return(
-		<header className="flex gap-7 h-screen flex-col items-center text-black">
+		<header className="flex gap-7 h-screen flex-col items-center text-black grid-background">
 			<nav className="flex justify-between w-full p-4 px-20">
 				<div className="flex items-center justify-center">
 					<img src="/images/small_logo.png" alt="Logo" className="h-10 w-10" />
