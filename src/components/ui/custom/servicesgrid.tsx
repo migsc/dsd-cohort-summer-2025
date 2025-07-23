@@ -18,11 +18,10 @@ export interface ServiceCardProps {
     durationUnits: string;
     priceMin: number;
     priceMax: number;
-    priceUnit: string;
 };
 
 // ServiceCard Component used to make individual cards
-export function ServiceCard({ name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax, priceUnit }: ServiceCardProps) {
+export function ServiceCard({ name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax }: ServiceCardProps) {
     return (
         <Card>
             <CardHeader>
@@ -35,7 +34,7 @@ export function ServiceCard({ name, desc, durationMin, durationMax, durationUnit
             </CardHeader>
             <CardContent>
                 <p>{durationMin}-{durationMax} {durationUnits}</p>
-                <p className="text-lime-500 font-bold text-xl">{priceUnit}{priceMin}-{priceUnit}{priceMax}</p>
+                <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax}</p>
             </CardContent>
             <CardFooter>
                 <Button asChild>

@@ -11,8 +11,7 @@ const services = [
         durationMax: 3,
         durationUnits: 'hours',
         priceMin: 80,
-        priceMax: 150,
-        priceUnit: '$'
+        priceMax: 150
     },
     {
         _id:'1',
@@ -22,8 +21,7 @@ const services = [
         durationMax: 6,
         durationUnits: 'hours',
         priceMin: 200,
-        priceMax: 400,
-        priceUnit: '$'
+        priceMax: 400
     },
     {
         _id:'2',
@@ -33,8 +31,7 @@ const services = [
         durationMax: 5,
         durationUnits: 'hours',
         priceMin: 150,
-        priceMax: 300,
-        priceUnit: '$'
+        priceMax: 300
     },
     {
         _id:'3',
@@ -44,8 +41,7 @@ const services = [
         durationMax: 3,
         durationUnits: 'hours',
         priceMin: 100,
-        priceMax: 250,
-        priceUnit: '$'
+        priceMax: 250
     },
     {
         _id:'4',
@@ -55,8 +51,7 @@ const services = [
         durationMax: 4,
         durationUnits: 'hours',
         priceMin: 150,
-        priceMax: 400,
-        priceUnit: '$'
+        priceMax: 400
     },
     {
         _id:'5',
@@ -66,8 +61,7 @@ const services = [
         durationMax: 2,
         durationUnits: 'hours',
         priceMin: 50,
-        priceMax: 150,
-        priceUnit: '$'
+        priceMax: 150
     },
     {
         _id:'6',
@@ -77,8 +71,7 @@ const services = [
         durationMax: 3,
         durationUnits: 'hours',
         priceMin: 100,
-        priceMax: 250,
-        priceUnit: '$'
+        priceMax: 250
     }
 ];
 
