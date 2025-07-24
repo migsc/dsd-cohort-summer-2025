@@ -1,0 +1,76 @@
+model Business {
+  id                                    String @id @default(auto()) @map("_id") @db.ObjectId
+  userId                                String @unique
+  user                                  User   @relation(fields: [userId], references: [id], onDelete: Cascade) // <--- THIS IS THE KEY RELATION
+
+  businessName                          String
+  contactPersonName                     String
+  contactPersonTitle                    String
+  contactPersonEmail                    String
+  contactPersonPhone                    String
+  businessAddressStreet                 String
+  businessAddressCity                   String
+  businessAddressState                  String
+  businessAddressZip                    String
+  businessAddressCountry                String
+  yearsInBusiness                       Int
+  businessDescription                   String
+  coreServices                          CoreService[]
+  operatingHours                        OperatingHours
+  averageTravelTimeMinutes              Int
+  currentSchedulingMethod               String
+  logoUrl                               String?
+  brandColorPrimary                     String?
+  brandColorSecondary                   String?
+  preferredCustomerCommunicationMethods String[]
+  additionalNotes                       String?
+
+  createdAt                             DateTime @default(now())
+  updatedAt                             DateTime @updatedAt
+
+  @@map("business")
+}
+
+model ClientProfile {
+  id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId                 String @unique
+  user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferredContactMethod String?
+  addressStreet          String?
+  addressCity            String?
+  addressState           String?
+  addressZip             String?
+  addressCountry         String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("client_profile")
+}
+
+type CoreService {
+  name         String
+  description  String
+  durationMin  Int
+  durationMax  Int
+  typicalCleanersAssigned Int
+  pricingModel String
+  priceMin     Float
+  priceMax     Float
+  id           String @default(cuid())
+}
+
+type OperatingHours {
+  monday    DayOperatingHours
+  tuesday   DayOperatingHours
+  wednesday DayOperatingHours
+  thursday  DayOperatingHours
+  friday    DayOperatingHours
+  saturday  DayOperatingHours
+  sunday    DayOperatingHours
+}
+
+type DayOperatingHours {
+  start  String
+  end    String
+  isOpen Boolean
+}
