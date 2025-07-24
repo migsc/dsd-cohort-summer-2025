@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <SidebarProvider>
       <AppSidebar items={customerItems} title='CleanHub Customer Portal'/>
-      <main>
+      <main className='w-full'>
         <SidebarTrigger />
         <PortalHeader logoSrc='https://placehold.co/50x50' logoAlt='logo' businessName='Suzys Cleaning'></PortalHeader>
         {children}
