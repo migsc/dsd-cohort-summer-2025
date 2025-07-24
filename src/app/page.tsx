@@ -9,7 +9,7 @@ export default function Home(){
 	const router = useRouter();
 	return(
 		<header className="flex gap-7 w-screen h-screen flex-col items-center text-black grid-background">
-			<nav className="flex justify-between w-full p-4 px-20">
+			<nav className="flex justify-between w-full p-4 px-20 max-w-[2400px]">
 				<div className="flex items-center justify-center">
 					<img src="/images/small_logo.png" alt="Logo" className="h-10 w-10" />
 					<p className="ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
@@ -19,11 +19,12 @@ export default function Home(){
 						<li><a href="/">Contact</a></li>
 					</ul>
 					<span>
-						<button onClick={()=>{router.push("/login")}} className="main_button">Login</button>
+						<Button onClick={()=>{router.push("/login")}} className="py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
 					</span>
 				</div>
 			</nav>
-			<div className="flex items-center justify-center w-full px-14 max-w-[1800px]">
+			<div className="pt-60 w-full h-full px-14 max-w-[1800px]">
+				<div className="flex items-center justify-evenly w-full ">
 				{/* content */}
 				<div className=" w-1/2 max-w-[900px]">
 					<hr className="bg-blue-600 w-[100px] h-1.5 mb-5 rounded-sm" />
@@ -34,7 +35,8 @@ export default function Home(){
 				</div>
 				{/* large logo */}
 				<div>
-					<img src="/images/main_logo.png" alt="main logo of site" className="floatAnimation hover:" />
+					<img src="/images/main_logo.png" alt="main logo of site" className="floatAnimation" />
+				</div>
 				</div>
 			</div>
 		</header>

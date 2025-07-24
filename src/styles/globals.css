@@ -120,9 +120,9 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
-	.main_button{
-		@apply py-3 rounded-md w-[150px] text-white text-[16px] bg-blue-600 cursor-pointer transition-colors duration-300 hover:bg-blue-500
-	}
+}
+.button-styling{
+	@apply py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer
 }
 .grid-background{
 	@apply absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px];
