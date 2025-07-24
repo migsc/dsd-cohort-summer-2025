@@ -3,12 +3,15 @@ import { toast } from "sonner";
 import z from "zod/v4";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Loader from "../loader";
 
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { ChevronLeftCircleIcon } from "lucide-react";
 
 export default function SignUpForm({
   onSwitchToSignIn,
@@ -58,7 +61,6 @@ export default function SignUpForm({
   return (
     <div className="animate-in fade-in-0 slide-in-from-bottom-20 duration-800 mx-auto mt-10 w-full max-w-md p-6">
       <h1 className="mb-6 text-center text-3xl font-bold">Create Account</h1>
-
       <form
         onSubmit={e => {
           e.preventDefault();

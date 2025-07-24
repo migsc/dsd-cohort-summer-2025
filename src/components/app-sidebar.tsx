@@ -1,5 +1,4 @@
-import { Calendar, Home, CreditCard, Settings, LogOut } from "lucide-react"
-
+import Link from 'next/link'
 import {
   Sidebar,
   SidebarContent,
@@ -11,50 +10,32 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-// Menu items if logged in
-const items = [
-  {
-    title: "Service Catalog",
-    url: "./dummy",
-    icon: Home,
-  },
-  {
-    title: "My Bookings",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Invoices",
-    url: "#",
-    icon: CreditCard,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-  {
-    title: "Logout",
-    url: "/",
-    icon: LogOut,
-  },
-]
+type SidebarItem = {
+  title: string
+  url: string
+  icon: React.ComponentType
+}
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  items: SidebarItem[] 
+  title?: string
+}
+
+export function AppSidebar({ items, title = "CleanHub Portal" }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>CleanHub Client Portal</SidebarGroupLabel>
+          <SidebarGroupLabel>{title}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

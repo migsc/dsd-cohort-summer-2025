@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Providers from "@/providers";
 
-import Navigation from "@/components/Navigation/Navigation";
-
 import "../styles/globals.css";
 
 const geistSans = Geist({
@@ -32,7 +30,6 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<Providers>
-					<Navigation />
 					<div className="grid grid-rows-[auto_1fr]">{children}</div>
 				</Providers>
 			</body>
