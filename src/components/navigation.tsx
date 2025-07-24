@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { buttonVariants } from './ui/button';
+import Logout from '@/components/logout';
 
 export default function Navigation() {
 
@@ -8,7 +9,7 @@ export default function Navigation() {
     { href: '/business/dashboard', label: 'Business Portal' },
     { href: '/login', label: 'Login Page' },
     { href: '/customer/service', label: 'Service' },
-    { href: '/customer/dummy', label: 'Service Catalog' },
+    { href: '/customer/dummy', label: 'Service Catalog' }
   ];
 
 	return (
@@ -26,6 +27,7 @@ export default function Navigation() {
 						{link.label}
 					</Link>
 				))}
+				<Logout />
 			</div>
 		</div>
 	);
