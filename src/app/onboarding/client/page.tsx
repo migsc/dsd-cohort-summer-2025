@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import React from "react";
 import {
@@ -145,7 +144,6 @@ export default function ClientOnboardingForm() {
         });
 
         if (response.ok) {
-          toast.success("Client profile created successfully!");
           router.push("/dashboard/client");
         } else {
           const responseError = await response.json();
