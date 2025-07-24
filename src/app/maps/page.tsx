@@ -15,11 +15,14 @@ export default function Maps() {
     const searchParams = useSearchParams();
     const[workerAddress, setWorkerAddress] = useState<LatLng | null>(null);
     const[customerAddress, setCustomerAddress] = useState<LatLng | null>(null);
+    const[distance, setDistance] = useState('');
+    const[duration, setDuration] = useState('');
+
     searchParams.forEach((value, key) => {
         console.log(value, key);
         });
 
-
+    // call Geocoding API first to make use of the other APIs easier
     useEffect(() => {
         const worker = searchParams.get('worker');
         const customer = searchParams.get('customer');
@@ -43,11 +46,29 @@ export default function Maps() {
 
     }, [searchParams]);
 
+
+    // useEffect(() => {
+    //     if (!workerAddress || !customerAddress) return;
+    //     const origin = `${workerAddress.lat},${workerAddress.lng}`;
+    //     const destination = `${customerAddress.lat},${customerAddress.lng}`;
+
+    //     fetch(`api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log("Fetched distance matrix results:", data);
+    //         setDistance(data.distance.text);
+    //         setDuration(data.duration.text);
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
+
+    // }, [workerAddress, customerAddress]);
+
     if (!workerAddress || !customerAddress) {
         return <div>Loading map...</div>;
     }
 
-    console.log(workerAddress, customerAddress);
     const center = {
         lat: (workerAddress.lat + customerAddress.lat) / 2,
         lng: (workerAddress.lng + customerAddress.lng) / 2
@@ -76,7 +97,11 @@ export default function Maps() {
                 </Map>
 
             </APIProvider>
-            
+        <p>
+            Total distance to destination: {distance}
+            <br/>
+            Estimated Time of Arrival: {duration}
+        </p>
         </section>
     );
 
