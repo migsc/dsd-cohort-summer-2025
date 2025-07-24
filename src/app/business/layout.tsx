@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 const businessItems = [
   {
     title: "Calendar",
-    url: "#",
+    url: "/business/calendar",
     icon: Calendar,
   },
   {

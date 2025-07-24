@@ -18,6 +18,10 @@
   },
   "dependencies": {
     "@prisma/client": "^6.11.1",
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-form": "^1.12.3",
     "better-auth": "^1.2.10",
     "class-variance-authority": "^0.7.1",
@@ -38,29 +42,13 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.10",
-    "@types/moment": "^2.13.0",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-big-calendar": "^1.16.2",
     "@types/react-dom": "^19",
     "husky": "^9.1.7",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.5.0",
     "tailwindcss": "^4.1.10",
     "typescript": "^5"
-  },
-  "version": "1.0.0",
-  "description": "**Project**: Home Cleaning & Maintenance Management System",
-  "main": "commitlint.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/migsc/dsd-cohort-summer-2025.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/migsc/dsd-cohort-summer-2025/issues"
-  },
-  "homepage": "https://github.com/migsc/dsd-cohort-summer-2025#readme"
+  }
 }
