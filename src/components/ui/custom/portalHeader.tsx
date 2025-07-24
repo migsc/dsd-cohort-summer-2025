@@ -2,7 +2,6 @@
 import SearchBar from './searchbar';
 import { User } from 'lucide-react';
 import Notifications from './notifications';
-import type { Component } from 'react';
 
 interface PortalHeaderProps {
     logoSrc: string;
@@ -12,7 +11,7 @@ interface PortalHeaderProps {
 
 export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalHeaderProps) {
     return (
-        <header className='flex items-center justify-between p-4 border-b z-10'>
+        <header className='flex items-center justify-between p-4 border-b z-10 gap-2'>
             <img src={logoSrc} alt={logoAlt} width={50} height={50}/>
             <h1 className='text-xl font-bold text-gray-300'>{businessName}</h1>
             <SearchBar placeholder='Search services...'></SearchBar>

@@ -88,7 +88,7 @@ export default async function OurServices(props: {
 
     return (
         <section className='mx-1 sm:mx-10'>
-            <h1 className='text-center font-bold text-3xl mb-4'>Our Services</h1>
+            <h1 className='text-center font-bold text-3xl mt-2 mb-4'>Our Services</h1>
             {!query && (
                 <p className='text-center mb-10'>
                     Suzy's Cleaners offer services ranging from a standard house cleaning to a true deep clean. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt eum repellat corrupti, delectus voluptas cumque quos quasi perferendis deleniti explicabo? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio eligendi assumenda deleniti veniam aliquid ipsa dignissimos aspernatur! Eaque, nemo officiis.
