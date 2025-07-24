@@ -124,7 +124,7 @@ const defaultClientValues: ClientOnboardingFormData = {
   addressCountry: "",
 };
 
-export default function ClientOnboardingForm({ userId }: { userId: string }) {
+export default function ClientOnboardingForm() {
   const router = useRouter();
 
   const form = useForm({
