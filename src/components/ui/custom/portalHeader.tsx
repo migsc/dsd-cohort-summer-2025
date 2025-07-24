@@ -11,8 +11,10 @@ interface PortalHeaderProps {
 export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalHeaderProps) {
     return (
         <header className='flex items-center justify-between p-4 border-b z-10 gap-2'>
-            <img src={logoSrc} alt={logoAlt} width={50} height={50}/>
-            <h1 className='text-xl font-bold text-gray-300'>{businessName}</h1>
+            <div className='flex items-center gap-5'>
+                <img src={logoSrc} alt={logoAlt} width={50} height={50}/>
+                <h1 className='text-xl text-center font-bold text-gray-300'>{businessName}</h1>
+            </div>
              {/* Notifications */}
             <div className="flex items-center gap-3">
                 {/* ***TODO: MAKE NOTIFICATIONS COMPONENT THAT UPDATES */}
@@ -21,7 +23,7 @@ export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalH
                 {/* Profile */}
                 {/* ***TODO: MAKE PROFILE DYNAMIC COMPONENT, PULL FROM DB */}
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                    <div className="hidden md:flex w-8 h-8 bg-gray-300 rounded-full items-center justify-center">
                         <User className="h-4 w-4 text-gray-600" />
                     </div>
                     <span className="text-sm font-medium text-gray-300">

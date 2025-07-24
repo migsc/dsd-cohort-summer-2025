@@ -92,11 +92,11 @@ export default async function OurServices(props: {
             <h1 className='text-center font-bold text-3xl mt-2 mb-4'>Our Services</h1>
             {!query && (
                 <p className='text-center'>
-                    Suzy's Cleaners offer services ranging from a standard house cleaning to a true deep clean. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt eum repellat corrupti, delectus voluptas cumque quos quasi perferendis deleniti explicabo? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio eligendi assumenda deleniti veniam aliquid ipsa dignissimos aspernatur! Eaque, nemo officiis.
+                    Suzy's Cleaners offer services ranging from a standard house cleaning to a true deep clean. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt eum repellat corrupti, delectus voluptas cumque quos quasi perferendis deleniti explicabo? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio eligendi assumenda deleniti veniam aliquid ipsa dignissimos aspernatur!
                 </p>
             )}
             <div className='w-full flex justify-center my-5'>
-                <SearchBar placeholder='Search services...' />
+                <SearchBar placeholder='Search services...'/>
             </div>
             <Suspense key={query} fallback={<Skeleton className='h-4 w-[250px]' />}>
                 <ServicesGrid services={services} query={query}></ServicesGrid>
