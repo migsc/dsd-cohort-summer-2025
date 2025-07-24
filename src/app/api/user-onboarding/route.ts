@@ -1,7 +1,8 @@
-import { auth } from "better-auth"; // Assuming your auth instance
-import { prisma } from "@/lib/prisma";
+import { auth } from "../auth/[...all]/route"; 
+import prisma from "../../../lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { headers } from "next/headers"
 
 const OnboardingSchema = z.object({
     phoneNumber: z.string().optional(),
@@ -9,7 +10,8 @@ const OnboardingSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-    const session = await auth.getSession(); // or however your session is retrieved
+    console.log("auth object methods", auth);
+    const session = await auth.api.getSession({ headers: await headers() }); 
     const userId = session?.user?.id;
 
     if (!userId) {

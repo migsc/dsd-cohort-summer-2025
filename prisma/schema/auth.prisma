@@ -5,7 +5,7 @@ model User {
   emailVerified Boolean
   image         String?
   phoneNumber   String?   
-  role          Role      @default(USER)
+  role          Role      @default(User)
   onboarded     Boolean   @default(false)
   createdAt     DateTime
   updatedAt     DateTime
@@ -17,8 +17,8 @@ model User {
 }
 
 enum Role {
-  USER
-  CUSTOMER
+  User
+  Customer
 }
 
 model Session {

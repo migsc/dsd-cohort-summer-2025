@@ -16,11 +16,16 @@ export default function UserOnboardingPage() {
   const { data: session, isPending } = authClient.useSession();
 
   // 1. Redirect if the user has already completed onboarding
-  useEffect(() => {
-    if (!isPending && session?.user?.onboarded) {
-      router.push("/dashboard");
-    }
-  }, [session, isPending, router]);
+
+    useEffect(() => {
+    fetch("/api/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.user?.onboarded) {
+          router.push("/dashboard");
+        }
+      });
+  }, [router]);
 
   const form = useForm({
     defaultValues: {
@@ -43,7 +48,7 @@ export default function UserOnboardingPage() {
     },
     validators: {
       onSubmit: z.object({
-        phoneNumber: z.string().optional(),
+        phoneNumber: z.string().min(1, "Required"),
         role: z.enum(["User", "Customer"]),
       }),
     },
