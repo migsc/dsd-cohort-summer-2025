@@ -13,18 +13,46 @@ export async function GET(request: Request){
     const apiKey = process.env.MAPS_API_KEY;
 
     const geocode = async(address : string) => {
+        console.log(`Getting geocode for ${address}`)
+        console.log("API key loaded:", !!apiKey);
         const res = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
         );
 
         const data = await res.json();
-        console.log(data);
-        return data
+        
+        // Log status code and error details
+        console.log("HTTP status:", res.status);
+        console.log("Geocode API response:", data);
+
+
+        if(!data.results[0]){
+            throw new Error(`No results found for address: ${address}`);
+        }
+
+        console.log("Geocode results", data.results[0])
+
+        return {
+            ...data.results[0].geometry.location, // {lat:... , lng:... }
+            formatted_address: data.results[0].formatted_address
+        };
     }
 
-    const [workerCoord, customerCoord] = await Promise.all([
-        geocode(workerAddress),
-        geocode(customerAddress)
-    ]);
+    try{
+        const [workerCoord, customerCoord] = await Promise.all([
+            geocode(workerAddress),
+            geocode(customerAddress)
+        ]);
+
+        return new Response(JSON.stringify({ 
+            workerCoord: workerCoord,
+            customerCoord: customerCoord
+            }),
+            {status: 200}
+        );
+    }
+    catch(error){
+        return new Response(JSON.stringify({error: "Geocode failed"}), {status: 500});
+    }
 
 }

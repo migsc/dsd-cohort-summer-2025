@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from "react";
 
 import { useSearchParams } from 'next/navigation';
+import { AdvancedMarker, APIProvider, Map, Marker, Pin } from '@vis.gl/react-google-maps';
 
 type LatLng = {
     lat: number,
     lng: number
 };
-
-
 
 
 export default function Maps() {
@@ -30,11 +29,53 @@ export default function Maps() {
         }
 
         fetch(`api/geocode?worker=${encodeURIComponent(worker)}&customer=${encodeURIComponent(customer)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Fetched address coordinates:", data);
+            setWorkerAddress(data.workerCoord);
+            setCustomerAddress(data.customerCoord);
+            console.log(workerAddress, customerAddress);
+
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 
     }, [searchParams]);
 
+    if (!workerAddress || !customerAddress) {
+        return <div>Loading map...</div>;
+    }
+
+    console.log(workerAddress, customerAddress);
+    const center = {
+        lat: (workerAddress.lat + customerAddress.lat) / 2,
+        lng: (workerAddress.lng + customerAddress.lng) / 2
+    };
+
+    const apiKey = process.env.NEXT_PUBLIC_MAPS_API_KEY;
+
     return (
         <section className = "space-y-12">
+            <APIProvider apiKey={apiKey!}>
+                <Map
+                    mapId={'1ab038de2bf0f57553dab021'}
+                    center={center}
+                    zoom={12}
+                    style={{ width: '100%', height: '500px', border: '1px solid #ccc' }}
+                >
+                    <AdvancedMarker position={workerAddress} >
+                    </AdvancedMarker>
+                    <AdvancedMarker position={customerAddress} >
+                        <Pin
+                        background={'#0f9d58'}
+                        borderColor={'#006425'}
+                        glyphColor={'#60d98f'}
+                        />
+                    </AdvancedMarker>
+                </Map>
+
+            </APIProvider>
             
         </section>
     );

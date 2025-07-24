@@ -19,6 +19,7 @@
   "dependencies": {
     "@prisma/client": "^6.12.0",
     "@tanstack/react-form": "^1.12.3",
+    "@vis.gl/react-google-maps": "^1.5.4",
     "better-auth": "^1.2.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
