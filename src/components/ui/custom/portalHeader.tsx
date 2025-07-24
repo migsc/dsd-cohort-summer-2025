@@ -1,5 +1,4 @@
 'use client';
-import SearchBar from './searchbar';
 import { User } from 'lucide-react';
 import Notifications from './notifications';
 
@@ -14,7 +13,6 @@ export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalH
         <header className='flex items-center justify-between p-4 border-b z-10 gap-2'>
             <img src={logoSrc} alt={logoAlt} width={50} height={50}/>
             <h1 className='text-xl font-bold text-gray-300'>{businessName}</h1>
-            <SearchBar placeholder='Search services...'></SearchBar>
              {/* Notifications */}
             <div className="flex items-center gap-3">
                 {/* ***TODO: MAKE NOTIFICATIONS COMPONENT THAT UPDATES */}
