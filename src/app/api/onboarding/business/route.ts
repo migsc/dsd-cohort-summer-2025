@@ -16,7 +16,6 @@ type CoreServiceType = {
 };
 
 export async function POST(request: Request) {
-  console.log("We are in the api");
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
 

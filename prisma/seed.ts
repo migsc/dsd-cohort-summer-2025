@@ -1,7 +1,6 @@
-// prisma/seed.ts
+import "../envConfig";
 import { PrismaClient } from "../prisma/generated/client";
 import { auth } from "../src/lib/auth";
-import "../envConfig.ts";
 
 const prisma = new PrismaClient();
 
@@ -39,11 +38,8 @@ async function main() {
 
     await prisma.user.update({
       where: { id: adminUser.id },
-      data: { role: "business", emailVerified: true },
+      data: { role: "business" },
     });
-    console.log(
-      `Updated admin user role to business and verified email for: ${adminUser.email}`
-    );
 
     const adminBusiness = await prisma.business.create({
       data: {
@@ -112,13 +108,7 @@ async function main() {
       adminBusiness.businessName
     );
   } catch (error: any) {
-    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
-      console.warn(
-        `User with email ${adminEmail} already exists. Skipping creation.`
-      );
-    } else {
-      console.error(`Error creating admin user or business: ${error.message}`);
-    }
+    console.error(`Error creating admin user or business: ${error.message}`);
   }
 
   const clientEmail = "client@example.com";
@@ -152,19 +142,9 @@ async function main() {
       },
     });
 
-    console.log(
-      "Created client user and profile:",
-      clientUser.email,
-      clientProfile.id
-    );
+    console.log("Created client user and profile:", clientUser.email);
   } catch (error: any) {
-    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
-      console.warn(
-        `User with email ${clientEmail} already exists. Skipping creation.`
-      );
-    } else {
-      console.error(`Error creating client user or profile: ${error.message}`);
-    }
+    console.error(`Error creating client user or profile: ${error.message}`);
   }
 
   console.log("Seeding finished.");
@@ -172,7 +152,7 @@ async function main() {
 
 main()
   .catch(async e => {
-    console.error("An unhandled error occurred during seeding:", e);
+    console.error("Error occurred during seeding:", e);
     process.exit(1);
   })
   .finally(async () => {
