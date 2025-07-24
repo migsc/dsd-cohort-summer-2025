@@ -36,7 +36,7 @@ export default function SignUpForm({
         },
         {
           onSuccess: () => {
-            router.push("/business/dashboard");
+            router.push("/onboarding");
             toast.success("Sign up successful");
           },
           onError: error => {
