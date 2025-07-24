@@ -9,6 +9,11 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  // Add ons
+  role          String         @default("clients")
+  business      Business?
+  clientProfile ClientProfile?
+
   @@unique([email])
   @@map("user")
 }
