@@ -1,4 +1,6 @@
 import ServicesGrid from '@/components/ui/custom/servicesgrid';
+import { Suspense } from 'react';
+import { Skeleton } from "@/components/ui/skeleton"
 
 // Array of service objects and the data they need to have
 // ***THIS DATA WILL COME FROM DATABASE INSTEAD OF BEING MANUALLY INPUT***
@@ -75,17 +77,26 @@ const services = [
     }
 ];
 
-// Page to display services
-export default function OurServices() {
+export default async function OurServices(props: {
+    searchParams?: Promise<{
+        query?: string;
+        page?: string;
+    }>;
+}) {
+    const searchParams = await props.searchParams;
+    const query = searchParams?.query || '';
+
     return (
         <section className='mx-1 sm:mx-10'>
             <h1 className='text-center font-bold text-3xl mb-4'>Our Services</h1>
-            {/* Business Description - will be configured by business this is just a default for now */}
-            <p className='text-center mb-10'>
-                Suzy's Cleaners offer services ranging from a standard house cleaning to a true deep clean. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt eum repellat corrupti, delectus voluptas cumque quos quasi perferendis deleniti explicabo? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio eligendi assumenda deleniti veniam aliquid ipsa dignissimos aspernatur! Eaque, nemo officiis.
-            </p>
-            <ServicesGrid services={services}>
-            </ServicesGrid>
+            {!query && (
+                <p className='text-center mb-10'>
+                    Suzy's Cleaners offer services ranging from a standard house cleaning to a true deep clean. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt eum repellat corrupti, delectus voluptas cumque quos quasi perferendis deleniti explicabo? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio eligendi assumenda deleniti veniam aliquid ipsa dignissimos aspernatur! Eaque, nemo officiis.
+                </p>
+            )}
+            <Suspense key={query} fallback={<Skeleton className="h-4 w-[250px]" />}>
+                <ServicesGrid services={services} query={query}></ServicesGrid>
+            </Suspense>
         </section>
-    )
-}
+    );
+};

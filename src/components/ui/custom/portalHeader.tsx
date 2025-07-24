@@ -2,6 +2,7 @@
 import SearchBar from './searchbar';
 import { User } from 'lucide-react';
 import Notifications from './notifications';
+import type { Component } from 'react';
 
 interface PortalHeaderProps {
     logoSrc: string;
@@ -9,17 +10,12 @@ interface PortalHeaderProps {
     businessName: string;
 }
 
-// ***TODO: Implement actual searching
-const handleSearch = (searchQuery: string) => {
-    console.log('User searched for:', searchQuery)
-};
-
 export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalHeaderProps) {
     return (
         <header className='flex items-center justify-between p-4 border-b z-10'>
             <img src={logoSrc} alt={logoAlt} width={50} height={50}/>
             <h1 className='text-xl font-bold text-gray-300'>{businessName}</h1>
-            <SearchBar onSearch={handleSearch}></SearchBar>
+            <SearchBar placeholder='Search services...'></SearchBar>
              {/* Notifications */}
             <div className="flex items-center gap-3">
                 {/* ***TODO: MAKE NOTIFICATIONS COMPONENT THAT UPDATES */}
