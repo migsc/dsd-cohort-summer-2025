@@ -47,23 +47,23 @@ export default function Maps() {
     }, [searchParams]);
 
 
-    // useEffect(() => {
-    //     if (!workerAddress || !customerAddress) return;
-    //     const origin = `${workerAddress.lat},${workerAddress.lng}`;
-    //     const destination = `${customerAddress.lat},${customerAddress.lng}`;
+    useEffect(() => {
+        if (!workerAddress || !customerAddress) return;
+        const origin = `${workerAddress.lat},${workerAddress.lng}`;
+        const destination = `${customerAddress.lat},${customerAddress.lng}`;
 
-    //     fetch(`api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log("Fetched distance matrix results:", data);
-    //         setDistance(data.distance.text);
-    //         setDuration(data.duration.text);
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
+        fetch(`api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Fetched distance matrix results:", data);
+            setDistance(data.distance.text);
+            setDuration(data.duration.text);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 
-    // }, [workerAddress, customerAddress]);
+    }, [workerAddress, customerAddress]);
 
     if (!workerAddress || !customerAddress) {
         return <div>Loading map...</div>;
@@ -85,8 +85,7 @@ export default function Maps() {
                     zoom={12}
                     style={{ width: '100%', height: '500px', border: '1px solid #ccc' }}
                 >
-                    <AdvancedMarker position={workerAddress} >
-                    </AdvancedMarker>
+                    <AdvancedMarker position={workerAddress} />
                     <AdvancedMarker position={customerAddress} >
                         <Pin
                         background={'#0f9d58'}

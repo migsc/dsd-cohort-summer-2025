@@ -1,7 +1,7 @@
 export async function GET(request: Request) {
   " Get Distance and Estimated Time of Arrival ";
   const { searchParams } = new URL(request.url);
-  console.log(searchParams);
+
   // searchParams is destrctured from URL object
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
@@ -13,9 +13,12 @@ export async function GET(request: Request) {
   }
 
   const apiKey = process.env.MAPS_API_KEY;
-  console.log(origin, destination);
   const res = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?origins=${origin}&destinations=${destination}&key=${apiKey}`
+    `https://maps.googleapis.com/maps/api/distancematrix/json?
+    origins=${origin}
+    &destinations=${destination}
+    &units=imperial
+    &key=${apiKey}`
   );
 
   const data = await res.json();
