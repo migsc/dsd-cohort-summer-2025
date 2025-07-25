@@ -1,5 +1,6 @@
 generator client {
-  provider      = "prisma-client"
+  provider      = "prisma-client-js"
+  output        = "../generated"
   moduleFormat  = "esm"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
