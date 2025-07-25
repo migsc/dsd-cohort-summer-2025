@@ -8,7 +8,7 @@ import { authClient } from "@/lib/auth-client";
 const loggedInItems = [
   {
     title: 'Service Catalog',
-    url: './dummy',
+    url: 'customer/',
     icon: Home,
   },
   {
