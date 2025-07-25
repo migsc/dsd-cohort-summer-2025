@@ -1,5 +1,9 @@
+"use client";
 import React from "react";
 import AppCalendar, { type CalendarEvent } from "@/components/app-calendar";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const tempEvents: CalendarEvent[] = [
   {
@@ -20,9 +24,22 @@ const tempEvents: CalendarEvent[] = [
 ];
 
 export default function Bookings() {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!session && !isPending) {
+      router.push("/login");
+    }
+  }, [session, isPending]);
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
-      <h1>Bookings</h1>
+    <div className="flex flex-col items-center">
+      <p className="text-xl mb-4 font-bold">Welcome {session?.user.name}</p>
       <div>
         <AppCalendar events={tempEvents} />
       </div>
