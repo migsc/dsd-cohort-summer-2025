@@ -1,9 +1,10 @@
 'use client';
-import { Calendar, Home, CreditCard, Settings, LogOut, LogIn } from 'lucide-react'
+import { Calendar, Home, CreditCard, Settings, LogIn } from 'lucide-react'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import PortalHeader from '@/components/ui/custom/portalHeader';
 import { authClient } from "@/lib/auth-client";
+import Logout from '@/components/logout'
 
 const loggedInItems = [
   {
@@ -25,12 +26,7 @@ const loggedInItems = [
     title: 'Settings',
     url: '#',
     icon: Settings,
-  },
-  {
-    title: 'Logout',
-    url: '/',
-    icon: LogOut,
-  },
+  }
 ];
 
 const loggedOutItems = [
@@ -56,10 +52,11 @@ export default function RootLayout({
 
   // render different sidebar options if they are logged in
   const sidebarItems = session ? loggedInItems : loggedOutItems;
+  const loggedIn = session ? true : false;
 
   return (
     <SidebarProvider>
-      <AppSidebar items={sidebarItems} title='CleanHub Customer Portal'/>
+      <AppSidebar items={sidebarItems} loggedIn={loggedIn} title='CleanHub Customer Portal'/>
       <main className='w-full'>
         <SidebarTrigger />
         <PortalHeader logoSrc='https://placehold.co/50x50' logoAlt='logo' businessName='Suzys Cleaning'></PortalHeader>
