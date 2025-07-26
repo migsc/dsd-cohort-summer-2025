@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import Logout from './logout'
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,20 +10,21 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 type SidebarItem = {
-  title: string
-  url: string
-  icon: React.ComponentType
-}
+  title: string;
+  url: string;
+  icon: React.ComponentType;
+};
 
 interface AppSidebarProps {
   items: SidebarItem[] 
   title?: string
+  loggedIn: boolean
 }
 
-export function AppSidebar({ items, title = "CleanHub Portal" }: AppSidebarProps) {
+export function AppSidebar({ items, title = "CleanHub Portal", loggedIn }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -29,7 +32,7 @@ export function AppSidebar({ items, title = "CleanHub Portal" }: AppSidebarProps
           <SidebarGroupLabel>{title}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
@@ -43,6 +46,7 @@ export function AppSidebar({ items, title = "CleanHub Portal" }: AppSidebarProps
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      {loggedIn && <div className='text-center mb-4'><Logout /></div>}
     </Sidebar>
-  )
+  );
 }

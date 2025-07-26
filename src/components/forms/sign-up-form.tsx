@@ -9,9 +9,6 @@ import { Label } from "@/components/ui/label";
 import Loader from "../loader";
 
 import { authClient } from "@/lib/auth-client";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ChevronLeftCircleIcon } from "lucide-react";
 
 export default function SignUpForm({
   onSwitchToSignIn,

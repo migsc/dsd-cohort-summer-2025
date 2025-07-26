@@ -31,7 +31,7 @@ export default function SignInForm({
         },
         {
           onSuccess: () => {
-            router.push("/business/dashboard");
+            router.push("/business/");
             toast.success("Sign in successful");
           },
           onError: error => {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { useRouter } from "next/navigation";
 import React from "react";
 import {
   Card,
@@ -23,119 +22,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { z } from "zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-type ClientOnboardingFormData = {
-  preferredContactMethod?: string;
-  addressStreet?: string;
-  addressCity?: string;
-  addressState?: string;
-  addressZip?: string;
-  addressCountry?: string;
-};
+import {
+  usStates,
+  preferredContactMethods,
+  CustomerOnboardingSchema,
+  defaultCustomerValues,
+} from "./schema/customer.schema";
 
-const preferredContactMethods = [
-  "Email",
-  "Phone",
-  "SMS",
-  "Client Portal",
-] as const;
-
-const usStates = [
-  "AL",
-  "AK",
-  "AZ",
-  "AR",
-  "CA",
-  "CO",
-  "CT",
-  "DE",
-  "FL",
-  "GA",
-  "HI",
-  "ID",
-  "IL",
-  "IN",
-  "IA",
-  "KS",
-  "KY",
-  "LA",
-  "ME",
-  "MD",
-  "MA",
-  "MI",
-  "MN",
-  "MS",
-  "MO",
-  "MT",
-  "NE",
-  "NV",
-  "NH",
-  "NJ",
-  "NM",
-  "NY",
-  "NC",
-  "ND",
-  "OH",
-  "OK",
-  "OR",
-  "PA",
-  "RI",
-  "SC",
-  "SD",
-  "TN",
-  "TX",
-  "UT",
-  "VT",
-  "VA",
-  "WA",
-  "WV",
-  "WI",
-  "WY",
-] as const;
-
-const ClientOnboardingSchema = z.object({
-  preferredContactMethod: z
-    .enum(preferredContactMethods, {
-      message: "Please select a valid contact method",
-    })
-    .optional()
-    .or(z.literal("")),
-  addressStreet: z.string().optional().or(z.literal("")),
-  addressCity: z.string().optional().or(z.literal("")),
-  addressState: z
-    .enum(usStates, { message: "Invalid state selected." })
-    .optional()
-    .or(z.literal("")),
-  addressZip: z
-    .string()
-    .regex(/^\d{5}(?:[-\s]\d{4})?$/, "Invalid zip code format")
-    .optional()
-    .or(z.literal("")),
-  addressCountry: z.string().optional().or(z.literal("")),
-});
-const defaultClientValues: ClientOnboardingFormData = {
-  preferredContactMethod: "",
-  addressStreet: "",
-  addressCity: "",
-  addressState: "",
-  addressZip: "",
-  addressCountry: "",
-};
-
-export default function ClientOnboardingForm() {
+export default function CustomerOnboarding() {
   const router = useRouter();
 
   const form = useForm({
-    defaultValues: defaultClientValues,
+    defaultValues: defaultCustomerValues,
 
     validators: {
-      onSubmit: ClientOnboardingSchema,
+      onSubmit: CustomerOnboardingSchema,
     },
 
     onSubmit: async ({ value }) => {
       try {
-        const response = await fetch("/api/onboarding/client", {
+        const response = await fetch("/api/onboarding/customer", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -144,7 +53,8 @@ export default function ClientOnboardingForm() {
         });
 
         if (response.ok) {
-          router.push("/dashboard/client");
+          toast.success("Customer onboarding successful!");
+          router.push("/customer");
         } else {
           const responseError = await response.json();
         }
@@ -157,7 +67,7 @@ export default function ClientOnboardingForm() {
   return (
     <Card className="mx-auto my-8 w-full max-w-2xl">
       <CardHeader>
-        <CardTitle>Client Onboarding</CardTitle>
+        <CardTitle>Customer Onboarding</CardTitle>
         <CardDescription>
           Please provide some additional details to complete your profile.
         </CardDescription>
@@ -174,20 +84,17 @@ export default function ClientOnboardingForm() {
             <h3 className="mb-4 text-lg font-semibold">Contact Preferences</h3>
             <form.Field
               name="preferredContactMethod"
-              validators={{
-                onBlur: z
-                  .enum(preferredContactMethods, {
-                    message: "Invalid method selected",
-                  })
-                  .optional(),
-              }}
               children={field => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>Preferred Contact Method</Label>
                   <Select
                     name={field.name}
                     value={field.state.value || ""}
-                    onValueChange={field.handleChange}
+                    onValueChange={value => {
+                      field.handleChange(
+                        value as (typeof preferredContactMethods)[number]
+                      );
+                    }}
                     onOpenChange={field.handleBlur}
                   >
                     <SelectTrigger>
@@ -221,12 +128,6 @@ export default function ClientOnboardingForm() {
               <div className="md:col-span-2">
                 <form.Field
                   name="addressStreet"
-                  validators={{
-                    onBlur: z
-                      .string()
-                      .min(3, "Street address is required")
-                      .optional(),
-                  }}
                   children={field => (
                     <div className="space-y-2">
                       <Label htmlFor={field.name}>Street Address</Label>
@@ -251,9 +152,6 @@ export default function ClientOnboardingForm() {
               </div>
               <form.Field
                 name="addressCity"
-                validators={{
-                  onBlur: z.string().min(2, "City is required").optional(),
-                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>City</Label>
@@ -277,18 +175,15 @@ export default function ClientOnboardingForm() {
               />
               <form.Field
                 name="addressState"
-                validators={{
-                  onBlur: z
-                    .enum(usStates, { message: "Invalid state selected." })
-                    .optional(),
-                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>State</Label>
                     <Select
                       name={field.name}
                       value={field.state.value || ""}
-                      onValueChange={field.handleChange}
+                      onValueChange={value => {
+                        field.handleChange(value as (typeof usStates)[number]);
+                      }}
                       onOpenChange={field.handleBlur}
                     >
                       <SelectTrigger>
@@ -315,12 +210,6 @@ export default function ClientOnboardingForm() {
               />
               <form.Field
                 name="addressZip"
-                validators={{
-                  onBlur: z
-                    .string()
-                    .regex(/^\d{5}(?:[-\s]\d{4})?$/, "Invalid zip code format")
-                    .optional(),
-                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Zip Code</Label>
@@ -344,9 +233,6 @@ export default function ClientOnboardingForm() {
               />
               <form.Field
                 name="addressCountry"
-                validators={{
-                  onBlur: z.string().min(2, "Country is required").optional(),
-                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Country</Label>
@@ -371,10 +257,44 @@ export default function ClientOnboardingForm() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Complete Client Profile
-          </Button>
+        <CardFooter className="flex-col pt-12">
+          <form.Subscribe>
+            {state => (
+              <Button
+                type="submit"
+                className="relative w-full cursor-pointer"
+                disabled={state.isSubmitting}
+              >
+                {state.isSubmitting ? (
+                  <>
+                    <svg
+                      className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+            )}
+          </form.Subscribe>
         </CardFooter>
       </form>
     </Card>
