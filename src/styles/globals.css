@@ -4,9 +4,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans:
-    "Inter", "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-sans: "Poppins", "Inter", "Geist", ui-sans-serif, system-ui, sans-serif,
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
@@ -126,10 +125,25 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+	* {
+		@apply border-border outline-ring/50;
+	}
+}
+.button-styling{
+	@apply py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer
+}
+.grid-background{
+	@apply absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px];
+}
+.floatAnimation {
+	animation: floater 5s ease-in-out infinite;
+	animation-delay: 0.5s;
+	animation-direction: alternate;
+	transition: transform 0.5s ease-in-out;
+	transform-origin: center center;
+}
+
+@keyframes floater {
+  0%{transform: translateY(-5%);transition: ease 0.5s;}
+  50%{transform: translateY(5%);transition: ease 0.5s;}
 }

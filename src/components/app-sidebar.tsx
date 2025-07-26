@@ -1,4 +1,6 @@
-import Link from "next/link";
+import Link from 'next/link'
+import Logout from './logout'
+
 import {
   Sidebar,
   SidebarContent,
@@ -17,14 +19,12 @@ type SidebarItem = {
 };
 
 interface AppSidebarProps {
-  items: SidebarItem[];
-  title?: string;
+  items: SidebarItem[] 
+  title?: string
+  loggedIn: boolean
 }
 
-export function AppSidebar({
-  items,
-  title = "CleanHub Portal",
-}: AppSidebarProps) {
+export function AppSidebar({ items, title = "CleanHub Portal", loggedIn }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -46,6 +46,7 @@ export function AppSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      {loggedIn && <div className='text-center mb-4'><Logout /></div>}
     </Sidebar>
   );
 }

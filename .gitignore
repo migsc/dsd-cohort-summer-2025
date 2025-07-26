@@ -37,6 +37,7 @@ notes.md
 .DS_Store
 *.pem
 *.local
+.nvmrc
 
 # Logs
 npm-debug.log*

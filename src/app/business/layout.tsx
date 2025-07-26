@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 const businessItems = [
   {
     title: "Calendar",
-    url: "#",
+    url: "/business/",
     icon: Calendar,
   },
   {
@@ -27,12 +27,7 @@ const businessItems = [
     title: "Configure Business",
     url: "#",
     icon: Settings,
-  },
-  {
-    title: "Logout",
-    url: "/",
-    icon: LogOut,
-  },
+  }
 ]
 
 export default function RootLayout({
@@ -42,9 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <SidebarProvider>
-      <AppSidebar items={businessItems} title="CleanHub Business Portal" />
+      <AppSidebar items={businessItems} title="CleanHub Business Portal" loggedIn={true} />
       <SidebarTrigger />
-      <main className="mt-5">{children}</main>
+      <main className="mt-5 w-full">{children}</main>
     </SidebarProvider>
   );
 }
