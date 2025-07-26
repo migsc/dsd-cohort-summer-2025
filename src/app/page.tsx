@@ -3,13 +3,25 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {  SquareChevronRight } from "lucide-react";
-import Navigation from "@/components/navigation";
+
+// Add list of links here or things that are respeditive here as variable objects.
+// TODO [CHRT-39]: ADD A SIDEBAR NAVIGATION FOR MOBILE RESPONSIVE SETUP
+// This will be used in the layout.tsx for the home page.
+  const items = [
+	{
+		title: "Home",
+		url: "/",
+		icon: () => <img src="/images/home_icon.png" alt="Home Icon" className="w-5 h-5" />
+	},
+  ];
 
 export default function Home(){
 	const router = useRouter();
 
 	return(
-		<header className="flex gap-7 w-screen h-screen flex-col items-center text-black grid-background">
+		<header className="flex md:gap-7 w-screen h-screen flex-col items-center text-black grid-background">
+			{/* Add side bar navigation here for mobile reponsive setup. First need to add it to the layout.tsx for the home page */}
+
 			<nav className="flex justify-center md:justify-between w-full p-4 px-20 max-w-[2000px]">
 				<div className="flex items-center justify-center">
 					<img src="/images/small_logo.png" alt="Logo" className="h-30 w-30 md:h-10 md:w-10" />
@@ -24,7 +36,7 @@ export default function Home(){
 					</div>
 				</div>
 			</nav>
-			<div className="pt-10 2xl:pt-30 w-full h-full px-14 max-w-[1800px]">
+			<div className="pt-10 2xl:pt-30 w-full h-full px-8 sm:px-14 md:max-w-[1800px]">
 				<div className="flex items-center justify-evenly w-full ">
 				{/* content */}
 				<div className=" w-full md:w-1/2 max-w-[900px]">
