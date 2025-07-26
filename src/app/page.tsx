@@ -7,6 +7,7 @@ import Navigation from "@/components/navigation";
 
 export default function Home(){
 	const router = useRouter();
+
 	return(
 		<header className="flex gap-7 w-screen h-screen flex-col items-center text-black grid-background">
 			<nav className="flex justify-center md:justify-between w-full p-4 px-20 max-w-[2000px]">
@@ -31,7 +32,7 @@ export default function Home(){
 					<h1 className="text-6xl font-black mb-5 mt-3 uppercase	">Your assistant who manages your customers cleaning needs.</h1>
 					<p className="max-w-[700px] leading-8 mb-5">Our app is a comprehensive software platform that empowers cleaning businesses to launch and manage their operations online. From initial setup to customer bookings and payment processing, we provide everything cleaning professionals need to run their business efficiently.</p>
 
-					<a href="./login" className=" flex gap-2.5 w-fit p-4 rounded-xl border bg-white border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started Managing Your Business <SquareChevronRight /></a>
+					<a href="./onboarding" className=" flex gap-2.5 w-fit p-4 rounded-xl border bg-white border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started Managing Your Business <SquareChevronRight /></a>
 				</div>
 				{/* large logo */}
 				<div className="hidden md:block">
