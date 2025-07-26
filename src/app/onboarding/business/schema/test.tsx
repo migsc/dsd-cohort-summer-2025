@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { useForm } from "@tanstack/react-form";
 import React from "react";
+import z from "zod/v4";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -42,9 +43,7 @@ export default function BusinessOnboarding() {
   const router = useRouter();
   const form = useForm({
     defaultValues: defaultBusinessValues,
-    validators: {
-      onSubmit: BusinessOnboardingSchema,
-    },
+
     onSubmit: async ({ value }) => {
       console.log("submit");
       try {
@@ -95,6 +94,9 @@ export default function BusinessOnboarding() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <form.Field
                 name="businessName"
+                validators={{
+                  onBlur: z.string().nonempty("Business Name is required."),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Business Name</Label>
@@ -116,12 +118,11 @@ export default function BusinessOnboarding() {
                   </div>
                 )}
               />
-
               <form.Field
                 name="yearsInBusiness"
                 children={field => (
                   <div className="space-y-2">
-                    <Label htmlFor={field.name}>Years in Business (yrs)</Label>
+                    <Label htmlFor={field.name}>Years in Business</Label>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -137,6 +138,11 @@ export default function BusinessOnboarding() {
               <div className="md:col-span-2">
                 <form.Field
                   name="businessDescription"
+                  validators={{
+                    onBlur: z
+                      .string()
+                      .nonempty("Business Description is required."),
+                  }}
                   children={field => (
                     <div className="space-y-2">
                       <Label htmlFor={field.name}>Business Description</Label>
@@ -169,6 +175,11 @@ export default function BusinessOnboarding() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <form.Field
                 name="contactPersonName"
+                validators={{
+                  onBlur: z
+                    .string()
+                    .nonempty("Contact Person Name is required."),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Contact Person Name</Label>
@@ -192,6 +203,9 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="contactPersonTitle"
+                validators={{
+                  onChange: z.enum(contactTitles),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Contact Person Title</Label>
@@ -228,6 +242,9 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="contactPersonEmail"
+                validators={{
+                  onBlur: z.email(),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Contact Person Email</Label>
@@ -252,6 +269,11 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="contactPersonPhone"
+                validators={{
+                  onBlur: z
+                    .string()
+                    .nonempty("Contact Person Phone is required."),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Contact Person Phone</Label>
@@ -284,6 +306,11 @@ export default function BusinessOnboarding() {
               <div className="md:col-span-2">
                 <form.Field
                   name="businessAddressStreet"
+                  validators={{
+                    onBlur: z
+                      .string()
+                      .nonempty("Business Street Address is required."),
+                  }}
                   children={field => (
                     <div className="space-y-2">
                       <Label htmlFor={field.name}>Street Address</Label>
@@ -308,6 +335,11 @@ export default function BusinessOnboarding() {
               </div>
               <form.Field
                 name="businessAddressCity"
+                validators={{
+                  onBlur: z
+                    .string()
+                    .nonempty("Business Adress City is required."),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>City</Label>
@@ -331,6 +363,9 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="businessAddressState"
+                validators={{
+                  onChange: z.enum(usStates, "Invalid Option"),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>State</Label>
@@ -365,6 +400,15 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="businessAddressZip"
+                validators={{
+                  onBlur: z
+                    .string()
+                    .nonempty("Zip code is required.")
+                    .regex(
+                      /^\d{5}(?:[-\s]\d{4})?$/,
+                      "Invalid zip code format."
+                    ),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Zip Code</Label>
@@ -388,6 +432,11 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="businessAddressCountry"
+                validators={{
+                  onBlur: z
+                    .string()
+                    .nonempty("Business Address Country is required."),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>Country</Label>
@@ -409,27 +458,8 @@ export default function BusinessOnboarding() {
                   </div>
                 )}
               />
-              <form.Field
-                name="serviceAreaRadius"
-                children={field => (
-                  <div className="space-y-2">
-                    <Label htmlFor={field.name}>Service Area Radius (mi)</Label>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      type="number"
-                      min={0}
-                      step={5}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={e => field.handleChange(Number(e.target.value))}
-                    />
-                  </div>
-                )}
-              />
             </div>
           </div>
-
           <Separator />
 
           {/* === Section: Core Services === */}
@@ -467,6 +497,11 @@ export default function BusinessOnboarding() {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                           <form.Field
                             name={`coreServices[${index}].name`}
+                            validators={{
+                              onBlur: z
+                                .string()
+                                .nonempty("Service Name is required."),
+                            }}
                             children={field => (
                               <div className="space-y-2">
                                 <Label htmlFor={field.name}>Service Name</Label>
@@ -494,6 +529,11 @@ export default function BusinessOnboarding() {
                           />
                           <form.Field
                             name={`coreServices[${index}].description`}
+                            validators={{
+                              onBlur: z
+                                .string()
+                                .nonempty("Service Description is required."),
+                            }}
                             children={field => (
                               <div className="space-y-2">
                                 <Label htmlFor={field.name}>Description</Label>
@@ -523,9 +563,7 @@ export default function BusinessOnboarding() {
                             name={`coreServices[${index}].durationMin`}
                             children={field => (
                               <div className="space-y-2">
-                                <Label htmlFor={field.name}>
-                                  Duration Min (hrs)
-                                </Label>
+                                <Label htmlFor={field.name}>Duration Min</Label>
                                 <Input
                                   id={field.name}
                                   name={field.name}
@@ -545,9 +583,7 @@ export default function BusinessOnboarding() {
                             name={`coreServices[${index}].durationMax`}
                             children={field => (
                               <div className="space-y-2">
-                                <Label htmlFor={field.name}>
-                                  Duration Max (hrs)
-                                </Label>
+                                <Label htmlFor={field.name}>Duration Max</Label>
                                 <Input
                                   id={field.name}
                                   name={field.name}
@@ -586,6 +622,9 @@ export default function BusinessOnboarding() {
                           />
                           <form.Field
                             name={`coreServices[${index}].pricingModel`}
+                            validators={{
+                              onChange: z.enum(pricingModels),
+                            }}
                             children={field => (
                               <div className="space-y-2">
                                 <Label htmlFor={field.name}>
@@ -629,7 +668,7 @@ export default function BusinessOnboarding() {
                             children={field => (
                               <div className="space-y-2">
                                 <Label htmlFor={field.name}>
-                                  Minimum Price ($)
+                                  Minimum Price
                                 </Label>
                                 <Input
                                   id={field.name}
@@ -651,7 +690,7 @@ export default function BusinessOnboarding() {
                             children={field => (
                               <div className="space-y-2">
                                 <Label htmlFor={field.name}>
-                                  Maximum Price ($)
+                                  Maximum Price
                                 </Label>
                                 <Input
                                   id={field.name}
@@ -812,6 +851,9 @@ export default function BusinessOnboarding() {
               />
               <form.Field
                 name="currentSchedulingMethod"
+                validators={{
+                  onChange: z.enum(schedulingMethods),
+                }}
                 children={field => (
                   <div className="space-y-2">
                     <Label htmlFor={field.name}>
@@ -912,6 +954,9 @@ export default function BusinessOnboarding() {
               <Label>Preferred Customer Communication Methods</Label>
               <form.Field
                 name="preferredCustomerCommunicationMethods"
+                validators={{
+                  onBlur: z.array(z.enum(communicationMethods)),
+                }}
                 children={field => (
                   <div>
                     <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-3">

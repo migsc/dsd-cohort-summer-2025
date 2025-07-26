@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl">Business Dashboard</h1>
+      <h1 className="text-3xl font-bold">Business Dashboard</h1>
       <p className="text-xl">Welcome {session?.user.name}</p>
     </div>
   );

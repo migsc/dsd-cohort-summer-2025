@@ -7,9 +7,6 @@ export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
 
-  console.log("session: ", session);
-  console.log("formData: ", formData);
-
   if (!session || !session.user) {
     console.log("Unauthorized");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -19,14 +16,14 @@ export async function POST(request: Request) {
 
   try {
     const result = await prisma.$transaction(async tx => {
-      // Update the User's role to 'client'
+      // Update the User's role to 'customer'
       await tx.user.update({
         where: { id: userId },
-        data: { role: "client" },
+        data: { role: "customer" },
       });
 
-      // Create the client profile
-      const newClient = await tx.clientProfile.create({
+      // Create the customer profile
+      const newCustomer = await tx.customer.create({
         data: {
           userId: userId,
           preferredContactMethod: formData.preferredContactMethod,
@@ -37,19 +34,19 @@ export async function POST(request: Request) {
           addressCountry: formData.addressCountry,
         },
       });
-      return newClient;
+      return newCustomer;
     });
 
-    console.log("Client done for user: ", userId);
+    console.log("Customer onboarding done for user: ", userId);
     return NextResponse.json(
-      { message: "Client onboarding successful" },
+      { message: "Customer onboarding successful" },
       { status: 200 }
     );
   } catch (err) {
     console.log("Error: ", err);
     return NextResponse.json(
       {
-        message: "Server error processing client onboarding",
+        message: "Server error processing customer onboarding",
       },
       { status: 500 }
     );
