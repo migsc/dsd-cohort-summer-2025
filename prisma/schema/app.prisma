@@ -13,6 +13,7 @@ model Business {
   businessAddressState                  String
   businessAddressZip                    String
   businessAddressCountry                String
+  serviceAreaRadius                     Int
   yearsInBusiness                       Int
   businessDescription                   String
   coreServices                          CoreService[]
@@ -31,7 +32,7 @@ model Business {
   @@map("business")
 }
 
-model ClientProfile {
+model Customer {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
   userId                 String @unique
   user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -44,7 +45,7 @@ model ClientProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("client_profile")
+  @@map("customer")
 }
 
 type CoreService {

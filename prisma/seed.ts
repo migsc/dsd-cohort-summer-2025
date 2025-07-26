@@ -8,7 +8,7 @@ async function main() {
   console.log("Start seeding...");
 
   await prisma.business.deleteMany();
-  await prisma.clientProfile.deleteMany();
+  await prisma.customer.deleteMany();
   await prisma.session.deleteMany();
   await prisma.account.deleteMany();
   await prisma.user.deleteMany();
@@ -54,6 +54,7 @@ async function main() {
         businessAddressState: "CA",
         businessAddressZip: "90210",
         businessAddressCountry: "USA",
+        serviceAreaRadius: 10,
         yearsInBusiness: 5,
         businessDescription:
           "A premier cleaning service managed by the app owner.",
@@ -96,7 +97,7 @@ async function main() {
         preferredCustomerCommunicationMethods: [
           "Email",
           "Phone",
-          "Client Portal",
+          "Customer Portal",
         ],
         additionalNotes: "This is the main admin business for development.",
       },
@@ -111,30 +112,30 @@ async function main() {
     console.error(`Error creating admin user or business: ${error.message}`);
   }
 
-  const clientEmail = "client@example.com";
-  const clientPassword = "password123";
-  const clientName = "Regular Client User";
+  const customerEmail = "customer@example.com";
+  const customerPassword = "password123";
+  const customerName = "Regular Customer User";
 
-  console.log(`Creating client user via Better Auth: ${clientEmail}`);
-  let clientUser;
+  console.log(`Creating customer user via Better Auth: ${customerEmail}`);
+  let customerUser;
 
   try {
-    const clientUserResult = await auth.api.signUpEmail({
+    const customerUserResult = await auth.api.signUpEmail({
       body: {
-        email: clientEmail,
-        password: clientPassword,
-        name: clientName,
+        email: customerEmail,
+        password: customerPassword,
+        name: customerName,
       },
     });
 
-    clientUser = await prisma.user.findUniqueOrThrow({
-      where: { email: clientEmail },
+    customerUser = await prisma.user.findUniqueOrThrow({
+      where: { email: customerEmail },
       select: { id: true, email: true, name: true },
     });
 
-    const clientProfile = await prisma.clientProfile.create({
+    const customerProfile = await prisma.customer.create({
       data: {
-        userId: clientUser.id,
+        userId: customerUser.id,
         preferredContactMethod: "Email",
         addressStreet: "456 Oak Ave",
         addressCity: "Anytown",
@@ -142,9 +143,9 @@ async function main() {
       },
     });
 
-    console.log("Created client user and profile:", clientUser.email);
+    console.log("Created customer user and profile:", customerUser.email);
   } catch (error: any) {
-    console.error(`Error creating client user or profile: ${error.message}`);
+    console.error(`Error creating customer user or profile: ${error.message}`);
   }
 
   console.log("Seeding finished.");

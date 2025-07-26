@@ -19,9 +19,6 @@ export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
 
-  console.log("session: ", session);
-  console.log("formData: ", formData);
-
   if (!session || !session.user) {
     console.log("Unauthorized");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -51,6 +48,7 @@ export async function POST(request: Request) {
           businessAddressState: formData.businessAddressState,
           businessAddressZip: formData.businessAddressZip,
           businessAddressCountry: formData.businessAddressCountry,
+          serviceAreaRadius: formData.serviceAreaRadius,
           yearsInBusiness: formData.yearsInBusiness,
           businessDescription: formData.businessDescription,
 

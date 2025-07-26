@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction, // Not used, consider removing if truly unused
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link"; // App Router: import { Link } from "next/link";
+import Link from "next/link";
 
 export default function CardDemo() {
   return (
@@ -16,16 +15,16 @@ export default function CardDemo() {
       <CardHeader>
         <CardTitle>Onboarding Options</CardTitle>
         <CardDescription>
-          Choose whether you want to onboard as Business or User
+          Choose whether you want to onboard as Business or Customer
         </CardDescription>
       </CardHeader>
       <CardContent></CardContent>
       <CardFooter className="flex-col gap-2">
-        <Link href={"/onboarding/client"} className="w-full">
-          <Button className="w-full">Client</Button>
+        <Link href={"/onboarding/customer"} className="w-full ">
+          <Button className="w-full cursor-pointer">Customer</Button>
         </Link>
         <Link href={"/onboarding/business"} className="w-full">
-          <Button className="w-full">Business</Button>
+          <Button className="w-full cursor-pointer">Business</Button>
         </Link>
       </CardFooter>
     </Card>

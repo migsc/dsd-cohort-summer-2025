@@ -10,13 +10,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 type SidebarItem = {
-  title: string
-  url: string
-  icon: React.ComponentType
-}
+  title: string;
+  url: string;
+  icon: React.ComponentType;
+};
 
 interface AppSidebarProps {
   items: SidebarItem[] 
@@ -32,7 +32,7 @@ export function AppSidebar({ items, title = "CleanHub Portal", loggedIn }: AppSi
           <SidebarGroupLabel>{title}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
@@ -48,5 +48,5 @@ export function AppSidebar({ items, title = "CleanHub Portal", loggedIn }: AppSi
       </SidebarContent>
       {loggedIn && <div className='text-center mb-4'><Logout /></div>}
     </Sidebar>
-  )
+  );
 }
