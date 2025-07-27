@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {Separator} from "@/components/ui/separator"
 import { Menu } from "lucide-react"
+import React from "react";
+import { useRouter } from "next/navigation";
+
 import {
   Sheet,
   SheetClose,
@@ -13,34 +15,29 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Navigation } from "lucide-react"
+import Link from "next/link";
 
 export function HamburgerMenu() {
+    const router = useRouter();
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Menu />
+        <Button className="bg-blue-600 text-white hover:bg-blue-700">
+            <Menu />
+        </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="bg-white p-2.5 w-[300px] md:w-[400px]">
         <SheetHeader>
-          <SheetTitle></SheetTitle>
-        </SheetHeader>
-        <div className="flex items-center justify-center">
-            <img src="/images/small_logo.png" alt="Logo" className="h-30 w-30 md:h-10 md:w-10" />
-            <p className="hidden md:block ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
-        </div>
-        <div className="hidden md:flex items-center space-x-4 gap-2.5">
-            <ul className="flex space-x-4">
-                <li><a href="/">Contact</a></li>
-            </ul>
-            <div>
-                <Button onClick={()=>{router.push("/login")}} className="py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
+            <div className="flex items-center justify-center flex-col mb-4 gap-5">
+            <img src="/images/small_logo.png" alt="Logo" className="w-20" />
+            <p className="ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
             </div>
-        </div>
+        </SheetHeader>
+        <nav className="text-black p-3 w-full">
+            <Link href="/" className="hover:text-blue-600">Contact</Link>
+        </nav>
         <SheetFooter>
-          <Button type="submit">Save changes</Button>
-          <SheetClose asChild>
-            <Button variant="outline">Close</Button>
-          </SheetClose>
+            <Button onClick={()=>{router.push("/login")}} className="py-3 rounded-md text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
