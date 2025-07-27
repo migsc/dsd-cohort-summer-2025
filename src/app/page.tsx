@@ -3,6 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {  SquareChevronRight } from "lucide-react";
+import { HamburgerMenu } from "@/components/HamburgerMenu";
 
 // Add list of links here or things that are respeditive here as variable objects.
 // TODO [CHRT-39]: ADD A SIDEBAR NAVIGATION FOR MOBILE RESPONSIVE SETUP
@@ -24,7 +25,7 @@ export default function Home(){
 
 			<nav className="flex justify-center md:justify-between w-full p-4 px-20 max-w-[2000px]">
 				<div className="flex items-center justify-center">
-					<img src="/images/small_logo.png" alt="Logo" className="h-30 w-30 md:h-10 md:w-10" />
+					<img src="/images/small_logo.png" alt="Logo" className=" hidden lg:block h-10 w-10" />
 					<p className="hidden md:block ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
 				</div>
 				<div className="hidden md:flex items-center space-x-4 gap-2.5">
@@ -35,6 +36,7 @@ export default function Home(){
 						<Button onClick={()=>{router.push("/login")}} className="py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
 					</div>
 				</div>
+				<HamburgerMenu />
 			</nav>
 			<div className="pt-10 2xl:pt-30 w-full h-full px-8 sm:px-14 md:max-w-[1800px]">
 				<div className="flex items-center justify-evenly w-full ">
