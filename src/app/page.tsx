@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {  SquareChevronRight } from "lucide-react";
 import Navigation from "@/components/navigation";
+import CustomerInfoSideBar from "@/components/CustomerInfoSideBar";
 
 export default function Home(){
 	const router = useRouter();
@@ -38,6 +39,10 @@ export default function Home(){
 					<img src="/images/main_logo.png" alt="main logo of site" className="floatAnimation" />
 				</div>
 				</div>
+			</div>
+
+			<div className="w-full h-screen px-14 max-w-[1800px] flex items-center justify-center">
+				<CustomerInfoSideBar/>
 			</div>
 		</header>
 	);
