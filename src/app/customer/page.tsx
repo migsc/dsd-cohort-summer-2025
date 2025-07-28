@@ -14,7 +14,7 @@ export default async function OurServices(props: {
     const query = searchParams?.query || '';
 
     // ***TODO: fetch businessId from database. hardcoded right now
-    const businessId = 'xTBH9CrJoEDiXXdaS5CeGZZ1xMSaEmcJ';
+    const businessId = '6887f7eae150d0e2757ea0b4';
     
     // Fetch business info & services from database
     const businessData = await getBusinessWithServices(businessId);
