@@ -4,7 +4,6 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import PortalHeader from '@/components/ui/custom/portalHeader';
 import { authClient } from "@/lib/auth-client";
-import Logout from '@/components/logout'
 
 const loggedInItems = [
   {
