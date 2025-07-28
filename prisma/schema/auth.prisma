@@ -10,8 +10,8 @@ model User {
   accounts      Account[]
 
   // Add ons
-  role          String         @default("customer")
-  business      Business?
+  role     String    @default("customer")
+  business Business?
   customer Customer?
 
   @@unique([email])

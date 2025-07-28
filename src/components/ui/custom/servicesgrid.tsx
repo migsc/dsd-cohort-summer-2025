@@ -39,7 +39,39 @@ export function ServiceCard({ _id, name, desc, durationMin, durationMax, duratio
             serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
             servicePrice: `$${priceMin}-${priceMax}`,
         });
-         alert(`Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`);
+        try {
+            const formData ={
+                ...bookingData,
+                serviceId: _id,
+                businessId: Math.random().toString(36).slice(2),
+                customerid: Math.random().toString(36).slice(2),
+                serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
+                servicePrice: `$${priceMin}-${priceMax}`,
+            }
+
+            console.log('Passing', formData);
+
+            const response = await fetch('api/bookings', {
+                method: 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify(formData),
+                credentials: 'include'
+            });
+
+            if (!response.ok){
+                console.error('Booking error');
+                alert('Booking error');
+                return;
+            }
+
+            const result = await response.json();
+            console.log('Booking response', result);
+            alert(`Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`);
+
+        }
+        catch(error){
+            console.error('Could not send data:', error);
+        }
     };
 
     return (
