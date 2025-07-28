@@ -9,72 +9,72 @@ const services = [
     {
         _id:'0',
         name: 'Standard House Cleaning',
-        desc: 'Regular maintenance cleaning including dusting, vacuuming, mopping, bathroom and kitchen cleaning. Perfect for ongoing home maintenance.',
+        description: 'Regular maintenance cleaning including dusting, vacuuming, mopping, bathroom and kitchen cleaning. Perfect for ongoing home maintenance.',
         durationMin: 1.5,
         durationMax: 3,
-        durationUnits: 'hours',
         priceMin: 80,
-        priceMax: 150
+        priceMax: 150,
+        pricingModel: 'per hour',
     },
     {
         _id:'1',
         name: 'Deep Cleaning',
-        desc: 'Intensive top-to-bottom cleaning including baseboards, light fixtures, inside appliances, and areas typically missed in regular cleaning. Ideal for first-time clients or seasonal refresh.',
+        description: 'Intensive top-to-bottom cleaning including baseboards, light fixtures, inside appliances, and areas typically missed in regular cleaning. Ideal for first-time clients or seasonal refresh.',
         durationMin: 3,
         durationMax: 6,
-        durationUnits: 'hours',
         priceMin: 200,
-        priceMax: 400
+        priceMax: 400,
+        pricingModel: 'per hour',
     },
     {
         _id:'2',
         name: 'Move-in/Move-out Cleaning',
-        desc: 'Comprehensive cleaning of empty property including inside cabinets, drawers, closets, and all surfaces. Ensures property is pristine for new occupants.',
+        description: 'Comprehensive cleaning of empty property including inside cabinets, drawers, closets, and all surfaces. Ensures property is pristine for new occupants.',
         durationMin: 2,
         durationMax: 5,
-        durationUnits: 'hours',
         priceMin: 150,
-        priceMax: 300
+        priceMax: 300,
+        pricingModel: 'per hour',
     },
     {
         _id:'3',
         name: 'Window Cleaning',
-        desc: 'Interior and exterior window cleaning including screens, sills, and frames. Makes homes brighter and improves curb appeal.',
+        description: 'Interior and exterior window cleaning including screens, sills, and frames. Makes homes brighter and improves curb appeal.',
         durationMin: 1,
         durationMax: 3,
-        durationUnits: 'hours',
         priceMin: 100,
-        priceMax: 250
+        priceMax: 250,
+        pricingModel: 'per hour',
     },
     {
         _id:'4',
         name: 'Pressure Washing',
-        desc: 'High-pressure cleaning of exterior surfaces including driveways, sidewalks, decks, patios, and house siding. Removes dirt, mold, and grime.',
+        description: 'High-pressure cleaning of exterior surfaces including driveways, sidewalks, decks, patios, and house siding. Removes dirt, mold, and grime.',
         durationMin: 1,
         durationMax: 4,
-        durationUnits: 'hours',
         priceMin: 150,
-        priceMax: 400
+        priceMax: 400,
+        pricingModel: 'per hour',
     },
     {
         _id:'5',
         name: 'Furniture Assembly',
-        desc: 'Professional assembly of furniture from retailers like IKEA, Amazon, or Wayfair. Includes tools, hardware check, and cleanup of packaging materials. Price and duration is per piece of furniture.',
+        description: 'Professional assembly of furniture from retailers like IKEA, Amazon, or Wayfair. Includes tools, hardware check, and cleanup of packaging materials. Price and duration is per piece of furniture.',
         durationMin: 1/2,
         durationMax: 2,
-        durationUnits: 'hours',
         priceMin: 50,
-        priceMax: 150
+        priceMax: 150,
+        pricingModel: 'per hour',
     },
     {
         _id:'6',
         name: 'Gutter Cleaning',
-        desc: 'Removal of leaves, debris, and blockages from gutters and downspouts. Includes inspection for damage and proper water flow testing.',
+        description: 'Removal of leaves, debris, and blockages from gutters and downspouts. Includes inspection for damage and proper water flow testing.',
         durationMin: 1,
         durationMax: 3,
-        durationUnits: 'hours',
         priceMin: 100,
-        priceMax: 250
+        priceMax: 250,
+        pricingModel: 'per hour'
     }
 ];
 
