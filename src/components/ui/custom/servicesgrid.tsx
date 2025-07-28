@@ -43,13 +43,9 @@ export function ServiceCard({ _id, name, desc, durationMin, durationMax, duratio
             const formData ={
                 ...bookingData,
                 serviceId: _id,
-                businessId: Math.random().toString(36).slice(2),
-                customerid: Math.random().toString(36).slice(2),
                 serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
                 servicePrice: `$${priceMin}-${priceMax}`,
             }
-
-            console.log('Passing', formData);
 
             const response = await fetch('api/bookings', {
                 method: 'POST',

@@ -90,7 +90,6 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
         notes: values.notes || '',
 
       };
-      console.log(onBooking, bookingData);
       onBooking(bookingData);
       
       // Reset form and close modal
