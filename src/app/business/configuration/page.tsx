@@ -6,7 +6,7 @@ import {
   type BusinessFormData,
   defaultBusinessValues,
 } from "@/app/onboarding/business/schema/business.schema";
-import BusinessForm from "./BusinessForm";
+
 import Configuration from "./Configuration";
 
 export default async function Cofiguration() {
@@ -43,12 +43,11 @@ export default async function Cofiguration() {
     businessData = validatedData;
   } catch (err) {
     console.log(err);
-    return <div>Error retrieving business profile</div>;
+    return <div>Error retrieving business profile.</div>;
   }
 
   return (
-    <div className="">
-      {/* <BusinessForm initialData={businessData} /> */}
+    <div>
       <Configuration initialData={businessData} />
     </div>
   );

@@ -3,15 +3,7 @@
 import { useForm } from "@tanstack/react-form";
 import { BusinessOnboardingSchema } from "@/app/onboarding/business/schema/business.schema";
 import { toast } from "sonner";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -27,6 +19,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { Save, ChevronRight } from "lucide-react";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import {
@@ -91,6 +84,8 @@ export default function Cofiguration({
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("general");
 
+  const router = useRouter();
+
   const handleEditingToggle = () => {
     if (isEditing) {
       setIsEditing(false);
@@ -124,8 +119,12 @@ export default function Cofiguration({
         if (!response.ok) {
           const responseError = await response.json();
           console.log(responseError);
+          toast.error("Failed to update business configuration.");
+          return;
         }
         toast.success("Business configuration updated successfully!");
+        setIsEditing(false);
+        router.refresh();
       } catch (err) {
         console.log(err);
       }
@@ -133,89 +132,99 @@ export default function Cofiguration({
   });
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="flex items-center justify-between p-5">
-        <div className="">
-          <div className="text-xl font-bold">Business Profile</div>
-          <div className="text-md">
-            Manage your business inforamtion, services, and settings.
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        e.stopPropagation();
+        void form.handleSubmit();
+      }}
+    >
+      <div className="container mx-auto flex flex-col gap-10 py-6">
+        <div className="flex items-center justify-between p-5">
+          <div className="">
+            <div className="text-xl font-bold">Business Profile</div>
+            <div className="text-md">
+              Manage your business inforamtion, services, and settings.
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div>
+              {isEditing && (
+                <form.Subscribe>
+                  {state => (
+                    <Button
+                      type="submit"
+                      className="bor relative cursor-pointer border-2"
+                    >
+                      {state.isSubmitting ? (
+                        <>
+                          <svg
+                            className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Saving...
+                        </>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Save /> Save Changes
+                        </span>
+                      )}
+                    </Button>
+                  )}
+                </form.Subscribe>
+              )}
+            </div>
+            <Button
+              type="button"
+              className="cursor-pointer"
+              onClick={handleEditingToggle}
+            >
+              {isEditing ? "Cancel Editing" : "Edit Profile"}
+            </Button>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          {isEditing && (
-            <form.Subscribe>
-              {state => (
-                <Button type="submit" className="relative  cursor-pointer">
-                  {state.isSubmitting ? (
-                    <>
-                      <svg
-                        className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Saving...
-                    </>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      <Save /> Save Changes
-                    </span>
-                  )}
-                </Button>
-              )}
-            </form.Subscribe>
-          )}
-          <Button className="cursor-pointer" onClick={handleEditingToggle}>
-            {isEditing ? "Cancel Editing" : "Edit Profile"}
-          </Button>
-        </div>
-      </div>
-      <div className="flex">
-        <Card>
-          <CardContent>
-            <nav className="flex flex-col">
-              {NavItems.map(item => (
-                <button
-                  key={item.id}
-                  className={`flex cursor-pointer items-center justify-between rounded-sm px-4 py-3 text-left ${
-                    activeTab === item.id
-                      ? "text-accent-foreground bg-gray-500"
-                      : "hover:bg-accent/50"
-                  }`}
-                  onClick={() => setActiveTab(item.id)}
-                >
-                  <div className="flex items-center gap-3">
-                    <span>{item.label}</span>
-                  </div>
-                  <ChevronRight className="ml-1 h-4 w-4 opacity-50" />
-                </button>
-              ))}
-            </nav>
-          </CardContent>
-        </Card>
+        <div className="flex">
+          <Card>
+            <CardContent>
+              <nav className="flex flex-col">
+                {NavItems.map(item => (
+                  <button
+                    type="button"
+                    key={item.id}
+                    className={`flex cursor-pointer items-center justify-between rounded-sm px-4 py-3 text-left ${
+                      activeTab === item.id
+                        ? "text-accent-foreground bg-gray-500"
+                        : "hover:bg-accent/50"
+                    }`}
+                    onClick={() => setActiveTab(item.id)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span>{item.label}</span>
+                    </div>
+                    <ChevronRight className="ml-1 h-4 w-4 opacity-50" />
+                  </button>
+                ))}
+              </nav>
+            </CardContent>
+          </Card>
 
-        <div className="flex-1 p-5">
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              e.stopPropagation();
-              void form.handleSubmit();
-            }}
-          >
+          <div className="flex-1 p-5">
             <div>
               {activeTab === "general" && (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -230,6 +239,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -260,6 +270,7 @@ export default function Cofiguration({
                           onChange={e =>
                             field.handleChange(Number(e.target.value))
                           }
+                          disabled={!isEditing}
                         />
                       </div>
                     )}
@@ -278,6 +289,7 @@ export default function Cofiguration({
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={e => field.handleChange(e.target.value)}
+                            disabled={!isEditing}
                             rows={4}
                           />
                           {field.state.meta.errors &&
@@ -309,6 +321,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -334,6 +347,7 @@ export default function Cofiguration({
                               value as (typeof contactTitles)[number]
                             );
                           }}
+                          disabled={!isEditing}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select title" />
@@ -369,6 +383,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -393,6 +408,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -423,6 +439,7 @@ export default function Cofiguration({
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={e => field.handleChange(e.target.value)}
+                            disabled={!isEditing}
                           />
                           {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
@@ -447,6 +464,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -472,6 +490,7 @@ export default function Cofiguration({
                               value as (typeof usStates)[number]
                             );
                           }}
+                          disabled={!isEditing}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a state" />
@@ -506,6 +525,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -529,6 +549,7 @@ export default function Cofiguration({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={e => field.handleChange(e.target.value)}
+                          disabled={!isEditing}
                         />
                         {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
@@ -559,6 +580,7 @@ export default function Cofiguration({
                           onChange={e =>
                             field.handleChange(Number(e.target.value))
                           }
+                          disabled={!isEditing}
                         />
                       </div>
                     )}
@@ -593,7 +615,8 @@ export default function Cofiguration({
                                     size="sm"
                                     onClick={() =>
                                       coreServicesField.removeValue(index)
-                                    } // Use removeValue from the array field API
+                                    }
+                                    disabled={!isEditing}
                                   >
                                     Remove
                                   </Button>
@@ -614,6 +637,7 @@ export default function Cofiguration({
                                           onChange={e =>
                                             field.handleChange(e.target.value)
                                           }
+                                          disabled={!isEditing}
                                         />
                                         {field.state.meta.errors &&
                                           field.state.meta.errors.length >
@@ -646,6 +670,7 @@ export default function Cofiguration({
                                           onChange={e =>
                                             field.handleChange(e.target.value)
                                           }
+                                          disabled={!isEditing}
                                         />
                                         {field.state.meta.errors &&
                                           field.state.meta.errors.length >
@@ -683,6 +708,7 @@ export default function Cofiguration({
                                               Number(e.target.value)
                                             )
                                           }
+                                          disabled={!isEditing}
                                         />
                                       </div>
                                     )}
@@ -707,6 +733,7 @@ export default function Cofiguration({
                                               Number(e.target.value)
                                             )
                                           }
+                                          disabled={!isEditing}
                                         />
                                       </div>
                                     )}
@@ -730,6 +757,7 @@ export default function Cofiguration({
                                               Number(e.target.value)
                                             )
                                           }
+                                          disabled={!isEditing}
                                         />
                                       </div>
                                     )}
@@ -749,6 +777,7 @@ export default function Cofiguration({
                                               value as (typeof pricingModels)[number]
                                             );
                                           }}
+                                          disabled={!isEditing}
                                         >
                                           <SelectTrigger>
                                             <SelectValue placeholder="Select model" />
@@ -800,6 +829,7 @@ export default function Cofiguration({
                                               Number(e.target.value)
                                             )
                                           }
+                                          disabled={!isEditing}
                                         />
                                       </div>
                                     )}
@@ -824,6 +854,7 @@ export default function Cofiguration({
                                               Number(e.target.value)
                                             )
                                           }
+                                          disabled={!isEditing}
                                         />
                                       </div>
                                     )}
@@ -850,6 +881,7 @@ export default function Cofiguration({
                               id: crypto.randomUUID(),
                             })
                           }
+                          disabled={!isEditing}
                         >
                           Add Core Service
                         </Button>
@@ -901,6 +933,7 @@ export default function Cofiguration({
                                     }
                                   }}
                                   onBlur={field.handleBlur}
+                                  disabled={!isEditing}
                                 />
                               )}
                             />
@@ -925,7 +958,7 @@ export default function Cofiguration({
                                 }
                                 disabled={
                                   !form.state.values.operatingHours[dayKey]
-                                    .isOpen
+                                    .isOpen || !isEditing
                                 }
                                 className="col-span-2"
                               />
@@ -945,7 +978,7 @@ export default function Cofiguration({
                                 }
                                 disabled={
                                   !form.state.values.operatingHours[dayKey]
-                                    .isOpen
+                                    .isOpen || !isEditing
                                 }
                                 className="col-span-2"
                               />
@@ -978,6 +1011,7 @@ export default function Cofiguration({
                           onChange={e =>
                             field.handleChange(Number(e.target.value))
                           }
+                          disabled={!isEditing}
                         />
                       </div>
                     )}
@@ -997,6 +1031,7 @@ export default function Cofiguration({
                               value as (typeof schedulingMethods)[number]
                             );
                           }}
+                          disabled={!isEditing}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select method" />
@@ -1039,6 +1074,7 @@ export default function Cofiguration({
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={e => field.handleChange(e.target.value)}
+                            disabled={!isEditing}
                           />
                         </div>
                       )}
@@ -1057,6 +1093,7 @@ export default function Cofiguration({
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={e => field.handleChange(e.target.value)}
+                            disabled={!isEditing}
                           />
                         </div>
                       )}
@@ -1075,12 +1112,13 @@ export default function Cofiguration({
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={e => field.handleChange(e.target.value)}
+                            disabled={!isEditing}
                           />
                         </div>
                       )}
                     />
                   </div>
-                  {/* Preferred Communication Methods (Multi-Checkbox) */}
+
                   <div className="mt-6">
                     <Label>Preferred Customer Communication Methods</Label>
                     <form.Field
@@ -1110,6 +1148,7 @@ export default function Cofiguration({
                                     );
                                   }}
                                   onBlur={field.handleBlur}
+                                  disabled={!isEditing}
                                 />
                                 <Label htmlFor={`comm-method-${method}`}>
                                   {method}
@@ -1142,6 +1181,7 @@ export default function Cofiguration({
                             onBlur={field.handleBlur}
                             onChange={e => field.handleChange(e.target.value)}
                             rows={5}
+                            disabled={!isEditing}
                           />
                         </div>
                       )}
@@ -1150,9 +1190,9 @@ export default function Cofiguration({
                 </div>
               )}
             </div>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
