@@ -28,10 +28,10 @@ export function HamburgerMenu() {
       </SheetTrigger>
       <SheetContent className="bg-white p-2.5 w-[300px] md:w-[400px]">
         <SheetHeader>
-            <div className="flex items-center justify-center flex-col mb-4 gap-5">
+          <SheetTitle className="flex items-center justify-center flex-col mb-4 gap-5">
             <img src="/images/small_logo.png" alt="Logo" className="w-20" />
             <p className="ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
-            </div>
+          </SheetTitle>
         </SheetHeader>
         <nav className="text-black p-3 w-full">
             <Link href="/" className="hover:text-blue-600">Contact</Link>
