@@ -3,6 +3,11 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+export async function GET(request: Request) {
+  const bookings = await prisma.booking.findMany();
+  return NextResponse.json(bookings, { status: 200 });
+}
+
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
