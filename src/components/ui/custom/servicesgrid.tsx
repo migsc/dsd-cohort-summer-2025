@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardContent,
@@ -7,8 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from 'next/link';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import BookingForm, { type BookingFormData } from "@/components/forms/book-service-form";
+import React from "react";
 
 export interface ServiceCardProps {
     _id: string;
@@ -22,28 +24,52 @@ export interface ServiceCardProps {
 };
 
 // ServiceCard Component used to make individual cards
-export function ServiceCard({ name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax }: ServiceCardProps) {
+export function ServiceCard({ _id, name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax }: ServiceCardProps) {
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
+    const handleBookNow = () => {
+        setIsBookingModalOpen(true);
+    };
+
+    const handleBooking = async (bookingData: BookingFormData) => {
+        // *** Booking logic will go here
+        console.log('Booking submitted:', {
+            ...bookingData,
+            serviceId: _id,
+            serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
+            servicePrice: `$${priceMin}-${priceMax}`,
+        });
+         alert(`Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`);
+    };
+
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    <h2 className="text-xl">{name}</h2>
-                    </CardTitle>
-                <CardDescription>
-                    <p>{desc}</p>
-                    </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p>{durationMin}-{durationMax} {durationUnits}</p>
-                <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax}</p>
-            </CardContent>
-            <CardFooter>
-                <Button asChild>
-                    {/* *** ADD SLUG FOR SPECIFIC SERVICE. I.E., /book/deep-clean *** */}
-                    <Link href='/book'>Book Now</Link>
-                </Button>
-            </CardFooter>
-        </Card>
+        <React.Fragment>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <h2 className="text-xl">{name}</h2>
+                        </CardTitle>
+                    <CardDescription>
+                        <p>{desc}</p>
+                        </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p>{durationMin}-{durationMax} {durationUnits}</p>
+                    <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax}</p>
+                </CardContent>
+                <CardFooter>
+                    <Button onClick={handleBookNow} className="w-full">
+                        Book Now
+                    </Button>
+                </CardFooter>
+            </Card>
+            <BookingForm
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        serviceName={name}
+        onBooking={handleBooking}
+            />
+        </React.Fragment>
     )
 };
 
