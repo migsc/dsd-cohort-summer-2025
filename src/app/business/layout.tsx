@@ -1,34 +1,41 @@
-import { Calendar, CreditCard, Settings, LogOut, Users, FolderKanban } from "lucide-react"
+import {
+  Calendar,
+  CreditCard,
+  Settings,
+  LogOut,
+  Users,
+  FolderKanban,
+} from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 const businessItems = [
   {
     title: "Calendar",
-    url: "/business/",
+    url: "/business",
     icon: Calendar,
   },
   {
     title: "Review Appointments",
-    url: "#",
+    url: "/business/appointments",
     icon: FolderKanban,
   },
   {
     title: "Payments",
-    url: "#",
+    url: "/business/payments",
     icon: CreditCard,
   },
   {
-    title: "Client List",
-    url: "#",
+    title: "Customer List",
+    url: "/business/customers",
     icon: Users,
   },
   {
     title: "Configure Business",
-    url: "#",
+    url: "/business/configuration",
     icon: Settings,
-  }
-]
+  },
+];
 
 export default function RootLayout({
   children,
@@ -37,7 +44,11 @@ export default function RootLayout({
 }>) {
   return (
     <SidebarProvider>
-      <AppSidebar items={businessItems} title="CleanHub Business Portal" loggedIn={true} />
+      <AppSidebar
+        items={businessItems}
+        title="CleanHub Business Portal"
+        loggedIn={true}
+      />
       <SidebarTrigger />
       <main className="mt-5 w-full">{children}</main>
     </SidebarProvider>
