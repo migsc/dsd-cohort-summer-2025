@@ -90,9 +90,7 @@ export default function ServicesGrid({
         const searchTerm = query.toLowerCase().trim();
         
         return services.filter(service => 
-            // Search in service name
             service.name.toLowerCase().includes(searchTerm) ||
-            // Search in service description
             service.description.toLowerCase().includes(searchTerm)
         );
     }, [services, query]);
