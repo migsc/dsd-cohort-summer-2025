@@ -5,7 +5,6 @@ export async function GET(request: Request) {
   // searchParams is destrctured from URL object
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
-
   if (!origin || !destination) {
     return new Response(JSON.stringify({ error: "Missing address params" }), {
       status: 400,
@@ -14,15 +13,10 @@ export async function GET(request: Request) {
 
   const apiKey = process.env.MAPS_API_KEY;
   const res = await fetch(
-    `https://maps.googleapis.com/maps/api/distancematrix/json?
-    origins=${origin}
-    &destinations=${destination}
-    &units=imperial
-    &key=${apiKey}`
+    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&units=imperial&key=${apiKey}`
   );
 
   const data = await res.json();
-
   if (data.status !== "OK") {
     return new Response(data.error_message || `Distance could not be found`);
   }

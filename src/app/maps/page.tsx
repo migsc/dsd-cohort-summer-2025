@@ -18,9 +18,6 @@ export default function Maps() {
     const[distance, setDistance] = useState('');
     const[duration, setDuration] = useState('');
 
-    searchParams.forEach((value, key) => {
-        console.log(value, key);
-        });
 
     // call Geocoding API first to make use of the other APIs easier
     useEffect(() => {
@@ -34,11 +31,8 @@ export default function Maps() {
         fetch(`api/geocode?worker=${encodeURIComponent(worker)}&customer=${encodeURIComponent(customer)}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Fetched address coordinates:", data);
             setWorkerAddress(data.workerCoord);
             setCustomerAddress(data.customerCoord);
-            console.log(workerAddress, customerAddress);
-
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -55,7 +49,6 @@ export default function Maps() {
         fetch(`api/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Fetched distance matrix results:", data);
             setDistance(data.distance.text);
             setDuration(data.duration.text);
         })
@@ -65,7 +58,7 @@ export default function Maps() {
 
     }, [workerAddress, customerAddress]);
 
-    if (!workerAddress || !customerAddress) {
+    if (!workerAddress || !customerAddress || !distance || !duration) {
         return <div>Loading map...</div>;
     }
 
