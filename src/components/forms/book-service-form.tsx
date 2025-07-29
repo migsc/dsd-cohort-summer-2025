@@ -88,8 +88,8 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
         date: values.date,
         timeSlot: values.timeSlot,
         notes: values.notes || '',
-      };
 
+      };
       onBooking(bookingData);
       
       // Reset form and close modal

@@ -15,18 +15,18 @@ import { useRouter } from "next/navigation";
 import { useAuth } from '@/hooks/useAuth';
 
 export interface ServiceCardProps {
-    id: string;
+    _id: string;
     name: string;
-    description: string;
+    desc: string;
     durationMin: number;
     durationMax: number;
+    durationUnits: string;
     priceMin: number;
     priceMax: number;
-    pricingModel: string;
 };
 
 // ServiceCard Component used to make individual cards
-export function ServiceCard({ id, name, description, durationMin, durationMax, priceMin, priceMax, pricingModel }: ServiceCardProps) {
+export function ServiceCard({ _id, name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax }: ServiceCardProps) {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
      const { isLoggedIn } = useAuth();
     const router = useRouter();
@@ -44,11 +44,39 @@ export function ServiceCard({ id, name, description, durationMin, durationMax, p
         // *** Booking logic will go here
         console.log('Booking submitted:', {
             ...bookingData,
-            serviceId: id,
-            serviceDuration: `${durationMin}-${durationMax}`,
-            servicePrice: `$${priceMin}-${priceMax} ${pricingModel}`,
+            serviceId: _id,
+            serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
+            servicePrice: `$${priceMin}-${priceMax}`,
         });
-         alert(`Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`);
+        try {
+            const formData ={
+                ...bookingData,
+                serviceId: _id,
+                serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
+                servicePrice: `$${priceMin}-${priceMax}`,
+            }
+
+            const response = await fetch('api/bookings', {
+                method: 'POST',
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify(formData),
+                credentials: 'include'
+            });
+
+            if (!response.ok){
+                console.error('Booking error');
+                alert('Booking error');
+                return;
+            }
+
+            const result = await response.json();
+            console.log('Booking response', result);
+            alert(`Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`);
+
+        }
+        catch(error){
+            console.error('Could not send data:', error);
+        }
     };
 
     return (
@@ -59,12 +87,12 @@ export function ServiceCard({ id, name, description, durationMin, durationMax, p
                         <h2 className="text-xl">{name}</h2>
                         </CardTitle>
                     <CardDescription>
-                        <p>{description}</p>
+                        <p>{desc}</p>
                         </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>{durationMin}-{durationMax}</p>
-                    <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax} {pricingModel}</p>
+                    <p>{durationMin}-{durationMax} {durationUnits}</p>
+                    <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax}</p>
                 </CardContent>
                 <CardFooter>
                     <Button onClick={handleBookNow} className="w-full">
@@ -99,8 +127,10 @@ export default function ServicesGrid({
         const searchTerm = query.toLowerCase().trim();
         
         return services.filter(service => 
+            // Search in service name
             service.name.toLowerCase().includes(searchTerm) ||
-            service.description.toLowerCase().includes(searchTerm)
+            // Search in service description
+            service.desc.toLowerCase().includes(searchTerm)
         );
     }, [services, query]);
 
@@ -128,7 +158,7 @@ export default function ServicesGrid({
             {/* Services grid */}
             <section className='grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
                 {filteredServices.map((service: ServiceCardProps) => (
-                    <div key={service.id}>
+                    <div key={service._id}>
                         <ServiceCard {...service} />
                     </div>
                 ))}
