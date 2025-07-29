@@ -17,8 +17,8 @@ const loggedInItems = [
     icon: Calendar,
   },
   {
-    title: 'Payments',
-    url: '/customer/payments',
+    title: 'Invoices',
+    url: '/customer/invoices',
     icon: CreditCard,
   },
   {
