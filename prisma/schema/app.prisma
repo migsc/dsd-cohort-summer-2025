@@ -1,7 +1,7 @@
 model Business {
   id                                    String @id @default(auto()) @map("_id") @db.ObjectId
   userId                                String @unique
-  user                                  User   @relation(fields: [userId], references: [id], onDelete: Cascade) // <--- THIS IS THE KEY RELATION
+  user                                  User   @relation(fields: [userId], references: [id], onDelete: Cascade) 
 
   businessName                          String
   contactPersonName                     String

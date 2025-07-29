@@ -65,7 +65,7 @@ async function main() {
             durationMin: 2,
             durationMax: 4,
             typicalCleanersAssigned: 2,
-            pricingModel: "Per Hour",
+            pricingModel: "Hourly",
             priceMin: 50,
             priceMax: 100,
           },

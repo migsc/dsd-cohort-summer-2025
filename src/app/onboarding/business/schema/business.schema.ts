@@ -94,8 +94,10 @@ export const CoreServiceSchema = z.object({
   pricingModel: z.enum(pricingModels),
   priceMin: z.number().min(0, "Min Price must be non-negative."),
   priceMax: z.number().min(0, "Max Price must be non-negative."),
-  id: z.uuid(),
+  id: z.string(),
 });
+
+export type CoreService = z.infer<typeof CoreServiceSchema>;
 
 export const DayOperatingHoursSchema = z
   .object({
@@ -201,6 +203,12 @@ export const BusinessOnboardingSchema = z.object({
 });
 
 export type BusinessFormData = z.infer<typeof BusinessOnboardingSchema>;
+export type BusinessData = BusinessFormData & {
+  id: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export const defaultBusinessValues: BusinessFormData = {
   businessName: "",
