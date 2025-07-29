@@ -13,18 +13,18 @@ import BookingForm, { type BookingFormData } from "@/components/forms/book-servi
 import React from "react";
 
 export interface ServiceCardProps {
-    _id: string;
+    id: string;
     name: string;
-    desc: string;
+    description: string;
     durationMin: number;
     durationMax: number;
-    durationUnits: string;
     priceMin: number;
     priceMax: number;
+    pricingModel: string;
 };
 
 // ServiceCard Component used to make individual cards
-export function ServiceCard({ _id, name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax }: ServiceCardProps) {
+export function ServiceCard({ id, name, description, durationMin, durationMax, priceMin, priceMax, pricingModel }: ServiceCardProps) {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
     const handleBookNow = () => {
@@ -35,9 +35,9 @@ export function ServiceCard({ _id, name, desc, durationMin, durationMax, duratio
         // *** Booking logic will go here
         console.log('Booking submitted:', {
             ...bookingData,
-            serviceId: _id,
-            serviceDuration: `${durationMin}-${durationMax} ${durationUnits}`,
-            servicePrice: `$${priceMin}-${priceMax}`,
+            serviceId: id,
+            serviceDuration: `${durationMin}-${durationMax}`,
+            servicePrice: `$${priceMin}-${priceMax} ${pricingModel}`,
         });
          alert(`Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`);
     };
@@ -50,12 +50,12 @@ export function ServiceCard({ _id, name, desc, durationMin, durationMax, duratio
                         <h2 className="text-xl">{name}</h2>
                         </CardTitle>
                     <CardDescription>
-                        <p>{desc}</p>
+                        <p>{description}</p>
                         </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>{durationMin}-{durationMax} {durationUnits}</p>
-                    <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax}</p>
+                    <p>{durationMin}-{durationMax}</p>
+                    <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax} {pricingModel}</p>
                 </CardContent>
                 <CardFooter>
                     <Button onClick={handleBookNow} className="w-full">
@@ -90,10 +90,8 @@ export default function ServicesGrid({
         const searchTerm = query.toLowerCase().trim();
         
         return services.filter(service => 
-            // Search in service name
             service.name.toLowerCase().includes(searchTerm) ||
-            // Search in service description
-            service.desc.toLowerCase().includes(searchTerm)
+            service.description.toLowerCase().includes(searchTerm)
         );
     }, [services, query]);
 
@@ -121,7 +119,7 @@ export default function ServicesGrid({
             {/* Services grid */}
             <section className='grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
                 {filteredServices.map((service: ServiceCardProps) => (
-                    <div key={service._id}>
+                    <div key={service.id}>
                         <ServiceCard {...service} />
                     </div>
                 ))}
