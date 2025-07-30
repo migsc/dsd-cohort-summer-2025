@@ -10,7 +10,7 @@
 
 html,
 body {
-  @apply bg-white dark:bg-white;
+  @apply bg-white dark:bg-black;
 }
 
 :root {
