@@ -2,22 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-
-type CoreServiceType = {
-  name: string;
-  description: string;
-  durationMin: number;
-  durationMax: number;
-  typicalCleanersAssigned: number;
-  pricingModel: string;
-  priceMin: number;
-  priceMax: number;
-  id?: string;
-};
+import type {
+  BusinessFormData,
+  CoreService,
+} from "@/app/onboarding/business/schema/business.schema";
 
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const formData = await request.json();
+  const formData: BusinessFormData = await request.json();
 
   if (!session || !session.user || !session.user.id) {
     console.log("Unauthorized");
@@ -52,19 +44,17 @@ export async function POST(request: Request) {
           yearsInBusiness: formData.yearsInBusiness,
           businessDescription: formData.businessDescription,
 
-          coreServices: formData.coreServices.map(
-            (service: CoreServiceType) => ({
-              name: service.name,
-              description: service.description,
-              durationMin: service.durationMin,
-              durationMax: service.durationMax,
-              typicalCleanersAssigned: service.typicalCleanersAssigned,
-              pricingModel: service.pricingModel,
-              priceMin: service.priceMin,
-              priceMax: service.priceMax,
-              id: service.id || undefined,
-            })
-          ),
+          coreServices: formData.coreServices.map((service: CoreService) => ({
+            name: service.name,
+            description: service.description,
+            durationMin: service.durationMin,
+            durationMax: service.durationMax,
+            typicalCleanersAssigned: service.typicalCleanersAssigned,
+            pricingModel: service.pricingModel,
+            priceMin: service.priceMin,
+            priceMax: service.priceMax,
+            id: service.id,
+          })),
 
           operatingHours: {
             monday: formData.operatingHours.monday,
@@ -86,19 +76,19 @@ export async function POST(request: Request) {
           additionalNotes: formData.additionalNotes,
         },
       });
+
       return newBusiness;
     });
 
-    console.log("Business done for user: ", userId);
     return NextResponse.json(
-      { message: "Business onboarding successful" },
+      { message: "Business onboarding successful." },
       { status: 200 }
     );
   } catch (err) {
     console.log("Error: ", err);
     return NextResponse.json(
       {
-        message: "Server error processing business onboarding",
+        message: "Server error processing business onboarding.",
       },
       { status: 500 }
     );

@@ -12,7 +12,7 @@ model User {
   // Add ons
   role          String         @default("customer")
   business      Business?
-  customer Customer?
+  customer      Customer?
 
   @@unique([email])
   @@map("user")

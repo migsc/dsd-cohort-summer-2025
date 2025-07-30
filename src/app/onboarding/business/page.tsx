@@ -46,7 +46,6 @@ export default function BusinessOnboarding() {
       onSubmit: BusinessOnboardingSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("submit");
       try {
         const response = await fetch("/api/onboarding/business", {
           method: "POST",
@@ -66,14 +65,6 @@ export default function BusinessOnboarding() {
         console.log(err);
       }
     },
-  });
-
-  console.log("Form state:", {
-    canSubmit: form.state.canSubmit,
-    isSubmitting: form.state.isSubmitting,
-    isValidating: form.state.isValidating,
-    errors: form.state.errors,
-    isValid: form.state.isValid,
   });
 
   return (
@@ -907,7 +898,7 @@ export default function BusinessOnboarding() {
                 )}
               />
             </div>
-            {/* Preferred Communication Methods (Multi-Checkbox) */}
+
             <div className="mt-6">
               <Label>Preferred Customer Communication Methods</Label>
               <form.Field

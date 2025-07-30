@@ -23,7 +23,7 @@ const tempEvents: CalendarEvent[] = [
   },
 ];
 
-export default function Bookings() {
+export default function Calendar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
 
@@ -39,7 +39,7 @@ export default function Bookings() {
 
   return (
     <div className="flex flex-col items-center">
-      <p className="text-xl mb-4 font-bold">Welcome {session?.user.name}</p>
+      <p className="mb-4 text-xl font-bold">Welcome {session?.user.name}</p>
       <div>
         <AppCalendar events={tempEvents} />
       </div>
