@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
 
-  if (!session || !session.user) {
+  if (!session || !session.user || !session.user.id) {
     console.log("Unauthorized");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
