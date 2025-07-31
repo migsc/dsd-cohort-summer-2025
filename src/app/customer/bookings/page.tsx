@@ -16,6 +16,7 @@ export default function MyBookings() {
             </h1>
 
             {/* In Progress Bookings */}
+            {/* ***TODO: pull info for these props from database */}
             <section className="w-full flex justify-center">
                 <div className="w-2xl">
                     <BookingProgressTracker 
@@ -30,6 +31,7 @@ export default function MyBookings() {
             </section>
 
             {/* Previous Bookings */}
+            {/* ***TODO: Pull previous bookings from DB */}
             <h2 className="text-black text-center font-bold text-lg text-gray-600 mt-4 mb-2">Previous Bookings</h2>
             <Table className="text-black">
                 <TableHeader className="bg-blue-500">
