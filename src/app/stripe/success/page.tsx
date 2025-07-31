@@ -68,12 +68,12 @@ async function ConfirmStripeSessionComponent() {
 }
 
 export default async function Success({
-  searchParams,
+  searchParams, // Passed as a Promise in Next.js 15+
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ stripe_session_id: string | undefined }>;
 }) {
-  const { session_id } = await (searchParams || {});
-  const stripeSessionId = session_id;
+  const params = await searchParams;
+  const stripeSessionId = params.stripe_session_id;
 
   if (!stripeSessionId) {
     console.log("Success page accessed without session_id. Redirecting.");
