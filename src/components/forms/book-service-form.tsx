@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock } from "lucide-react";
 import z from "zod";
 
 import {
@@ -12,7 +12,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -28,10 +28,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 interface BookingFormProps {
   isOpen: boolean;
@@ -57,46 +57,51 @@ type BookingFormValues = z.infer<typeof bookingSchema>;
 
 // *** Available time slots. This will come from DB. Business to configure this
 const timeSlots = [
-  '8:00 AM - 10:00 AM',
-  '10:00 AM - 12:00 PM',
-  '12:00 PM - 2:00 PM',
-  '2:00 PM - 4:00 PM',
-  '4:00 PM - 6:00 PM',
-  '6:00 PM - 8:00 PM'
+  "8:00 AM - 10:00 AM",
+  "10:00 AM - 12:00 PM",
+  "12:00 PM - 2:00 PM",
+  "2:00 PM - 4:00 PM",
+  "4:00 PM - 6:00 PM",
+  "6:00 PM - 8:00 PM",
 ];
 
-export default function BookingForm({ isOpen, onClose, serviceName, onBooking }: BookingFormProps) {
+export default function BookingForm({
+  isOpen,
+  onClose,
+  serviceName,
+  onBooking,
+}: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      date: '',
-      timeSlot: '',
-      notes: '',
+      date: "",
+      timeSlot: "",
+      notes: "",
     },
   });
 
   const onSubmit = async (values: BookingFormValues) => {
     setIsSubmitting(true);
-    
+
     try {
       const bookingData: BookingFormData = {
         serviceName,
         date: values.date,
         timeSlot: values.timeSlot,
-        notes: values.notes || '',
+        notes: values.notes || "",
       };
 
       onBooking(bookingData);
-      
+
       // Reset form and close modal
       form.reset();
       onClose();
     } catch (error) {
-      console.error('Booking failed:', error);
+      console.error("Booking failed:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -118,7 +123,8 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
             Book {serviceName}
           </DialogTitle>
           <DialogDescription>
-            Select your preferred date and time for this service. We'll confirm your booking shortly.
+            Select your preferred date and time for this service. We'll confirm
+            your booking shortly.
           </DialogDescription>
         </DialogHeader>
 
@@ -152,18 +158,21 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
               name="timeSlot"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium flex items-center gap-2">
+                  <FormLabel className="flex items-center gap-2 text-sm font-medium">
                     <Clock className="h-4 w-4" />
                     Time Slot
                   </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select a time slot" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {timeSlots.map((slot) => (
+                      {timeSlots.map(slot => (
                         <SelectItem key={slot} value={slot}>
                           {slot}
                         </SelectItem>
@@ -192,7 +201,7 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className="text-xs text-gray-500 text-right">
+                  <FormDescription className="text-right text-xs text-gray-500">
                     {field.value?.length || 0}/500 characters
                   </FormDescription>
                   <FormMessage />
@@ -202,21 +211,17 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
 
             {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={handleClose}
                 disabled={isSubmitting}
                 className="flex-1"
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="flex-1"
-              >
-                {isSubmitting ? 'Booking...' : 'Book Service'}
+              <Button type="submit" disabled={isSubmitting} className="flex-1">
+                {isSubmitting ? "Booking..." : "Book Service"}
               </Button>
             </div>
           </form>
