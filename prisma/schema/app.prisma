@@ -1,7 +1,7 @@
 model Business {
-  id                                    String @id @default(auto()) @map("_id") @db.ObjectId
-  userId                                String @unique
-  user                                  User   @relation(fields: [userId], references: [id], onDelete: Cascade) 
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   businessName                          String
   contactPersonName                     String
@@ -15,6 +15,7 @@ model Business {
   businessAddressCountry                String
   serviceAreaRadius                     Int
   yearsInBusiness                       Int
+  businessSlug                          String         @unique
   businessDescription                   String
   coreServices                          CoreService[]
   operatingHours                        OperatingHours
@@ -78,7 +79,7 @@ type DayOperatingHours {
 }
 
 model Booking {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
   serviceName     String
   date            String
   timeSlot        String
@@ -86,6 +87,7 @@ model Booking {
   serviceId       String
   serviceDuration String?
   servicePrice    String?
+  status          BookingStatus @default(PENDING)
 
   customer   Customer @relation(fields: [customerId], references: [id])
   customerId String   @db.ObjectId
@@ -94,6 +96,15 @@ model Booking {
   businessId String   @db.ObjectId
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("booking")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  CANCELED
+  COMPLETED
 }
