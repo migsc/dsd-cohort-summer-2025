@@ -30,10 +30,10 @@ export default async function OurServices(props: {
 
     return (
         <section className='mx-1 sm:mx-10'>
-            <h1 className='text-center font-bold text-3xl my-2'>Our Services</h1>
-            <h2 className='text-center text-2xl mt-2 mb-4'>{businessData.businessName}</h2>
+            <h1 className='text-center font-bold text-3xl my-2 text-black'>Our Services</h1>
+            <h2 className='text-center text-2xl mt-2 mb-4 text-black'>{businessData.businessName}</h2>
             {!query && (
-                <p className='text-center'>
+                <p className='text-center text-black'>
                     {businessData.businessDescription}
                 </p>
             )}

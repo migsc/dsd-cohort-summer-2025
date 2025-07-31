@@ -8,22 +8,22 @@ import { useAuth } from '@/hooks/useAuth';
 const loggedInItems = [
   {
     title: 'Service Catalog',
-    url: 'customer/',
+    url: '/customer',
     icon: Home,
   },
   {
     title: 'My Bookings',
-    url: '#',
+    url: '/customer/bookings',
     icon: Calendar,
   },
   {
     title: 'Invoices',
-    url: '#',
+    url: '/customer/invoices',
     icon: CreditCard,
   },
   {
     title: 'Settings',
-    url: '#',
+    url: '/customer/settings',
     icon: Settings,
   }
 ];
@@ -31,7 +31,7 @@ const loggedInItems = [
 const loggedOutItems = [
   {
     title: 'Service Catalog',
-    url: './dummy',
+    url: '/customer',
     icon: Home,
   },
   {
