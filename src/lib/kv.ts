@@ -18,15 +18,15 @@ const client: RedisClientType = createClient({
 });
 
 client.on("error", err => console.log("Redis Client Error", err));
-client.on("connect", () =>
-  console.log("Node-Redis Client: Attempting to connect...")
-);
-client.on("ready", () =>
-  console.log("Node-Redis Client: Connected and ready!")
-);
+// client.on("connect", () =>
+//   console.log("Node-Redis Client: Attempting to connect...")
+// );
+// client.on("ready", () =>
+//   console.log("Node-Redis Client: Connected and ready!")
+// );
 client.on("end", () => console.log("Node-Redis Client: Connection ended."));
-client.on("reconnecting", () =>
-  console.warn("Node-Redis Client: Reconnecting...")
+// client.on("reconnecting", () =>
+//   console.warn("Node-Redis Client: Reconnecting...")
 );
 
 if (!client.isOpen) {

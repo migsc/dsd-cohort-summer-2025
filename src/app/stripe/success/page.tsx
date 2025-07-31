@@ -37,25 +37,26 @@ async function ConfirmStripeSessionComponent() {
     syncedData = await syncStripeDataToKV(stripeCustomerId);
 
     if (syncedData.status === "error" || syncedData.status === "none") {
-      // console.log("no payment status.");
+      console.log("no payment status.");
       redirect("/customer");
     }
 
     if (syncedData.status === "succeeded") {
-      // console.log("payment succeded.");
+      console.log("payment succeded.");
       redirect("/customer");
     }
 
     if (syncedData.status === "processing") {
-      // console.log("payment processing.");
+      console.log("payment processing.");
       redirect("/customer");
     }
 
     if (syncedData.status === "canceled") {
-      // console.log("payment canceled.");
+      console.log("payment canceled.");
       redirect("/customer");
     }
 
+    console.log("Here.");
     return redirect("/");
   } catch (err) {
     if (isRedirectError(err)) {

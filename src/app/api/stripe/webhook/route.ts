@@ -70,7 +70,7 @@ export async function POST(req: Request) {
   }
 
   if (!allowedEvents.includes(event.type)) {
-    console.log("Not an allowed event");
+    // console.log("Not an allowed event");
     return NextResponse.json(
       { message: "Event type not handled." },
       { status: 200 }
