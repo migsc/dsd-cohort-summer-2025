@@ -63,7 +63,7 @@ export function ServiceCard({ id, name, description, durationMin, durationMax, p
                         </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>{durationMin}-{durationMax}</p>
+                    <p>{durationMin}-{durationMax} hours</p>
                     <p className="text-lime-500 font-bold text-xl">${priceMin}-${priceMax} {pricingModel}</p>
                 </CardContent>
                 <CardFooter>
