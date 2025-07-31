@@ -1,9 +1,9 @@
+import PortalHeader from '@/components/ui/custom/portalHeader';
+
 export default function Invoices() {
     return (
         <div>
-            <h1 className='text-center font-bold text-3xl my-2'>
-                Invoices
-            </h1>
+            <PortalHeader pageName='Invoices' userName="Jane Doe"></PortalHeader>
         </div>
     )
 }

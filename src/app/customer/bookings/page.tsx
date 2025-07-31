@@ -5,19 +5,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import PortalHeader from '@/components/ui/custom/portalHeader';
 import { PreviousBookingRow } from '@/components/ui/custom/tableRows'
 import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 
 export default function MyBookings() {
     return (
         <div>
-            <h1 className='text-center font-bold text-3xl mb-4'>
-                My Bookings
-            </h1>
+            <PortalHeader pageName='My Bookings' userName="Jane Doe"></PortalHeader>
 
             {/* In Progress Bookings */}
             {/* ***TODO: pull info for these props from database */}
-            <section className="w-full flex justify-center">
+            <section className="w-full flex justify-center mt-5">
                 <div className="w-2xl">
                     <BookingProgressTracker 
                         orderNum="001" 

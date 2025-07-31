@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import SearchBar from '@/components/ui/custom/searchbar';
 import { getBusinessWithServices } from '@/lib/services';
+import PortalHeader from '@/components/ui/custom/portalHeader';
 
 export default async function OurServices(props: {
     searchParams?: Promise<{
@@ -14,9 +15,7 @@ export default async function OurServices(props: {
     const query = searchParams?.query || '';
 
     // ***TODO: fetch businessId from database. hardcoded right now
-    // PRODUCTION DB
-    // const businessId = '6888eda1126c69ebb2d37bf2';
-    const businessId = '6888f51196f38c2453ae2866';
+    const businessId = '6888eda1126c69ebb2d37bf2';
     
     // Fetch business info & services from database
     const businessData = await getBusinessWithServices(businessId);
@@ -24,7 +23,7 @@ export default async function OurServices(props: {
     if (!businessData) {
         return (
             <div>
-                <h1 className='text-center font-bold text-3xl my-2'>Our Services</h1>
+                <PortalHeader pageName='Our Services' userName="Jane Doe"></PortalHeader>
                 <div>Business not found</div>
             </div>
     );
@@ -32,8 +31,8 @@ export default async function OurServices(props: {
 
     return (
         <section className='mx-1 sm:mx-10'>
-            <h1 className='text-center font-bold text-3xl my-2'>Our Services</h1>
-            <h2 className='text-center text-2xl mt-2 mb-4'>{businessData.businessName}</h2>
+            <PortalHeader pageName='Our Services' userName="Jane Doe"></PortalHeader>
+            <h2 className='text-center text-2xl mt-5 mb-4'>{businessData.businessName}</h2>
             {!query && (
                 <p className='text-center'>
                     {businessData.businessDescription}

@@ -2,7 +2,6 @@ import {
   Calendar,
   CreditCard,
   Settings,
-  LogOut,
   Users,
   FolderKanban,
 } from "lucide-react";
@@ -46,11 +45,13 @@ export default function RootLayout({
     <SidebarProvider>
       <AppSidebar
         items={businessItems}
-        title="CleanHub Business Portal"
+        title="Suzys Cleaning Business Portal"
         loggedIn={true}
       />
       <SidebarTrigger />
-      <main className="mt-5 w-full">{children}</main>
+      <main className="mt-5 w-full">
+        {children}
+      </main>
     </SidebarProvider>
   );
 }

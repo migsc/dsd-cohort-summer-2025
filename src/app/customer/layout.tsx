@@ -2,7 +2,6 @@
 import { Calendar, Home, CreditCard, Settings, LogIn } from 'lucide-react'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
-import PortalHeader from '@/components/ui/custom/portalHeader';
 import { useAuth } from '@/hooks/useAuth'; 
 
 const loggedInItems = [
@@ -58,10 +57,9 @@ export default function RootLayout({
 
   return (
     <SidebarProvider>
-      <AppSidebar items={sidebarItems} loggedIn={isLoggedIn} title='CleanHub Customer Portal'/>
+      <AppSidebar items={sidebarItems} loggedIn={isLoggedIn} title='Suzys Cleaning'/>
       <main className='w-full'>
         <SidebarTrigger />
-        <PortalHeader logoSrc='https://placehold.co/50x50' logoAlt='logo' businessName='Suzys Cleaning'></PortalHeader>
         {children}
       </main>
     </SidebarProvider>
