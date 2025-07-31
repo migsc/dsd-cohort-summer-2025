@@ -11,7 +11,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -188,7 +187,7 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                 >
                   <SheetHeader>
                     <SheetTitle className="flex h-full pt-2">
-                      <div className="flex w-[30%] h-full flex-col gap-4 border-r pr-4">
+                      <div className="flex h-full w-[30%] flex-col gap-4 border-r pr-4">
                         <h1 className="font-blod text-2xl">
                           {appointment.customerInfo.clientName}
                         </h1>
@@ -197,12 +196,14 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                         </h2>
                       </div>
                       <div className="pl-4">
-                        <p className="font-semibold text-gray-400 text-md">Order Details</p>
+                        <p className="text-md font-semibold text-gray-400">
+                          Order Details
+                        </p>
                       </div>
                     </SheetTitle>
                   </SheetHeader>
                   <div className="flex h-full gap-4 p-4">
-                    <div className="flex w-[30%] h-full flex-col gap-4 border-r pr-4">
+                    <div className="flex h-full w-[30%] flex-col gap-4 border-r pr-4">
                       <section className="flex flex-col gap-2">
                         <h3 className="font-bold">Contact Info</h3>
                         <p className="text-sm">
@@ -214,36 +215,50 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                       </section>
                     </div>
                     <div>
-                        <div className="flex flex-col gap-2">
-                            <p className="text-sm flex justify-between w-[150px]">
-                                Status: <Badge
-                        variant="default"
-                        className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}>{appointment.workOrderInfo.status}</Badge>
-                            </p>
-                            <p className="text-sm flex justify-between w-[150px]">
-                                Type: <Badge
-                        variant="default"
-                        className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}>{appointment.workOrderInfo.Type}</Badge>
-                            </p>
-                            <p className="text-sm flex justify-between w-[150px]">
-                                Date: <span>{appointment.workOrderInfo.fulfillmentDate}</span>
-                            </p>
-                            <p className="text-sm flex justify-between w-[150px]">
-                                Time: <span>{appointment.workOrderInfo.fulfillmentTime}</span>
-                            </p>
-                            <div>
-                                <p className="text-sm flex justify-between w-full">
-                                    Address: {" "}
-                                    {appointment.workOrderInfo.address}
-                                </p>
-                                <div>
-                                    <p>Here goes the google maps information</p>
-                                </div>
-                            </div>
-                            <p className="text-sm flex flex-col w-full pb-4">
-                                Description: <span>{appointment.workOrderInfo.description}</span>
-                            </p>
+                      <div className="flex flex-col gap-2">
+                        <p className="flex w-[150px] justify-between text-sm">
+                          Status:{" "}
+                          <Badge
+                            variant="default"
+                            className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                          >
+                            {appointment.workOrderInfo.status}
+                          </Badge>
+                        </p>
+                        <p className="flex w-[150px] justify-between text-sm">
+                          Type:{" "}
+                          <Badge
+                            variant="default"
+                            className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                          >
+                            {appointment.workOrderInfo.Type}
+                          </Badge>
+                        </p>
+                        <p className="flex w-[150px] justify-between text-sm">
+                          Date:{" "}
+                          <span>
+                            {appointment.workOrderInfo.fulfillmentDate}
+                          </span>
+                        </p>
+                        <p className="flex w-[150px] justify-between text-sm">
+                          Time:{" "}
+                          <span>
+                            {appointment.workOrderInfo.fulfillmentTime}
+                          </span>
+                        </p>
+                        <div>
+                          <p className="flex w-full justify-between text-sm">
+                            Address: {appointment.workOrderInfo.address}
+                          </p>
+                          <div>
+                            <p>Here goes the google maps information</p>
+                          </div>
                         </div>
+                        <p className="flex w-full flex-col pb-4 text-sm">
+                          Description:{" "}
+                          <span>{appointment.workOrderInfo.description}</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <SheetFooter className="border-t">
@@ -266,13 +281,9 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                         </div>
                       ) : filter === "Approved" ? (
                         <div className="mr-4 text-sm text-gray-500">
-                          <p>This appointment is approved.</p>
-                          <Button
-                            variant="default"
-                            className="mt-1.5 w-full bg-yellow-600 text-white hover:bg-yellow-500"
-                          >
-                            Add to Calendar
-                          </Button>
+                          <p className="text-blue-600">
+                            This appointment is approved.
+                          </p>
                         </div>
                       ) : (
                         <p className="mr-4 text-sm text-red-500">
