@@ -34,7 +34,7 @@ export async function syncStripeDataToKV(customerId: string) {
 
     if (!customer || customer.deleted) {
       console.log("Customer not found or deleted.");
-      const chargeData = { status: "none" };
+      const chargeData: StripeOneTimeChargeCache = { status: "none" };
       await kv.set(`stripe:customer:${customerId}`, JSON.stringify(chargeData));
       return chargeData;
     }
