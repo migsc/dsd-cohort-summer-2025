@@ -15,13 +15,17 @@ export default async function OurServices(props: {
 
     // ***TODO: fetch businessId from database. hardcoded right now
     const businessId = '6888eda1126c69ebb2d37bf2';
-    // const businessId = '68890058fc38c4cb8600cc17';
     
     // Fetch business info & services from database
     const businessData = await getBusinessWithServices(businessId);
 
     if (!businessData) {
-        return <div>Business not found</div>;
+        return (
+            <div>
+                <h1 className='text-center font-bold text-3xl my-2'>Our Services</h1>
+                <div>Business not found</div>
+            </div>
+    );
     }
 
     return (
