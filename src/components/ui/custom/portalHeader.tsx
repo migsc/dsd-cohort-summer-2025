@@ -13,7 +13,7 @@ export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalH
         <header className='flex items-center justify-between p-4 border-b z-10 gap-2'>
             <div className='flex items-center gap-5'>
                 <img src={logoSrc} alt={logoAlt} width={50} height={50}/>
-                <h1 className='text-xl text-center font-bold text-gray-600'>{businessName}</h1>
+                <h1 className='text-xl text-center font-bold'>{businessName}</h1>
             </div>
              {/* Notifications */}
             <div className="flex items-center gap-3">
@@ -24,9 +24,9 @@ export default function PortalHeader({ logoSrc, logoAlt, businessName }: PortalH
                 {/* ***TODO: MAKE PROFILE DYNAMIC COMPONENT, PULL FROM DB */}
                 <div className="flex items-center gap-2">
                     <div className="hidden md:flex w-8 h-8 bg-gray-300 rounded-full items-center justify-center">
-                        <User className="h-4 w-4 text-gray-600" />
+                        <User className="h-4 w-4" />
                     </div>
-                    <span className="text-sm font-medium text-gray-600">
+                    <span className="text-sm font-medium">
                         John Doe
                     </span>
                 </div>

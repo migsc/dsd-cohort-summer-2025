@@ -11,7 +11,7 @@ import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 export default function MyBookings() {
     return (
         <div>
-            <h1 className='text-center font-bold text-3xl mb-4 text-black'>
+            <h1 className='text-center font-bold text-3xl mb-4'>
                 My Bookings
             </h1>
 
@@ -32,8 +32,8 @@ export default function MyBookings() {
 
             {/* Previous Bookings */}
             {/* ***TODO: Pull previous bookings from DB */}
-            <h2 className="text-black text-center font-bold text-lg text-gray-600 mt-4 mb-2">Previous Bookings</h2>
-            <Table className="text-black">
+            <h2 className="text-center font-bold text-lg mt-4 mb-2">Previous Bookings</h2>
+            <Table>
                 <TableHeader className="bg-blue-500">
                     <TableRow>
                     <TableHead className="w-[100px]">Order No.</TableHead>

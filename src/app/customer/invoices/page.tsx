@@ -1,8 +1,8 @@
 export default function Invoices() {
     return (
-        <div className="text-black">
+        <div>
             <h1 className='text-center font-bold text-3xl my-2'>
-                Payments
+                Invoices
             </h1>
         </div>
     )
