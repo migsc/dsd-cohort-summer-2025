@@ -69,17 +69,19 @@ async function ConfirmStripeSessionComponent() {
 }
 
 export default async function Success({
-  searchParams, // Passed as a Promise in Next.js 15+
+  searchParams,
 }: {
   searchParams: Promise<{ stripe_session_id: string | undefined }>;
 }) {
   const params = await searchParams;
+  console.log("params: ", params);
   const stripeSessionId = params.stripe_session_id;
+  console.log("stripeSessionId: ", stripeSessionId);
 
-  if (!stripeSessionId) {
-    console.log("Success page accessed without session_id. Redirecting.");
-    redirect("/");
-  }
+  // if (!stripeSessionId) {
+  //   console.log("Success page accessed without session_id. Redirecting.");
+  //   redirect("/");
+  // }
 
   return (
     <div className="flex min-h-screen items-center justify-center text-2xl">

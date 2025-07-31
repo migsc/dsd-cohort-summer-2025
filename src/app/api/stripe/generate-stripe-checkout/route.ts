@@ -20,6 +20,7 @@ export async function POST(req: Request) {
   const formData = await req.json();
 
   const origin = (await headers()).get("origin");
+  console.log("origin: ", origin);
 
   // Get the stripeCustomerId from your KV store.
   let stripeCustomerId = await kv.get(`stripe:user:${user.id}`);
