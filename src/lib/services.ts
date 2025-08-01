@@ -1,35 +1,37 @@
-import prisma from './prisma'
+import prisma from "./prisma";
 
 export interface ServiceData {
-  id: string
-  name: string
-  description: string
-  durationMin: number
-  durationMax: number
-  priceMin: number
-  priceMax: number
-  pricingModel: string
+  id: string;
+  name: string;
+  description: string;
+  durationMin: number;
+  durationMax: number;
+  priceMin: number;
+  priceMax: number;
+  pricingModel: string;
 }
 
 export interface BusinessWithServices {
-  businessName: string
-  businessDescription: string
-  services: ServiceData[]
+  businessName: string;
+  businessDescription: string;
+  services: ServiceData[];
 }
 
 // get business name, description, and services from DB
-export async function getBusinessWithServices(businessId: string): Promise<BusinessWithServices | null> {
+export async function getBusinessWithServices(
+  businessId: string
+): Promise<BusinessWithServices | null> {
   const business = await prisma.business.findUnique({
     where: { id: businessId },
     select: {
       businessName: true,
       businessDescription: true,
-      coreServices: true
-    }
-  })
+      coreServices: true,
+    },
+  });
 
   if (!business) {
-    return null
+    return null;
   }
 
   return {
@@ -44,6 +46,6 @@ export async function getBusinessWithServices(businessId: string): Promise<Busin
       priceMin: service.priceMin,
       priceMax: service.priceMax,
       pricingModel: service.pricingModel,
-    }))
-  }
+    })),
+  };
 }
