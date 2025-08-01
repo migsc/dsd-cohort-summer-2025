@@ -30,6 +30,7 @@ export async function GET(request: Request, context: RouteContext) {
   }
 
   const userId = session.user.id;
+
   try {
     const businessProfileWithBookings = await prisma.business.findUnique({
       where: {
