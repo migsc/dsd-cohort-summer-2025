@@ -101,6 +101,7 @@ export default function Cofiguration({
     }
   };
 
+  // TODO: Form validation turned off for demo purposes.
   const form = useForm({
     defaultValues: initialData,
     onSubmit: async ({ value }) => {
