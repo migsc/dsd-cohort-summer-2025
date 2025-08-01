@@ -4,6 +4,15 @@ import { auth } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
 
+function makeSlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/\./g, "") // remove periods
+    .replace(/[^a-z0-9\s-]/g, "") // strip anything not a-z, 0-9, space, or dash
+    .trim()
+    .replace(/\s+/g, "-"); // convert spaces to hyphens
+}
+
 async function main() {
   console.log("Start seeding...");
 
@@ -41,6 +50,7 @@ async function main() {
       data: { role: "business" },
     });
 
+    const businessName = "Admin Cleaning Co.";
     const adminBusiness = await prisma.business.create({
       data: {
         userId: adminUser.id,
@@ -56,6 +66,7 @@ async function main() {
         businessAddressCountry: "USA",
         serviceAreaRadius: 10,
         yearsInBusiness: 5,
+        businessSlug: makeSlug(businessName),
         businessDescription:
           "A premier cleaning service managed by the app owner.",
         coreServices: [

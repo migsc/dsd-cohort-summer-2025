@@ -14,21 +14,26 @@ export default async function OurServices(props: {
     const query = searchParams?.query || '';
 
     // ***TODO: fetch businessId from database. hardcoded right now
-    const businessId = '6887f7eae150d0e2757ea0b4';
+    const businessId = '6888eda1126c69ebb2d37bf2';
     
     // Fetch business info & services from database
     const businessData = await getBusinessWithServices(businessId);
 
     if (!businessData) {
-        return <div>Business not found</div>;
+        return (
+            <div>
+                <h1 className='text-center font-bold text-3xl my-2'>Our Services</h1>
+                <div>Business not found</div>
+            </div>
+    );
     }
 
     return (
         <section className='mx-1 sm:mx-10'>
-            <h1 className='text-center font-bold text-3xl my-2'>Our Services</h1>
-            <h2 className='text-center text-2xl mt-2 mb-4'>{businessData.businessName}</h2>
+            <h1 className='text-center font-bold text-3xl my-2 text-black'>Our Services</h1>
+            <h2 className='text-center text-2xl mt-2 mb-4 text-black'>{businessData.businessName}</h2>
             {!query && (
-                <p className='text-center'>
+                <p className='text-center text-black'>
                     {businessData.businessDescription}
                 </p>
             )}

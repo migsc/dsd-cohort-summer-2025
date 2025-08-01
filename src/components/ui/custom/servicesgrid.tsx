@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { useMemo, useState } from 'react';
 import BookingForm, { type BookingFormData } from "@/components/forms/book-service-form";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from '@/hooks/useAuth';
 
 export interface ServiceCardProps {
     _id: string;
@@ -26,8 +28,15 @@ export interface ServiceCardProps {
 // ServiceCard Component used to make individual cards
 export function ServiceCard({ _id, name, desc, durationMin, durationMax, durationUnits, priceMin, priceMax }: ServiceCardProps) {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+     const { isLoggedIn } = useAuth();
+    const router = useRouter();
 
     const handleBookNow = () => {
+        if (!isLoggedIn) {
+            router.push('/login');
+            return;
+        }
+        
         setIsBookingModalOpen(true);
     };
 
