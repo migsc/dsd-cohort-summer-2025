@@ -22,9 +22,9 @@ export default function MyBookings() {
                         orderNum="001" 
                         service="Standard House Cleaning" 
                         amount="$250.00" 
-                        currentStatus="on_way" 
-                        expectedCompletion="2:00 PM Today" 
-                        placedDate="July 25, 2025" 
+                        currentStatus="confirmed" 
+                        expectedCompletion="2:00 PM August 2, 2025" 
+                        placedDate="August 1, 2025" 
                     />
                 </div>
             </section>
