@@ -3,12 +3,6 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-interface RouteContext {
-  params: Promise<{
-    businessSlug: string;
-  }>;
-}
-
 async function findCustomer(userId: string) {
   return prisma.customer.findUnique({
     where: { userId },
@@ -21,8 +15,11 @@ async function findBusiness(userId: string) {
   });
 }
 
-export async function GET(request: Request, context: RouteContext) {
-  const { businessSlug } = await context.params;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ businessSlug: string }> }
+) {
+  const { businessSlug } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session || !session.user || !session.user.id) {
@@ -62,17 +59,6 @@ export async function GET(request: Request, context: RouteContext) {
       { status: 500 }
     );
   }
-}
-
-export async function POST(request: Request, context: RouteContext) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  const formData = await request.json();
-  const { businessSlug } = await context.params;
-  console.log("In the post bookings: ", businessSlug);
-  console.log("formData: ", formData);
-
-  return NextResponse.json({ message: "in the post bookings route" });
-  // TODO: Create booking
 }
 
 export async function PATCH(

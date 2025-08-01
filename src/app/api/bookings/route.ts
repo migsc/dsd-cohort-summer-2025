@@ -3,11 +3,6 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-import type {
-  BusinessFormData,
-  CoreService,
-} from "@/app/onboarding/business/schema/business.schema";
-
 async function findCustomer(userId: string) {
   return prisma.customer.findUnique({
     where: { userId },
