@@ -241,14 +241,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -292,14 +292,14 @@ export default function Cofiguration({
                             disabled={!isEditing}
                             rows={4}
                           />
-                          {field.state.meta.errors &&
+                          {/* {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
                               <ul className="text-sm text-red-500">
                                 {field.state.meta.errors.map((error, i) => (
                                   <li key={i}>{error?.message}</li>
                                 ))}
                               </ul>
-                            )}
+                            )} */}
                         </div>
                       )}
                     />
@@ -323,14 +323,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -360,14 +360,14 @@ export default function Cofiguration({
                             ))}
                           </SelectContent>
                         </Select>
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -385,14 +385,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -410,14 +410,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -441,14 +441,14 @@ export default function Cofiguration({
                             onChange={e => field.handleChange(e.target.value)}
                             disabled={!isEditing}
                           />
-                          {field.state.meta.errors &&
+                          {/* {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
                               <ul className="text-sm text-red-500">
                                 {field.state.meta.errors.map((error, i) => (
                                   <li key={i}>{error?.message}</li>
                                 ))}
                               </ul>
-                            )}
+                            )} */}
                         </div>
                       )}
                     />
@@ -466,14 +466,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -503,14 +503,14 @@ export default function Cofiguration({
                             ))}
                           </SelectContent>
                         </Select>
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -527,14 +527,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -551,14 +551,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -639,7 +639,7 @@ export default function Cofiguration({
                                           }
                                           disabled={!isEditing}
                                         />
-                                        {field.state.meta.errors &&
+                                        {/* {field.state.meta.errors &&
                                           field.state.meta.errors.length >
                                             0 && (
                                             <ul className="text-sm text-red-500">
@@ -651,7 +651,7 @@ export default function Cofiguration({
                                                 )
                                               )}
                                             </ul>
-                                          )}
+                                          )} */}
                                       </div>
                                     )}
                                   />
@@ -672,7 +672,7 @@ export default function Cofiguration({
                                           }
                                           disabled={!isEditing}
                                         />
-                                        {field.state.meta.errors &&
+                                        {/* {field.state.meta.errors &&
                                           field.state.meta.errors.length >
                                             0 && (
                                             <ul className="text-sm text-red-500">
@@ -684,7 +684,7 @@ export default function Cofiguration({
                                                 )
                                               )}
                                             </ul>
-                                          )}
+                                          )} */}
                                       </div>
                                     )}
                                   />
@@ -793,7 +793,7 @@ export default function Cofiguration({
                                             ))}
                                           </SelectContent>
                                         </Select>
-                                        {field.state.meta.errors &&
+                                        {/* {field.state.meta.errors &&
                                           field.state.meta.errors.length >
                                             0 && (
                                             <ul className="text-sm text-red-500">
@@ -805,7 +805,7 @@ export default function Cofiguration({
                                                 )
                                               )}
                                             </ul>
-                                          )}
+                                          )} */}
                                       </div>
                                     )}
                                   />
@@ -1044,14 +1044,14 @@ export default function Cofiguration({
                             ))}
                           </SelectContent>
                         </Select>
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -1156,14 +1156,14 @@ export default function Cofiguration({
                               </div>
                             ))}
                           </div>
-                          {field.state.meta.errors &&
+                          {/* {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
                               <ul className="text-sm text-red-500">
                                 {field.state.meta.errors.map((error, i) => (
                                   <li key={i}>{error?.message}</li>
                                 ))}
                               </ul>
-                            )}
+                            )} */}
                         </div>
                       )}
                     />
