@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SearchBar from "@/components/ui/custom/searchbar";
 import prisma from "@/lib/prisma";
-import { getBusinessWithServices } from "@/lib/services";
+import PortalHeader from '@/components/ui/custom/portalHeader';
 
 interface PageProps {
   params: Promise<{
@@ -31,7 +31,7 @@ export default async function OurServices(props: PageProps) {
     if (!business) {
       return (
         <div>
-          <h1 className="my-2 text-center text-3xl font-bold">Our Services</h1>
+          <PortalHeader pageName='Our Services' userName="Jane Doe"></PortalHeader>
           <div>Business not found for slug: {businessSlug}</div>
         </div>
       );
@@ -49,8 +49,8 @@ export default async function OurServices(props: PageProps) {
   console.log(business.businessName);
 
   return (
-    <section className="mx-1 sm:mx-10">
-      <h1 className="my-2 text-center text-3xl font-bold">Our Services</h1>
+    <div className="mx-1 sm:mx-10">
+      <PortalHeader pageName='Our Services' userName="Jane Doe"></PortalHeader>
       <h2 className="mb-4 mt-2 text-center text-2xl">
         {business.businessName}
       </h2>
@@ -66,6 +66,6 @@ export default async function OurServices(props: PageProps) {
           query={query}
         ></ServicesGrid>
       </Suspense>
-    </section>
+    </div>
   );
 }
