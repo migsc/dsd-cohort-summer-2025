@@ -26,6 +26,10 @@ model Business {
   preferredCustomerCommunicationMethods String[]
   additionalNotes                       String?
 
+  // Demetrius additions
+  bookings                              Booking[]
+  businessSlug                          String
+
   createdAt                             DateTime @default(now())
   updatedAt                             DateTime @updatedAt
 
@@ -44,6 +48,9 @@ model Customer {
   addressCountry         String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Demetrius additions
+  bookings               Booking[]
 
   @@map("customer")
 }
@@ -74,4 +81,37 @@ type DayOperatingHours {
   start  String
   end    String
   isOpen Boolean
+}
+
+
+model Booking {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  serviceName     String
+  date            String
+  timeSlot        String
+  notes           String?
+  serviceId       String
+  serviceDuration String?
+  servicePrice    String?
+  status          BookingStatus @default(PENDING)
+
+  // Demetrius additions
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @db.ObjectId
+
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String   @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("booking")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  CANCELED
+  COMPLETED
 }
