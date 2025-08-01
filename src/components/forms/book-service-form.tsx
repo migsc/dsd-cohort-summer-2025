@@ -98,9 +98,9 @@ export default function BookingForm({
         const HARDCODED_PRICE_CENTS = 21400;
 
         const HARDCODED_DEFAULTS = {
-          serviceType: "deepClean",
+          serviceType: serviceName,
           bedrooms: 3,
-          addons: ["windowCleaning", "ovenCleaning"],
+          addons: ["Window Cleaning", "Oven Cleaning"],
           customerEmail: "test@example.com",
         };
         const response = await fetch("/api/stripe/generate-stripe-checkout", {
