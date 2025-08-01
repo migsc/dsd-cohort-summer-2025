@@ -17,7 +17,7 @@ const loggedInItems = [
   },
   {
     title: 'Payments',
-    url: '/customer/Payments',
+    url: '/customer/payments',
     icon: CreditCard,
   },
   {
