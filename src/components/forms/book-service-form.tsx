@@ -141,11 +141,6 @@ export default function BookingForm({
                   onBlur={field.handleBlur}
                   onChange={e => field.handleChange(e.target.value)}
                 />
-                {field.state.meta.errors.map(error => (
-                  <p key={error?.message} className="text-sm text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
               </div>
             )}
           </form.Field>
@@ -173,11 +168,6 @@ export default function BookingForm({
                     ))}
                   </SelectContent>
                 </Select>
-                {field.state.meta.errors.map(error => (
-                  <p key={error?.message} className="text-sm text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
               </div>
             )}
           </form.Field>
@@ -198,11 +188,6 @@ export default function BookingForm({
                   onBlur={field.handleBlur}
                   onChange={e => field.handleChange(e.target.value)}
                 />
-                {field.state.meta.errors.map(error => (
-                  <p key={error?.message} className="text-sm text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
                 <p className="text-right text-xs text-gray-500">
                   {field.state.value?.length || 0}/500 characters
                 </p>
