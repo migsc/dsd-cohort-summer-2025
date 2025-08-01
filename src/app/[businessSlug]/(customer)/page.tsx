@@ -46,12 +46,12 @@ export default async function OurServices(props: PageProps) {
     );
   }
 
+  console.log(business.businessName);
+
   return (
     <section className="mx-1 sm:mx-10">
-      <h1 className="my-2 text-center text-3xl font-bold text-black">
-        Our Services
-      </h1>
-      <h2 className="mb-4 mt-2 text-center text-2xl text-black">
+      <h1 className="my-2 text-center text-3xl font-bold">Our Services</h1>
+      <h2 className="mb-4 mt-2 text-center text-2xl">
         {business.businessName}
       </h2>
 
@@ -64,6 +64,7 @@ export default async function OurServices(props: PageProps) {
         <ServicesGrid
           services={business.coreServices}
           query={query}
+          businessSlug={businessSlug}
         ></ServicesGrid>
       </Suspense>
     </section>

@@ -64,9 +64,14 @@ export async function GET(request: Request, context: RouteContext) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request, context: RouteContext) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
+  const { businessSlug } = await context.params;
+  console.log("In the post bookings: ", businessSlug);
+  console.log("formData: ", formData);
+
+  return NextResponse.json({ message: "in the post bookings route" });
   // TODO: Create booking
 }
 

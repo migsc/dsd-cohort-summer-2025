@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Calendar, Clock } from 'lucide-react';
-import z from "zod";
+import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { Calendar, Clock } from "lucide-react";
+
+import { Label } from "@/components/ui/label";
 
 import {
   Dialog,
@@ -12,95 +12,91 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/dialog";
+
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
-interface BookingFormProps {
+export interface BookingFormProps {
   isOpen: boolean;
   onClose: () => void;
+  serviceId: string;
   serviceName: string;
-  onBooking: (bookingData: BookingFormData) => void;
+  serviceDuration: string;
+  servicePrice: string;
+  businessSlug: string;
 }
 
 export interface BookingFormData {
+  serviceId: string;
   serviceName: string;
   date: string;
   timeSlot: string;
-  notes: string;
+  notes?: string;
+  serviceDuration: string;
+  servicePrice: string;
 }
 
-const bookingSchema = z.object({
-  date: z.string().min(1, "Please select a date"),
-  timeSlot: z.string().min(1, "Please select a time slot"),
-  notes: z.string().optional(),
-});
-
-type BookingFormValues = z.infer<typeof bookingSchema>;
-
-// *** Available time slots. This will come from DB. Business to configure this
 const timeSlots = [
-  '8:00 AM - 10:00 AM',
-  '10:00 AM - 12:00 PM',
-  '12:00 PM - 2:00 PM',
-  '2:00 PM - 4:00 PM',
-  '4:00 PM - 6:00 PM',
-  '6:00 PM - 8:00 PM'
+  "8:00 AM - 10:00 AM",
+  "10:00 AM - 12:00 PM",
+  "12:00 PM - 2:00 PM",
+  "2:00 PM - 4:00 PM",
+  "4:00 PM - 6:00 PM",
+  "6:00 PM - 8:00 PM",
 ];
 
-export default function BookingForm({ isOpen, onClose, serviceName, onBooking }: BookingFormProps) {
+export default function BookingForm({
+  isOpen,
+  onClose,
+  serviceId,
+  serviceName,
+  serviceDuration,
+  servicePrice,
+  businessSlug,
+}: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
-  const form = useForm<BookingFormValues>({
-    resolver: zodResolver(bookingSchema),
+  const form = useForm({
     defaultValues: {
-      date: '',
-      timeSlot: '',
-      notes: '',
+      date: "",
+      timeSlot: "",
+      notes: "",
     },
-  });
-
-  const onSubmit = async (values: BookingFormValues) => {
-    setIsSubmitting(true);
-    
-    try {
-      const bookingData: BookingFormData = {
-        serviceName,
-        date: values.date,
-        timeSlot: values.timeSlot,
-        notes: values.notes || '',
+    onSubmit: async value => {
+      console.log("submit");
+      console.log("value: ", value);
+      const bookingInfo = {
+        ...value.value,
+        serviceId,
+        serviceDuration,
+        servicePrice,
       };
 
-      onBooking(bookingData);
-      
-      // Reset form and close modal
-      form.reset();
-      onClose();
-    } catch (error) {
-      console.error('Booking failed:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      console.log("bookingInfo: ", bookingInfo);
+      try {
+        const response = await fetch(`/api/${businessSlug}/bookings`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingInfo),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
 
   const handleClose = () => {
     if (!isSubmitting) {
@@ -118,109 +114,129 @@ export default function BookingForm({ isOpen, onClose, serviceName, onBooking }:
             Book {serviceName}
           </DialogTitle>
           <DialogDescription>
-            Select your preferred date and time for this service. We'll confirm your booking shortly.
+            Select your preferred date and time for this service. We'll confirm
+            your booking shortly.
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Date Selection */}
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium">
-                    Preferred Date
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      min={today}
-                      className="w-full"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
+          className="space-y-6"
+        >
+          <form.Field name="date">
+            {field => (
+              <div className="space-y-2">
+                <Label htmlFor={field.name}>Preferred Date</Label>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type="date"
+                  min={today}
+                  className="w-full"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={e => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.errors.map(error => (
+                  <p key={error?.message} className="text-sm text-red-500">
+                    {error?.message}
+                  </p>
+                ))}
+              </div>
+            )}
+          </form.Field>
 
-            {/* Time Slot Selection */}
-            <FormField
-              control={form.control}
-              name="timeSlot"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    Time Slot
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a time slot" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {timeSlots.map((slot) => (
-                        <SelectItem key={slot} value={slot}>
-                          {slot}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form.Field name="timeSlot">
+            {field => (
+              <div className="space-y-2">
+                <Label htmlFor={field.name} className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  Time Slot
+                </Label>
+                <Select
+                  onValueChange={field.handleChange}
+                  defaultValue={field.state.value}
+                  onOpenChange={open => !open && field.handleBlur()}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a time slot" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {timeSlots.map(slot => (
+                      <SelectItem key={slot} value={slot}>
+                        {slot}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {field.state.meta.errors.map(error => (
+                  <p key={error?.message} className="text-sm text-red-500">
+                    {error?.message}
+                  </p>
+                ))}
+              </div>
+            )}
+          </form.Field>
 
-            {/* Notes */}
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium">
-                    Special Instructions (Optional)
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Any specific requests or notes for our team..."
-                      className="min-h-[80px] resize-none"
-                      maxLength={500}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-xs text-gray-500 text-right">
-                    {field.value?.length || 0}/500 characters
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+          <form.Field name="notes">
+            {field => (
+              <div className="space-y-2">
+                <Label htmlFor={field.name}>
+                  Special Instructions (Optional)
+                </Label>
+                <Textarea
+                  id={field.name}
+                  name={field.name}
+                  placeholder="Any specific requests or notes for our team..."
+                  className="min-h-[80px] resize-none"
+                  maxLength={500}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={e => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.errors.map(error => (
+                  <p key={error?.message} className="text-sm text-red-500">
+                    {error?.message}
+                  </p>
+                ))}
+                <p className="text-right text-xs text-gray-500">
+                  {field.state.value?.length || 0}/500 characters
+                </p>
+              </div>
+            )}
+          </form.Field>
+          <div className="flex gap-3 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              disabled={form.state.isSubmitting}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <form.Subscribe
+              selector={state => ({
+                canSubmit: state.canSubmit,
+                isSubmitting: state.isSubmitting,
+              })}
+            >
+              {state => (
+                <Button
+                  type="submit"
+                  className="w-full flex-1"
+                  disabled={!state.canSubmit || state.isSubmitting}
+                >
+                  {state.isSubmitting ? "Booking..." : "Book Service"}
+                </Button>
               )}
-            />
-
-            {/* Action Buttons */}
-            <div className="flex gap-3 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={handleClose}
-                disabled={isSubmitting}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="flex-1"
-              >
-                {isSubmitting ? 'Booking...' : 'Book Service'}
-              </Button>
-            </div>
-          </form>
-        </Form>
+            </form.Subscribe>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
