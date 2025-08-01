@@ -82,11 +82,11 @@ export default async function Layout({ children, params }: LayoutProps) {
         />
         <main className="w-full">
           <SidebarTrigger />
-          <PortalHeader
+          {/* <PortalHeader
             logoSrc="https://placehold.co/50x50"
             logoAlt="logo"
-            businessName="Suzys Cleaning"
-          ></PortalHeader>
+            businessName={businessSlug}
+          ></PortalHeader> */}
           {children}
         </main>
       </SidebarProvider>
@@ -102,11 +102,11 @@ export default async function Layout({ children, params }: LayoutProps) {
       />
       <main className="w-full">
         <SidebarTrigger />
-        <PortalHeader
+        {/* <PortalHeader
           logoSrc="https://placehold.co/50x50"
           logoAlt="logo"
           businessName={business.businessName}
-        ></PortalHeader>
+        ></PortalHeader> */}
         {children}
       </main>
     </SidebarProvider>
