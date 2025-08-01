@@ -1,62 +1,103 @@
-"use client";
 import { Calendar, Home, CreditCard, Settings, LogIn } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import PortalHeader from "@/components/ui/custom/portalHeader";
-import { useAuth } from "@/hooks/useAuth";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
-const loggedInItems = [
-  {
-    title: "Service Catalog",
-    url: "/customer",
-    icon: Home,
-  },
-  {
-    title: "My Bookings",
-    url: "/customer/bookings",
-    icon: Calendar,
-  },
-  {
-    title: "Invoices",
-    url: "/customer/invoices",
-    icon: CreditCard,
-  },
-  {
-    title: "Settings",
-    url: "/customer/settings",
-    icon: Settings,
-  },
-];
+interface LayoutProps {
+  children: React.ReactNode;
+  params: Promise<{
+    businessSlug: string;
+  }>;
+}
 
-const loggedOutItems = [
-  {
-    title: "Service Catalog",
-    url: "/customer",
-    icon: Home,
-  },
-  {
-    title: "Log In",
-    url: "/login",
-    icon: LogIn,
-  },
-];
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children, params }: LayoutProps) {
   // check if user is logged in
-  const { isLoggedIn, isLoading } = useAuth();
+  const session = await auth.api.getSession({ headers: await headers() });
+  const { businessSlug } = await params;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  let business;
+  try {
+    business = await prisma.business.findUnique({
+      where: {
+        businessSlug: businessSlug,
+      },
+    });
+
+    if (!business) {
+      console.log("Business not found.");
+      redirect("/");
+    }
+  } catch (error) {
+    console.log("Error getting business: ", error);
+    redirect("/");
   }
 
-  // render different sidebar options if they are logged in
-  const sidebarItems = isLoggedIn ? loggedInItems : loggedOutItems;
+  const loggedInItems = [
+    {
+      title: "Service Catalog",
+      url: `/${businessSlug}`,
+      icon: Home,
+    },
+    {
+      title: "My Bookings",
+      url: `/${businessSlug}/bookings`,
+      icon: Calendar,
+    },
+    {
+      title: "Invoices",
+      url: `/${businessSlug}/invoices`,
+      icon: CreditCard,
+    },
+    {
+      title: "Settings",
+      url: `/${businessSlug}/settings`,
+      icon: Settings,
+    },
+  ];
+
+  const loggedOutItems = [
+    {
+      title: "Service Catalog",
+      url: `/${businessSlug}`,
+      icon: Home,
+    },
+    {
+      title: "Log In",
+      url: `/login?business=${businessSlug}`,
+      icon: LogIn,
+    },
+  ];
+
+  if (!session || !session.user || !session.user.id) {
+    return (
+      <SidebarProvider>
+        <AppSidebar
+          items={loggedOutItems}
+          loggedIn={false}
+          title="CleanHub Customer Portal"
+        />
+        <main className="w-full">
+          <SidebarTrigger />
+          <PortalHeader
+            logoSrc="https://placehold.co/50x50"
+            logoAlt="logo"
+            businessName="Suzys Cleaning"
+          ></PortalHeader>
+          {children}
+        </main>
+      </SidebarProvider>
+    );
+  }
 
   return (
     <SidebarProvider>
       <AppSidebar
-        items={sidebarItems}
-        loggedIn={isLoggedIn}
+        items={loggedInItems}
+        loggedIn={true}
         title="CleanHub Customer Portal"
       />
       <main className="w-full">
@@ -64,7 +105,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <PortalHeader
           logoSrc="https://placehold.co/50x50"
           logoAlt="logo"
-          businessName="Suzys Cleaning"
+          businessName={business.businessName}
         ></PortalHeader>
         {children}
       </main>
