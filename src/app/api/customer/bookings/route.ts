@@ -1,11 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-
-import type {
-  BusinessFormData,
-  CoreService,
-} from "@/app/onboarding/business/schema/business.schema";
+import prisma from "@/lib/prisma";
 
 async function findCustomer(userId: string) {
   return prisma.customer.findUnique({
@@ -37,7 +33,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const formData: BusinessFormData = await request.json();
+  const formData = await request.json();
   console.log(session);
 
   if (!session || !session.user || !session.user.id) {

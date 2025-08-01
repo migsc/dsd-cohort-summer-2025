@@ -7,6 +7,15 @@ import type {
   CoreService,
 } from "@/app/onboarding/business/schema/business.schema";
 
+function makeSlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/\./g, "") // remove periods
+    .replace(/[^a-z0-9\s-]/g, "") // strip anything not a-z, 0-9, space, or dash
+    .trim()
+    .replace(/\s+/g, "-"); // convert spaces to hyphens
+}
+
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData: BusinessFormData = await request.json();
@@ -31,6 +40,7 @@ export async function POST(request: Request) {
         data: {
           userId: userId,
           businessName: formData.businessName,
+          businessSlug: makeSlug(formData.businessName),
           contactPersonName: formData.contactPersonName,
           contactPersonTitle: formData.contactPersonTitle,
           contactPersonEmail: formData.contactPersonEmail,

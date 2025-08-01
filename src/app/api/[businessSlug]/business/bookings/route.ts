@@ -15,31 +15,56 @@ async function findBusiness(userId: string) {
   });
 }
 
-export async function GET(request, { params }) {
-  const { businessSlug } = params;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ businessSlug: string }> }
+) {
+  const { businessSlug } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
+
   if (!session || !session.user || !session.user.id) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  // Use the slug
-  console.log(businessSlug, session); // "suzy"
-  // get business tied to service
-  const bookings = await prisma.booking.findMany({
-    where: { businessId: session.id },
-  });
+  const userId = session.user.id;
 
-  if (!bookings) {
-    return Response.json(
-      { message: "No bookings could be fouind" },
-      { status: 404 }
+  try {
+    const businessProfileWithBookings = await prisma.business.findUnique({
+      where: {
+        userId: userId,
+      },
+      include: {
+        bookings: true,
+      },
+    });
+
+    if (!businessProfileWithBookings) {
+      return NextResponse.json(
+        { message: "Business profile not found." },
+        { status: 404 }
+      );
+    }
+
+    console.log(businessProfileWithBookings.bookings);
+    return NextResponse.json(
+      {
+        bookings: businessProfileWithBookings.bookings,
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.log("Error fetching business profile: ", err);
+    return NextResponse.json(
+      { message: "Internal Server Error." },
+      { status: 500 }
     );
   }
-
-  return Response.json(bookings, { status: 200 });
 }
 
-export async function PATCH(request, { params }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ businessSlug: string }> }
+) {
   const { businessSlug } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
 
@@ -48,7 +73,7 @@ export async function PATCH(request, { params }) {
   }
 
   // Parse the incoming JSON
-  const body = await request.json();
+  const body = await req.json();
   const { bookingId, status } = body;
 
   const business = await findBusiness(session.user.id);
