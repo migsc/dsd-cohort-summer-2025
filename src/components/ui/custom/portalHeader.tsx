@@ -1,5 +1,9 @@
 'use client';
-import { User } from 'lucide-react';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import Notifications from './notifications';
 
 interface PortalHeaderProps {
@@ -22,7 +26,15 @@ export default function PortalHeader({ pageName, userName }: PortalHeaderProps) 
                 {/* ***TODO: MAKE PROFILE DYNAMIC COMPONENT, PULL FROM DB */}
                 <div className="flex items-center gap-2">
                     <div className="hidden md:flex w-8 h-8 bg-gray-300 rounded-full items-center justify-center">
-                        <User className="h-4 w-4" />
+                        <div className="flex flex-row flex-wrap items-center gap-12">
+                        <Avatar className="rounded-2xl border-white border-1">
+        <AvatarImage
+          src="https://github.com/evilrabbit.png"
+          alt="@evilrabbit"
+        />
+        <AvatarFallback>ER</AvatarFallback>
+      </Avatar>
+                        </div>
                     </div>
                     <span className="text-sm font-medium">
                         {userName}
