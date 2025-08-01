@@ -38,22 +38,22 @@ async function ConfirmStripeSessionComponent() {
 
     if (syncedData.status === "error" || syncedData.status === "none") {
       console.log("no payment status.");
-      redirect("/customer");
+      redirect("/suzy/");
     }
 
     if (syncedData.status === "succeeded") {
       console.log("payment succeded.");
-      redirect("/customer");
+      redirect("/suzy/");
     }
 
     if (syncedData.status === "processing") {
       console.log("payment processing.");
-      redirect("/customer");
+      redirect("/suzy/");
     }
 
     if (syncedData.status === "canceled") {
       console.log("payment canceled.");
-      redirect("/customer");
+      redirect("/suzy/");
     }
 
     console.log("Here.");
