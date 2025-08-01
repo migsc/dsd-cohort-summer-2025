@@ -64,7 +64,6 @@ export default async function OurServices(props: PageProps) {
         <ServicesGrid
           services={business.coreServices}
           query={query}
-          businessSlug={businessSlug}
         ></ServicesGrid>
       </Suspense>
     </section>

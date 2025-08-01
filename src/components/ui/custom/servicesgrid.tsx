@@ -20,11 +20,9 @@ import { useAuth } from "@/hooks/useAuth";
 export default function ServicesGrid({
   services,
   query,
-  businessSlug,
 }: {
   services: ServiceCardProps[];
   query: string;
-  businessSlug: string;
 }) {
   const filteredServices = useMemo(() => {
     // if no search query, return all services
@@ -69,7 +67,7 @@ export default function ServicesGrid({
       <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filteredServices.map((service: ServiceCardProps) => (
           <div key={service.id}>
-            <ServiceCard {...service} businessSlug={businessSlug} />
+            <ServiceCard {...service} />
           </div>
         ))}
       </section>
@@ -87,7 +85,6 @@ export interface ServiceCardProps {
   pricingModel: string;
   priceMin: number;
   priceMax: number;
-  businessSlug: string;
 }
 
 // ServiceCard Component used to make individual cards
@@ -100,7 +97,6 @@ export function ServiceCard({
   priceMin,
   priceMax,
   pricingModel,
-  businessSlug,
 }: ServiceCardProps) {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const { isLoggedIn } = useAuth();
@@ -147,7 +143,6 @@ export function ServiceCard({
         serviceName={name}
         serviceDuration={`${durationMin}-${durationMax} mins`}
         servicePrice={`$${priceMin}-${priceMax} ${pricingModel}`}
-        businessSlug={businessSlug}
       />
     </React.Fragment>
   );

@@ -41,14 +41,7 @@ const loggedOutItems = [
   },
 ];
 
-interface LayoutProps {
-  children: React.ReactNode;
-  params: {
-    businessSlug: string;
-  };
-}
-
-export default function Layout({ children, params }: LayoutProps) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   // check if user is logged in
   const { isLoggedIn, isLoading } = useAuth();
 

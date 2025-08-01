@@ -15,13 +15,13 @@ import { redirect } from "next/navigation";
 
 interface LayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     businessSlug: string;
-  };
+  }>;
 }
 
 export default async function Layout({ children, params }: LayoutProps) {
-  const businessSlug = params.businessSlug;
+  const { businessSlug } = await params;
 
   const session = await auth.api.getSession({ headers: await headers() });
 

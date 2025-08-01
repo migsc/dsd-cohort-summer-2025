@@ -32,7 +32,6 @@ export interface BookingFormProps {
   serviceName: string;
   serviceDuration: string;
   servicePrice: string;
-  businessSlug: string;
 }
 
 export interface BookingFormData {
@@ -61,7 +60,6 @@ export default function BookingForm({
   serviceName,
   serviceDuration,
   servicePrice,
-  businessSlug,
 }: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -74,18 +72,17 @@ export default function BookingForm({
       notes: "",
     },
     onSubmit: async value => {
-      console.log("submit");
-      console.log("value: ", value);
       const bookingInfo = {
         ...value.value,
         serviceId,
+        serviceName,
         serviceDuration,
         servicePrice,
       };
 
       console.log("bookingInfo: ", bookingInfo);
       try {
-        const response = await fetch(`/api/${businessSlug}/bookings`, {
+        const response = await fetch(`/api/bookings`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
