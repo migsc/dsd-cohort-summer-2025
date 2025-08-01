@@ -13,8 +13,8 @@ type APIResponse = {
 const tempEvents: CalendarEvent[] = [
   {
     title: "Standard Clean",
-    start: new Date(2025, 7, 1, 9, 0),
-    end: new Date(2025, 7, 1, 10, 0),
+    start: new Date(2025, 7, 1, 12, 0),
+    end: new Date(2025, 7, 1, 13, 0),
     location: "101 Test St., Dallas TX 75230",
     contact: "(469)111-1111",
   },

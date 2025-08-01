@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import {
   getBusinessIdFromUser,
   getBusinessOperatingHours,
-} from "@/app/business-repo";
+} from "@/app/repos/business-repo";
 
 export async function GET(req: NextRequest) {
   try {

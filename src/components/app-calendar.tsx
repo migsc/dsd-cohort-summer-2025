@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { Calendar, Views } from "react-big-calendar";
+import React, { useState } from "react";
+import { Calendar, Views, type View } from "react-big-calendar";
 import localizer from "@/lib/calendar-localizer";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "@/styles/calendar.css";
@@ -25,6 +25,8 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
   events,
   operatingHours,
 }) => {
+  const [view, setView] = useState<View>(Views.WEEK);
+
   const getHoursForDay = (date: Date): DayOperatingHours | null => {
     if (!operatingHours) return null;
 
@@ -102,8 +104,8 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
         startAccessor="start"
         endAccessor="end"
         eventPropGetter={eventStyleGetter}
-        views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
-        defaultView={Views.WEEK}
+        view={view}
+        onView={view => setView(view)}
         style={{ height: "100%" }}
       />
     </div>
