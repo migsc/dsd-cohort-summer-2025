@@ -13,82 +13,8 @@ import BookingForm, {
   type BookingFormData,
 } from "@/components/forms/book-service-form";
 import React from "react";
-
-export interface ServiceCardProps {
-  id: string;
-  name: string;
-  description: string;
-  durationMin: number;
-  durationMax: number;
-  priceMin: number;
-  priceMax: number;
-  pricingModel: string;
-}
-
-// ServiceCard Component used to make individual cards
-export function ServiceCard({
-  id,
-  name,
-  description,
-  durationMin,
-  durationMax,
-  priceMin,
-  priceMax,
-  pricingModel,
-}: ServiceCardProps) {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
-  const handleBookNow = () => {
-    setIsBookingModalOpen(true);
-  };
-
-  const handleBooking = async (bookingData: BookingFormData) => {
-    // *** Booking logic will go here
-    console.log("Booking submitted:", {
-      ...bookingData,
-      serviceId: id,
-      serviceDuration: `${durationMin}-${durationMax}`,
-      servicePrice: `$${priceMin}-${priceMax} ${pricingModel}`,
-    });
-    alert(
-      `Booking submitted for ${bookingData.serviceName} on ${bookingData.date} at ${bookingData.timeSlot}`
-    );
-  };
-
-  return (
-    <React.Fragment>
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <h2 className="text-xl">{name}</h2>
-          </CardTitle>
-          <CardDescription>
-            <p>{description}</p>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>
-            {durationMin}-{durationMax}
-          </p>
-          <p className="text-xl font-bold text-lime-500">
-            ${priceMin}-${priceMax} {pricingModel}
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={handleBookNow} className="w-full">
-            Book Now
-          </Button>
-        </CardFooter>
-      </Card>
-      <BookingForm
-        isOpen={isBookingModalOpen}
-        onClose={() => setIsBookingModalOpen(false)}
-        serviceName={name}
-        onBooking={handleBooking}
-      />
-    </React.Fragment>
-  );
-}
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 // ServicesGrid Component. Accepts an array of services (objects) and maps each service to a ServiceCard
 export default function ServicesGrid({
@@ -146,5 +72,78 @@ export default function ServicesGrid({
         ))}
       </section>
     </div>
+  );
+}
+
+export interface ServiceCardProps {
+  id: string;
+  name: string;
+  description: string;
+  durationMin: number;
+  durationMax: number;
+  typicalCleanersAssigned: number;
+  pricingModel: string;
+  priceMin: number;
+  priceMax: number;
+}
+
+// ServiceCard Component used to make individual cards
+export function ServiceCard({
+  id,
+  name,
+  description,
+  durationMin,
+  durationMax,
+  priceMin,
+  priceMax,
+  pricingModel,
+}: ServiceCardProps) {
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  const handleBookNow = () => {
+    if (!isLoggedIn) {
+      router.push("/login");
+      return;
+    }
+
+    setIsBookingModalOpen(true);
+  };
+
+  return (
+    <React.Fragment>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <h2 className="text-xl">{name}</h2>
+          </CardTitle>
+          <CardDescription>
+            <p>{description}</p>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>
+            {durationMin}-{durationMax} hours
+          </p>
+          <p className="text-xl font-bold text-lime-500">
+            ${priceMin}-${priceMax} {pricingModel}
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button onClick={handleBookNow} className="w-full">
+            Book Now
+          </Button>
+        </CardFooter>
+      </Card>
+      <BookingForm
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        serviceId={id}
+        serviceName={name}
+        serviceDuration={`${durationMin}-${durationMax} mins`}
+        servicePrice={`$${priceMin}-${priceMax} ${pricingModel}`}
+      />
+    </React.Fragment>
   );
 }

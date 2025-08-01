@@ -2,28 +2,27 @@
 import { Calendar, Home, CreditCard, Settings, LogIn } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import PortalHeader from "@/components/ui/custom/portalHeader";
-import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/hooks/useAuth";
 
 const loggedInItems = [
   {
     title: "Service Catalog",
-    url: "customer/",
+    url: "/customer",
     icon: Home,
   },
   {
     title: "My Bookings",
-    url: "#",
+    url: "/customer/bookings",
     icon: Calendar,
   },
   {
-    title: "Invoices",
-    url: "#",
+    title: "Payments",
+    url: "/customer/payments",
     icon: CreditCard,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/customer/settings",
     icon: Settings,
   },
 ];
@@ -31,7 +30,7 @@ const loggedInItems = [
 const loggedOutItems = [
   {
     title: "Service Catalog",
-    url: "./dummy",
+    url: "/customer",
     icon: Home,
   },
   {
@@ -41,32 +40,26 @@ const loggedOutItems = [
   },
 ];
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   // check if user is logged in
-  const { data: session } = authClient.useSession();
+  const { isLoggedIn, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   // render different sidebar options if they are logged in
-  const sidebarItems = session ? loggedInItems : loggedOutItems;
-  const loggedIn = session ? true : false;
+  const sidebarItems = isLoggedIn ? loggedInItems : loggedOutItems;
 
   return (
     <SidebarProvider>
       <AppSidebar
         items={sidebarItems}
-        loggedIn={loggedIn}
-        title="CleanHub Customer Portal"
+        loggedIn={isLoggedIn}
+        title="Suzy's Cleaning"
       />
       <main className="w-full">
         <SidebarTrigger />
-        <PortalHeader
-          logoSrc="https://placehold.co/50x50"
-          logoAlt="logo"
-          businessName="Suzys Cleaning"
-        ></PortalHeader>
         {children}
       </main>
     </SidebarProvider>
