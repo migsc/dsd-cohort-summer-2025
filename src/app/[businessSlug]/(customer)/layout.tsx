@@ -48,8 +48,8 @@ export default async function Layout({ children, params }: LayoutProps) {
       icon: Calendar,
     },
     {
-      title: "Invoices",
-      url: `/${businessSlug}/invoices`,
+      title: "Payments",
+      url: `/${businessSlug}/payments`,
       icon: CreditCard,
     },
     {
