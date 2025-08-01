@@ -14,7 +14,7 @@ export default function Home(){
 			<nav className="flex justify-center md:justify-between w-full p-4 px-20 max-w-[2000px]">
 				<div className="flex items-center justify-center">
 					<img src="/images/small_logo.png" alt="Logo" className=" hidden lg:block h-10 w-10" />
-					<p className="hidden md:block ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
+					<p className="hidden md:block ml-2 text-2xl font-bold text-primary">CleanHub</p>
 				</div>						
 				<div className="hidden md:flex items-center space-x-4 gap-2.5">
 					<ul className="flex space-x-4">
@@ -38,7 +38,8 @@ export default function Home(){
 					<p className="max-w-[700px] leading-8 mb-5">Our app is a comprehensive software platform that empowers cleaning businesses to launch and manage their operations online. From initial setup to customer bookings and payment processing, we provide everything cleaning professionals need to run their business efficiently.</p>
 
 					{/* UPDATE: a to be Link component. And add some JSX conditionals for when to show something based on screen size. */}
-					<a href="./onboarding" className=" flex gap-2.5 w-fit p-4 rounded-xl border bg-white border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started<span className="hidden md:inline">Managing Your Business</span><SquareChevronRight /></a> 
+					<a href="./login" className=" flex gap-2.5 w-fit p-4 rounded-xl border bg-white border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started<span className="hidden md:inline">Managing Your Business</span><SquareChevronRight /></a> 
+
 				</div>
 				{/* large logo */}
 				<div className="hidden md:block">

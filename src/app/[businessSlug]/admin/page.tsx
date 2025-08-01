@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
+
 const tempEvents: CalendarEvent[] = [
   {
     title: "Standard Clean",
@@ -38,6 +39,7 @@ export default function Calendar() {
   if (isPending) {
     return <div>Loading...</div>;
   }
+
 
   return (
     <div className="flex flex-col items-center">

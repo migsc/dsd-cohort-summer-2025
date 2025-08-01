@@ -13,7 +13,7 @@
     "db:studio": "npx prisma studio",
     "db:generate": "npx prisma generate --schema ./prisma/schema",
     "db:migrate": "npx prisma migrate dev",
-    "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed": "npx tsx prisma/seed2.ts",
     "prepare": "if [ \"$CI\" != \"true\" ] && [ \"$CI\" != \"1\" ]; then husky install; fi",
     "postinstall": "npx prisma generate"
   },
