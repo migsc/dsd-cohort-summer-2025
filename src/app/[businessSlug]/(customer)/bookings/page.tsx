@@ -5,35 +5,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import PortalHeader from '@/components/ui/custom/portalHeader';
 import { PreviousBookingRow } from '@/components/ui/custom/tableRows'
 import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 
 export default function MyBookings() {
     return (
         <div>
-            <h1 className='text-center font-bold text-3xl mb-4 text-black'>
-                My Bookings
-            </h1>
+            <PortalHeader pageName='My Bookings' userName="Jane Doe"></PortalHeader>
 
             {/* In Progress Bookings */}
             {/* ***TODO: pull info for these props from database */}
-            <section className="w-full flex justify-center">
+            <section className="w-full flex justify-center mt-5">
                 <div className="w-2xl">
                     <BookingProgressTracker 
                         orderNum="001" 
                         service="Standard House Cleaning" 
                         amount="$250.00" 
-                        currentStatus="on_way" 
-                        expectedCompletion="2:00 PM Today" 
-                        placedDate="July 25, 2025" 
+                        currentStatus="confirmed" 
+                        expectedCompletion="2:00 PM August 2, 2025" 
+                        placedDate="August 1, 2025" 
                     />
                 </div>
             </section>
 
             {/* Previous Bookings */}
             {/* ***TODO: Pull previous bookings from DB */}
-            <h2 className="text-black text-center font-bold text-lg text-gray-600 mt-4 mb-2">Previous Bookings</h2>
-            <Table className="text-black">
+            <h2 className="text-center font-bold text-lg mt-4 mb-2">Previous Bookings</h2>
+            <Table>
                 <TableHeader className="bg-blue-500">
                     <TableRow>
                     <TableHead className="w-[100px]">Order No.</TableHead>

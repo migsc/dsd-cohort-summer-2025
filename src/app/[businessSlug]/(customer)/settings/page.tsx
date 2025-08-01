@@ -1,9 +1,9 @@
+import PortalHeader from '@/components/ui/custom/portalHeader';
+
 export default function Settings() {
     return (
-        <div className="text-black">
-            <h1 className='text-center font-bold text-3xl my-2'>
-                Settings
-            </h1>
+        <div>
+            <PortalHeader pageName='Settings' userName="Jane Doe"></PortalHeader>
         </div>
     )
 }
