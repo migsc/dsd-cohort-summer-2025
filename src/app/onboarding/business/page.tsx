@@ -38,6 +38,7 @@ import {
   type BusinessFormData,
 } from "./schema/business.schema";
 
+// TEMP. Its the same function that generates in the backend so it may just stay this way.
 function slugify(text: string): string {
   return text
     .toString()
