@@ -21,7 +21,7 @@ export default function Home(){
 						<li><a href="/">Contact</a></li>
 					</ul>
 					<div>
-						<Button onClick={()=>{router.push("/login")}} className="py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
+						<Button onClick={()=>{router.push("/login?form=signin")}} className="py-3 rounded-md w-[150px] text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
 					</div>
 				</div>
 				{/* Hamburger Menu */}
@@ -38,7 +38,7 @@ export default function Home(){
 					<p className="max-w-[700px] leading-8 mb-5">Our app is a comprehensive software platform that empowers cleaning businesses to launch and manage their operations online. From initial setup to customer bookings and payment processing, we provide everything cleaning professionals need to run their business efficiently.</p>
 
 					{/* UPDATE: a to be Link component. And add some JSX conditionals for when to show something based on screen size. */}
-					<a href="./onboarding" className=" flex gap-2.5 w-fit p-4 rounded-xl border bg-white border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started<span className="hidden md:inline">Managing Your Business</span><SquareChevronRight /></a> 
+					<a href="/login" className=" flex gap-2.5 w-fit p-4 rounded-xl border bg-white border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">Get Started<span className="hidden md:inline">Managing Your Business</span><SquareChevronRight /></a> 
 				</div>
 				{/* large logo */}
 				<div className="hidden md:block">
