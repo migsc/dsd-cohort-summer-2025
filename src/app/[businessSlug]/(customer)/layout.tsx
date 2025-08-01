@@ -56,7 +56,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar
         items={sidebarItems}
         loggedIn={isLoggedIn}
-        title="CleanHub Customer Portal"
+        title="Suzy's Cleaning"
       />
       <main className="w-full">
         <SidebarTrigger />
