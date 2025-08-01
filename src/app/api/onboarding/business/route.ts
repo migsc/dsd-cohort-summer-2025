@@ -7,6 +7,18 @@ import type {
   CoreService,
 } from "@/app/onboarding/business/schema/business.schema";
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+}
+
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
   const formData: BusinessFormData = await request.json();
@@ -31,6 +43,7 @@ export async function POST(request: Request) {
         data: {
           userId: userId,
           businessName: formData.businessName,
+          businessSlug: slugify(formData.businessName),
           contactPersonName: formData.contactPersonName,
           contactPersonTitle: formData.contactPersonTitle,
           contactPersonEmail: formData.contactPersonEmail,

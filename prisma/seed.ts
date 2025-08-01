@@ -1,12 +1,25 @@
 import "../envConfig";
-import { PrismaClient } from "../prisma/generated/client";
+import { PrismaClient, BookingStatus } from "../prisma/generated/client";
 import { auth } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+}
+
 async function main() {
   console.log("Start seeding...");
 
+  await prisma.booking.deleteMany();
   await prisma.business.deleteMany();
   await prisma.customer.deleteMany();
   await prisma.session.deleteMany();
@@ -18,9 +31,11 @@ async function main() {
   const adminEmail = "admin@example.com";
   const adminPassword = "password123";
   const adminName = "Admin Business Owner";
+  const adminBusinessName = "Admin Cleaning Co.";
 
   console.log(`Creating admin user via Better Auth: ${adminEmail}`);
   let adminUser;
+  let adminBusiness;
 
   try {
     const adminUserResult = await auth.api.signUpEmail({
@@ -41,10 +56,13 @@ async function main() {
       data: { role: "business" },
     });
 
-    const adminBusiness = await prisma.business.create({
+    const adminBusinessSlug = slugify(adminBusinessName);
+
+    adminBusiness = await prisma.business.create({
       data: {
         userId: adminUser.id,
-        businessName: "Admin Cleaning Co.",
+        businessName: adminBusinessName,
+        businessSlug: adminBusinessSlug,
         contactPersonName: adminName,
         contactPersonTitle: "Owner",
         contactPersonEmail: adminEmail,
@@ -106,7 +124,9 @@ async function main() {
     console.log(
       "Created admin user and business:",
       adminUser.email,
-      adminBusiness.businessName
+      adminBusiness.businessName,
+      "(Slug:",
+      adminBusiness.businessSlug + ")"
     );
   } catch (error: any) {
     console.error(`Error creating admin user or business: ${error.message}`);
@@ -118,6 +138,7 @@ async function main() {
 
   console.log(`Creating customer user via Better Auth: ${customerEmail}`);
   let customerUser;
+  let customerProfile;
 
   try {
     const customerUserResult = await auth.api.signUpEmail({
@@ -133,7 +154,7 @@ async function main() {
       select: { id: true, email: true, name: true },
     });
 
-    const customerProfile = await prisma.customer.create({
+    customerProfile = await prisma.customer.create({
       data: {
         userId: customerUser.id,
         preferredContactMethod: "Email",
@@ -147,6 +168,69 @@ async function main() {
   } catch (error: any) {
     console.error(`Error creating customer user or profile: ${error.message}`);
   }
+
+  // --- ADD BOOKINGS ---
+  if (adminBusiness && customerProfile) {
+    console.log("Creating bookings...");
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const dayAfterTomorrow = new Date(today);
+    dayAfterTomorrow.setDate(today.getDate() + 2);
+
+    await prisma.booking.create({
+      data: {
+        serviceName: "Standard Home Cleaning",
+        date: tomorrow.toISOString().split("T")[0],
+        timeSlot: "10:00 AM - 12:00 PM",
+        notes: "First booking test - standard service.",
+        serviceId: "std-clean-001",
+        serviceDuration: "2 hours",
+        servicePrice: "100.00",
+        status: BookingStatus.PENDING,
+        customerId: customerProfile.id,
+        businessId: adminBusiness.id,
+      },
+    });
+
+    await prisma.booking.create({
+      data: {
+        serviceName: "Deep Clean",
+        date: dayAfterTomorrow.toISOString().split("T")[0],
+        timeSlot: "01:00 PM - 05:00 PM",
+        notes: "Second booking test - deep clean for a larger house.",
+        serviceId: "deep-clean-001",
+        serviceDuration: "4 hours",
+        servicePrice: "350.00",
+        status: BookingStatus.CONFIRMED,
+        customerId: customerProfile.id,
+        businessId: adminBusiness.id,
+      },
+    });
+
+    await prisma.booking.create({
+      data: {
+        serviceName: "Standard Home Cleaning",
+        date: tomorrow.toISOString().split("T")[0],
+        timeSlot: "03:00 PM - 05:00 PM",
+        notes: "Cancelled booking example.",
+        serviceId: "std-clean-002",
+        serviceDuration: "2 hours",
+        servicePrice: "100.00",
+        status: BookingStatus.CANCELED,
+        customerId: customerProfile.id,
+        businessId: adminBusiness.id,
+      },
+    });
+
+    console.log("Bookings created successfully.");
+  } else {
+    console.warn(
+      "Skipping booking creation: Admin business or customer profile not created successfully."
+    );
+  }
+  // --- END ADD BOOKINGS ---
 
   console.log("Seeding finished.");
 }
