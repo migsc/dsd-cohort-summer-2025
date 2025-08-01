@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod/v4";
@@ -17,6 +17,10 @@ export default function SignInForm({
 }) {
   const router = useRouter();
   const { isPending } = authClient.useSession();
+  const searchParams = useSearchParams();
+
+  const business = searchParams.get("business");
+  console.log("sign-in, searchParams: ", business);
 
   const form = useForm({
     defaultValues: {
@@ -30,8 +34,26 @@ export default function SignInForm({
           password: value.password,
         },
         {
-          onSuccess: () => {
-            router.push("/business/");
+          onSuccess: async value => {
+            console.log("sign-in, success, value: ", value.data.user);
+
+            const response = await fetch("/api/role");
+
+            if (!response.ok) {
+              router.push("/");
+            }
+            const data = await response.json();
+
+            if (data.message.role === "user") {
+              if (business) {
+                router.push(`/${business}`);
+                return;
+              }
+              router.push("/business-list");
+              return;
+            }
+
+            router.push(`${data.message.businessSlug}/admin`);
             toast.success("Sign in successful");
           },
           onError: error => {
