@@ -103,10 +103,8 @@ export default function Cofiguration({
 
   const form = useForm({
     defaultValues: initialData,
-    validators: {
-      onSubmit: BusinessOnboardingSchema,
-    },
     onSubmit: async ({ value }) => {
+      console.log("submit");
       try {
         const response = await fetch("/api/business/update-configuration", {
           method: "POST",
@@ -134,6 +132,7 @@ export default function Cofiguration({
   return (
     <form
       onSubmit={e => {
+        console.log("on submit");
         e.preventDefault();
         e.stopPropagation();
         void form.handleSubmit();
