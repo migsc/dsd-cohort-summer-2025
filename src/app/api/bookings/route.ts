@@ -38,7 +38,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const formData: BusinessFormData = await request.json();
+  const formData = await request.json();
   console.log(session);
 
   if (!session || !session.user || !session.user.id) {
