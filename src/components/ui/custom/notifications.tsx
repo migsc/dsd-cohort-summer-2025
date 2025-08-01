@@ -5,7 +5,7 @@ import { Bell } from 'lucide-react';
 export default function Notifications() {
     return (
         <Button variant="ghost" size="sm" className="relative cursor-pointer">
-            <Bell className="h-5 w-5" />
+            <Bell className="h-5 w-5 text-gray-500" />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                 3
             </span>

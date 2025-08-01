@@ -33,6 +33,7 @@ export function HamburgerMenu() {
             <p className="ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
           </SheetTitle>
         </SheetHeader>
+        {/* create a map to be able to recieve all the links and contact that get passed a props. */}
         <nav className="text-black p-3 w-full">
             <Link href="/" className="hover:text-blue-600">Contact</Link>
         </nav>
