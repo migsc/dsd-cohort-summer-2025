@@ -1,7 +1,10 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-export async function GET(req, { params }) {
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ businessSlug: string }> }
+) {
   const { businessSlug } = await params;
   console.log("Request headers:", Object.fromEntries(req.headers));
   const session = await auth.api.getSession({ headers: await headers() });

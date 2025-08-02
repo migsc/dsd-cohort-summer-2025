@@ -15,18 +15,22 @@ async function findBusiness(userId: string) {
   });
 }
 
-export async function GET(request, { params }) {
-  const { businessSlug } = params;
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ businessSlug: string }> }
+) {
+  const { businessSlug } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
+  console.log(businessSlug, session);
   if (!session || !session.user || !session.user.id) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  // Use the slug
-  console.log(businessSlug, session); // "suzy"
   // get business tied to service
+  const business = await findBusiness(session.user.id);
+
   const bookings = await prisma.booking.findMany({
-    where: { businessId: session.id },
+    where: { businessId: business?.id },
   });
 
   if (!bookings) {
@@ -39,7 +43,10 @@ export async function GET(request, { params }) {
   return Response.json(bookings, { status: 200 });
 }
 
-export async function PATCH(request, { params }) {
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ businessSlug: string }> }
+) {
   const { businessSlug } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
 

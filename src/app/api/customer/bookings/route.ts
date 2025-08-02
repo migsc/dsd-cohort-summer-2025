@@ -1,14 +1,16 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-
-import type {
-  BusinessFormData,
-  CoreService,
-} from "@/app/onboarding/business/schema/business.schema";
 
 async function findCustomer(userId: string) {
   return prisma.customer.findUnique({
+    where: { userId },
+  });
+}
+
+async function findBusiness(userId: string) {
+  return prisma.business.findUnique({
     where: { userId },
   });
 }
@@ -37,8 +39,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const formData: BusinessFormData = await request.json();
+  const data = await request.json();
   console.log(session);
+  console.log(data);
 
   if (!session || !session.user || !session.user.id) {
     console.log("Unauthorized");
@@ -49,7 +52,7 @@ export async function POST(request: Request) {
   const business = await prisma.business.findFirst({
     where: {
       coreServices: {
-        some: { id: formData.serviceId },
+        some: { id: data.serviceId },
       },
     },
   });
@@ -62,9 +65,7 @@ export async function POST(request: Request) {
   }
 
   // find the customer
-  const customer = await prisma.customer.findUnique({
-    where: { userId: session.user.id },
-  });
+  const customer = await findCustomer(session.user.id);
 
   if (!customer) {
     return NextResponse.json(
@@ -77,16 +78,16 @@ export async function POST(request: Request) {
   try {
     const newBooking = await prisma.booking.create({
       data: {
-        serviceName: formData.serviceName,
-        date: formData.date,
-        timeSlot: formData.timeSlot,
-        notes: formData.notes,
-        serviceId: formData.serviceId,
+        serviceName: data.serviceName,
+        date: data.date,
+        timeSlot: data.timeSlot,
+        notes: data.notes || "",
+        serviceId: data.serviceId,
         businessId: business.id,
         customerId: customer.id,
         status: "PENDING",
-        serviceDuration: formData.serviceDuration,
-        servicePrice: formData.servicePrice,
+        serviceDuration: data.serviceDuration,
+        servicePrice: data.servicePrice,
       },
     });
     console.log("Booking created", newBooking);
