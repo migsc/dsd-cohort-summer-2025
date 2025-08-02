@@ -1,0 +1,29 @@
+"use client";
+import React from "react";
+import { Calendar } from "react-big-calendar";
+import localizer from "@/lib/calendar-localizer";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "@/styles/calendar.css";
+
+export type CalendarEvent = {
+  title: string;
+  start: Date;
+  end: Date;
+  location: string;
+  contact: string;
+  allDay?: boolean;
+};
+
+const AppCalendar: React.FC<{ events: CalendarEvent[] }> = ({ events }) => (
+  <div style={{ height: 500 }}>
+    <Calendar
+      localizer={localizer}
+      events={events}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: "100%" }}
+    />
+  </div>
+);
+
+export default AppCalendar;

@@ -1,9 +1,9 @@
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod/v4";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Loader from "../loader";
@@ -17,6 +17,14 @@ export default function SignUpForm({
 }) {
   const router = useRouter();
   const { isPending } = authClient.useSession();
+  const searchParams = useSearchParams();
+
+  let redirectURL = "/onboarding";
+  const business = searchParams.get("business");
+  if (business) {
+    redirectURL = `/onboarding/customer?business=${business}`;
+  }
+  console.log("sign-up, searchParams: ", business);
 
   const form = useForm({
     defaultValues: {
@@ -33,10 +41,10 @@ export default function SignUpForm({
         },
         {
           onSuccess: () => {
-            router.push("/dashboard");
+            router.push(redirectURL);
             toast.success("Sign up successful");
           },
-          onError: (error) => {
+          onError: error => {
             toast.error(error.error.message);
           },
         }
@@ -56,11 +64,10 @@ export default function SignUpForm({
   }
 
   return (
-    <div className="mx-auto w-full mt-10 max-w-md p-6 animate-in fade-in-0 slide-in-from-bottom-20 duration-800">
+    <div className="animate-in fade-in-0 slide-in-from-bottom-20 duration-800 mx-auto mt-10 w-full max-w-md p-6">
       <h1 className="mb-6 text-center text-3xl font-bold">Create Account</h1>
-
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
           void form.handleSubmit();
@@ -69,7 +76,7 @@ export default function SignUpForm({
       >
         <div>
           <form.Field name="name">
-            {(field) => (
+            {field => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Name</Label>
                 <Input
@@ -77,9 +84,9 @@ export default function SignUpForm({
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={e => field.handleChange(e.target.value)}
                 />
-                {field.state.meta.errors.map((error) => (
+                {field.state.meta.errors.map(error => (
                   <p key={error?.message} className="text-red-500">
                     {error?.message}
                   </p>
@@ -91,7 +98,7 @@ export default function SignUpForm({
 
         <div>
           <form.Field name="email">
-            {(field) => (
+            {field => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Email</Label>
                 <Input
@@ -100,9 +107,9 @@ export default function SignUpForm({
                   type="email"
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={e => field.handleChange(e.target.value)}
                 />
-                {field.state.meta.errors.map((error) => (
+                {field.state.meta.errors.map(error => (
                   <p key={error?.message} className="text-red-500">
                     {error?.message}
                   </p>
@@ -114,7 +121,7 @@ export default function SignUpForm({
 
         <div>
           <form.Field name="password">
-            {(field) => (
+            {field => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Password</Label>
                 <Input
@@ -123,9 +130,9 @@ export default function SignUpForm({
                   type="password"
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={e => field.handleChange(e.target.value)}
                 />
-                {field.state.meta.errors.map((error) => (
+                {field.state.meta.errors.map(error => (
                   <p key={error?.message} className="text-red-500">
                     {error?.message}
                   </p>
@@ -136,7 +143,7 @@ export default function SignUpForm({
         </div>
 
         <form.Subscribe>
-          {(state) => (
+          {state => (
             <Button
               type="submit"
               className="w-full"

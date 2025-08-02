@@ -1,0 +1,117 @@
+model Business {
+  id                                    String @id @default(auto()) @map("_id") @db.ObjectId
+  userId                                String @unique
+  user                                  User   @relation(fields: [userId], references: [id], onDelete: Cascade) 
+
+  businessName                          String 
+  contactPersonName                     String
+  contactPersonTitle                    String
+  contactPersonEmail                    String
+  contactPersonPhone                    String
+  businessAddressStreet                 String
+  businessAddressCity                   String
+  businessAddressState                  String
+  businessAddressZip                    String
+  businessAddressCountry                String
+  serviceAreaRadius                     Int
+  yearsInBusiness                       Int
+  businessDescription                   String
+  coreServices                          CoreService[]
+  operatingHours                        OperatingHours
+  averageTravelTimeMinutes              Int
+  currentSchedulingMethod               String
+  logoUrl                               String?
+  brandColorPrimary                     String?
+  brandColorSecondary                   String?
+  preferredCustomerCommunicationMethods String[]
+  additionalNotes                       String?
+
+  // Demetrius additions
+  bookings                              Booking[]
+  businessSlug                          String @unique
+
+  createdAt                             DateTime @default(now())
+  updatedAt                             DateTime @updatedAt
+
+  @@map("business")
+}
+
+model Customer {
+  id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId                 String @unique
+  user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferredContactMethod String?
+  addressStreet          String?
+  addressCity            String?
+  addressState           String?
+  addressZip             String?
+  addressCountry         String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Demetrius additions
+  bookings               Booking[]
+
+  @@map("customer")
+}
+
+type CoreService {
+  name         String
+  description  String
+  durationMin  Int
+  durationMax  Int
+  typicalCleanersAssigned Int
+  pricingModel String
+  priceMin     Float
+  priceMax     Float
+  id           String @default(cuid())
+}
+
+type OperatingHours {
+  monday    DayOperatingHours
+  tuesday   DayOperatingHours
+  wednesday DayOperatingHours
+  thursday  DayOperatingHours
+  friday    DayOperatingHours
+  saturday  DayOperatingHours
+  sunday    DayOperatingHours
+}
+
+type DayOperatingHours {
+  start  String
+  end    String
+  isOpen Boolean
+}
+
+
+model Booking {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  serviceName     String
+  date            String
+  timeSlot        String
+  notes           String?
+  serviceId       String
+  serviceDuration String?
+  servicePrice    String?
+  status          BookingStatus @default(PENDING)
+
+  // Demetrius additions
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @db.ObjectId
+
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String   @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("booking")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  CANCELED
+  COMPLETED
+}

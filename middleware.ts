@@ -18,5 +18,5 @@ export function middleware() {
 }
 
 export const config = {
-  matcher: "/:path*",
+  matcher: ["/((?!api/stripe/webhook).*)"],
 };

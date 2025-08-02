@@ -1,11 +1,13 @@
 # [CHRT-#](https://dsd-cohort-summer-2025.atlassian.net/browse/CHRT-#)
 
 ## Description
+
 <!-- Please include a summary of the change and which issue is fixed. -->
 
 Fixes # (issue)
 
 ## Type of change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
@@ -14,6 +16,7 @@ Fixes # (issue)
 - [ ] Other (describe):
 
 ## Checklist
+
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my code
 - [ ] I have commented my code, particularly in hard-to-understand areas
@@ -26,4 +29,5 @@ Fixes # (issue)
 ## Screenshots (if applicable)
 
 ## Additional context
+
 <!-- Add any other context about the PR here. -->
