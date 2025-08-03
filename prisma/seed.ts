@@ -1,9 +1,5 @@
 import "../envConfig";
-import {
-  PrismaClient,
-  BookingStatus,
-  PricingModel,
-} from "../prisma/generated/client";
+import { PrismaClient, BookingStatus, PricingModel } from "./generated/client";
 import { auth } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
