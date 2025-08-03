@@ -1,5 +1,10 @@
 import "../envConfig";
-import { PrismaClient, BookingStatus, PricingModel } from "./generated/client";
+import {
+  PrismaClient,
+  BookingStatus,
+  PricingModel,
+  type CoreService as CoreServiceModel,
+} from "../prisma/generated/client";
 import { auth } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
@@ -21,6 +26,7 @@ async function main() {
   console.log("Start seeding...");
 
   await prisma.booking.deleteMany();
+  await prisma.coreService.deleteMany();
   await prisma.business.deleteMany();
   await prisma.customer.deleteMany();
   await prisma.session.deleteMany();
@@ -39,6 +45,7 @@ async function main() {
   let adminBusiness:
     | Awaited<ReturnType<typeof prisma.business.create>>
     | undefined;
+  let adminCoreServices: CoreServiceModel[] = [];
 
   try {
     await auth.api.signUpEmail({
@@ -75,95 +82,7 @@ async function main() {
         yearsInBusiness: 5,
         businessDescription:
           "A premier cleaning service managed by the app owner.",
-        coreServices: [
-          {
-            id: "std-home-clean-001",
-            name: "Standard Home Cleaning",
-            description: "Regular cleaning for homes.",
-            durationMin: 120,
-            durationMax: 240,
-            typicalCleanersAssigned: 2,
-            pricingModel: PricingModel.HOUR,
-            priceMin: 50,
-            priceMax: 100,
-            rate: 75,
-          },
-          {
-            id: "deep-clean-001",
-            name: "Deep Clean",
-            description: "Thorough, detailed cleaning.",
-            durationMin: 240,
-            durationMax: 480,
-            typicalCleanersAssigned: 3,
-            pricingModel: PricingModel.JOB,
-            priceMin: 200,
-            priceMax: 400,
-            rate: 300,
-          },
-          {
-            id: "office-clean-001",
-            name: "Office Cleaning",
-            description:
-              "Daily or weekly cleaning for small to medium offices.",
-            durationMin: 90,
-            durationMax: 180,
-            typicalCleanersAssigned: 1,
-            pricingModel: PricingModel.HOUR,
-            priceMin: 300,
-            priceMax: 800,
-            rate: 50,
-          },
-          {
-            id: "move-in-out-clean-001",
-            name: "Move-In/Out Cleaning",
-            description:
-              "Comprehensive cleaning for empty homes before/after moving.",
-            durationMin: 300,
-            durationMax: 600,
-            typicalCleanersAssigned: 3,
-            pricingModel: PricingModel.SQFT,
-            priceMin: 400,
-            priceMax: 1000,
-            rate: 0.25,
-          },
-          {
-            id: "post-construction-clean-001",
-            name: "Post-Construction Clean-Up",
-            description:
-              "Removal of debris and deep cleaning after construction.",
-            durationMin: 480,
-            durationMax: 960,
-            typicalCleanersAssigned: 4,
-            pricingModel: PricingModel.JOB,
-            priceMin: 800,
-            priceMax: 2500,
-            rate: 1500,
-          },
-          {
-            id: "carpet-shampoo-001",
-            name: "Carpet Shampoo & Steam",
-            description: "Deep cleaning and sanitization of carpets.",
-            durationMin: 60,
-            durationMax: 240,
-            typicalCleanersAssigned: 1,
-            pricingModel: PricingModel.ROOM,
-            priceMin: 75,
-            priceMax: 200,
-            rate: 100,
-          },
-          {
-            id: "window-wash-001",
-            name: "Window Washing",
-            description: "Interior and exterior window cleaning.",
-            durationMin: 60,
-            durationMax: 300,
-            typicalCleanersAssigned: 1,
-            pricingModel: PricingModel.JOB,
-            priceMin: 10,
-            priceMax: 20,
-            rate: 15,
-          },
-        ],
+        // REMOVED: coreServices is no longer an embedded array here
         operatingHours: {
           monday: { start: "09:00", end: "17:00", isOpen: true },
           tuesday: { start: "09:00", end: "17:00", isOpen: true },
@@ -186,6 +105,101 @@ async function main() {
         additionalNotes: "This is the main admin business for development.",
       },
     });
+
+    if (adminBusiness) {
+      const servicesData = [
+        {
+          name: "Standard Home Cleaning",
+          description: "Regular cleaning for homes.",
+          durationMin: 120,
+          durationMax: 240,
+          typicalCleanersAssigned: 2,
+          pricingModel: PricingModel.HOUR,
+          priceMin: 50,
+          priceMax: 100,
+          rate: 75,
+        },
+        {
+          name: "Deep Clean",
+          description: "Thorough, detailed cleaning.",
+          durationMin: 240,
+          durationMax: 480,
+          typicalCleanersAssigned: 3,
+          pricingModel: PricingModel.JOB,
+          priceMin: 200,
+          priceMax: 400,
+          rate: 300,
+        },
+        {
+          name: "Office Cleaning",
+          description: "Daily or weekly cleaning for small to medium offices.",
+          durationMin: 90,
+          durationMax: 180,
+          typicalCleanersAssigned: 1,
+          pricingModel: PricingModel.HOUR,
+          priceMin: 300,
+          priceMax: 800,
+          rate: 50,
+        },
+        {
+          name: "Move-In/Out Cleaning",
+          description:
+            "Comprehensive cleaning for empty homes before/after moving.",
+          durationMin: 300,
+          durationMax: 600,
+          typicalCleanersAssigned: 3,
+          pricingModel: PricingModel.SQFT,
+          priceMin: 400,
+          priceMax: 1000,
+          rate: 0.25,
+        },
+        {
+          name: "Post-Construction Clean-Up",
+          description:
+            "Removal of debris and deep cleaning after construction.",
+          durationMin: 480,
+          durationMax: 960,
+          typicalCleanersAssigned: 4,
+          pricingModel: PricingModel.JOB,
+          priceMin: 800,
+          priceMax: 2500,
+          rate: 1500,
+        },
+        {
+          name: "Carpet Shampoo & Steam",
+          description: "Deep cleaning and sanitization of carpets.",
+          durationMin: 60,
+          durationMax: 240,
+          typicalCleanersAssigned: 1,
+          pricingModel: PricingModel.ROOM,
+          priceMin: 75,
+          priceMax: 200,
+          rate: 100,
+        },
+        {
+          name: "Window Washing",
+          description: "Interior and exterior window cleaning.",
+          durationMin: 60,
+          durationMax: 300,
+          typicalCleanersAssigned: 1,
+          pricingModel: PricingModel.JOB,
+          priceMin: 10,
+          priceMax: 20,
+          rate: 15,
+        },
+      ];
+
+      for (const serviceData of servicesData) {
+        const createdService = await prisma.coreService.create({
+          data: {
+            ...serviceData,
+            businessId: adminBusiness.id,
+          },
+        });
+        adminCoreServices.push(createdService);
+      }
+      console.log(`Created ${adminCoreServices.length} core services.`);
+    }
 
     console.log(
       "Created admin user and business:",
@@ -238,36 +252,29 @@ async function main() {
   }
 
   // --- Create 10 Bookings ---
-  if (adminBusiness && customersAndProfiles.length > 0) {
+  // Ensure adminBusiness, customers, and services were created successfully
+  if (
+    adminBusiness &&
+    customersAndProfiles.length > 0 &&
+    adminCoreServices.length > 0
+  ) {
     console.log("Creating 10 bookings...");
 
-    const services = adminBusiness.coreServices;
+    const services = adminCoreServices;
     const bookingPromises = [];
 
-    // Helper to get a date string for N days from now
     const getDateString = (daysOffset: number) => {
       const d = new Date();
       d.setDate(d.getDate() + daysOffset);
       return d.toISOString().split("T")[0];
     };
-
-    // Helper to convert AM/PM to 24-hour HH:MM format
     const convertTo24Hour = (timeAmPm: string): string => {
       const [time, period] = timeAmPm.split(" ");
       let [hours, minutes] = time.split(":").map(Number);
-
-      if (period === "PM" && hours < 12) {
-        hours += 12;
-      } else if (period === "AM" && hours === 12) {
-        hours = 0; // 12 AM is 00:00
-      }
-
-      const hoursStr = hours.toString().padStart(2, "0");
-      const minutesStr = minutes.toString().padStart(2, "0");
-      return `${hoursStr}:${minutesStr}`;
+      if (period === "PM" && hours < 12) hours += 12;
+      else if (period === "AM" && hours === 12) hours = 0;
+      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
     };
-
-    // Helper to parse time slot into start and end times in 24-hour format
     const parseTimeSlot24Hour = (timeSlot: string) => {
       const [startAmPm, endAmPm] = timeSlot.split(" - ");
       return {
@@ -283,12 +290,11 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[0].name, // REMOVED THIS LINE
           date: getDateString(1),
           startTime: s1,
           endTime: e1,
           notes: "Initial booking by customer 1.",
-          serviceId: services[0].id,
+          serviceId: services[0].id, // USE THE ID FROM THE CREATED CoreService MODEL
           duration: 150,
           price: 150,
           rooms: 3,
@@ -299,6 +305,8 @@ async function main() {
       })
     );
 
+    // Continue with other 9 bookings similarly, using `services[index].id`
+
     // Booking 2: Deep Clean (Customer 2, day after tomorrow)
     const { startTime: s2, endTime: e2 } = parseTimeSlot24Hour(
       "01:00 PM - 05:00 PM"
@@ -306,7 +314,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[1].name, // REMOVED THIS LINE
           date: getDateString(2),
           startTime: s2,
           endTime: e2,
@@ -328,7 +335,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[2].name, // REMOVED THIS LINE
           date: getDateString(3),
           startTime: s3,
           endTime: e3,
@@ -350,7 +356,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[3].name, // REMOVED THIS LINE
           date: getDateString(4),
           startTime: s4,
           endTime: e4,
@@ -373,7 +378,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[4].name, // REMOVED THIS LINE
           date: getDateString(5),
           startTime: s5,
           endTime: e5,
@@ -395,7 +399,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[5].name, // REMOVED THIS LINE
           date: getDateString(6),
           startTime: s6,
           endTime: e6,
@@ -418,7 +421,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[6].name, // REMOVED THIS LINE
           date: getDateString(7),
           startTime: s7,
           endTime: e7,
@@ -440,7 +442,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[0].name, // REMOVED THIS LINE
           date: getDateString(8),
           startTime: s8,
           endTime: e8,
@@ -463,7 +464,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[1].name, // REMOVED THIS LINE
           date: getDateString(9),
           startTime: s9,
           endTime: e9,
@@ -485,7 +485,6 @@ async function main() {
     bookingPromises.push(
       prisma.booking.create({
         data: {
-          // serviceName: services[2].name, // REMOVED THIS LINE
           date: getDateString(10),
           startTime: s10,
           endTime: e10,
@@ -504,7 +503,7 @@ async function main() {
     console.log(`Created ${bookingPromises.length} bookings successfully.`);
   } else {
     console.warn(
-      "Skipping booking creation: Admin business or customer profiles not created successfully."
+      "Skipping booking creation: Admin business, customer profiles, or core services not created successfully."
     );
   }
 
