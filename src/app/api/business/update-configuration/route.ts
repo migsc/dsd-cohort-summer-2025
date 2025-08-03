@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         ...formData,
       },
     });
-
+    console.log("here");
     return NextResponse.json(
       {
         message: "Business configuration update successful.",

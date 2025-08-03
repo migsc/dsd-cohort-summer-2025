@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SearchBar from "@/components/ui/custom/searchbar";
 import prisma from "@/lib/prisma";
-import PortalHeader from '@/components/ui/custom/portalHeader';
+import PortalHeader from "@/components/ui/custom/portalHeader";
 
 interface PageProps {
   params: Promise<{
@@ -31,7 +31,10 @@ export default async function OurServices(props: PageProps) {
     if (!business) {
       return (
         <div>
-          <PortalHeader pageName='Our Services' userName="Jane Doe"></PortalHeader>
+          {/* <PortalHeader
+            pageName="Our Services"
+            userName="Jane Doe"
+          ></PortalHeader> */}
           <div>Business not found for slug: {businessSlug}</div>
         </div>
       );
@@ -50,7 +53,7 @@ export default async function OurServices(props: PageProps) {
 
   return (
     <div className="mx-1 sm:mx-10">
-      <PortalHeader pageName='Our Services' userName="Jane Doe"></PortalHeader>
+      <PortalHeader pageName="Our Services" userName="Jane Doe"></PortalHeader>
       <h2 className="mb-4 mt-2 text-center text-2xl">
         {business.businessName}
       </h2>

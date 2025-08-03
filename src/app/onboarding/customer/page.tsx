@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   usStates,
@@ -34,6 +34,14 @@ import {
 
 export default function CustomerOnboarding() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const business = searchParams.get("business");
+
+  let redirectURL = "/business-list";
+  if (business) {
+    redirectURL = `/${business}`;
+  }
 
   const form = useForm({
     defaultValues: defaultCustomerValues,
@@ -54,7 +62,7 @@ export default function CustomerOnboarding() {
 
         if (response.ok) {
           toast.success("Customer onboarding successful!");
-          router.push("/customer");
+          router.push(redirectURL);
         } else {
           const responseError = await response.json();
         }
