@@ -55,7 +55,11 @@ model Customer {
   @@map("customer")
 }
 
-type CoreService {
+model CoreService {
+    id                      String       @id @default(auto()) @map("_id") @db.ObjectId
+    businessId              String       @db.ObjectId
+    business                Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
     name                    String
     description             String
     durationMin             Int
@@ -65,9 +69,41 @@ type CoreService {
     priceMin                Float
     priceMax                Float
     rate                    Float
-    id                      String @default(cuid())
+
+    bookings                Booking[]
+
+    createdAt               DateTime @default(now())
+    updatedAt               DateTime @updatedAt
+
+    @@map("coreService")
 }
 
+model Booking {
+    id              String        @id @default(auto()) @map("_id") @db.ObjectId
+    date            String
+    startTime       String
+    endTime         String
+    notes           String?
+    duration        Int
+    price           Float
+    rooms           Float?
+    squareFootage   Float?
+    status          BookingStatus @default(PENDING)
+
+    serviceId       String        @db.ObjectId 
+    service         CoreService   @relation(fields: [serviceId], references: [id])
+
+    customerId String   @db.ObjectId
+    customer   Customer @relation(fields: [customerId], references: [id])
+
+    businessId String   @db.ObjectId
+    business   Business @relation(fields: [businessId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("booking")
+}
 
 type OperatingHours {
   monday    DayOperatingHours
@@ -83,32 +119,6 @@ type DayOperatingHours {
   start  String
   end    String
   isOpen Boolean
-}
-
-
-model Booking {
-    id              String        @id @default(auto()) @map("_id") @db.ObjectId
-    date            String
-    startTime       String
-    endTime         String
-    notes           String?
-    serviceId       String
-    duration        Int
-    price           Float
-    rooms           Float?
-    squareFootage   Float?
-    status          BookingStatus @default(PENDING)
-  
-    customer   Customer @relation(fields: [customerId], references: [id])
-    customerId String   @db.ObjectId
-  
-    business   Business @relation(fields: [businessId], references: [id])
-    businessId String   @db.ObjectId
-  
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-  
-    @@map("booking")
 }
 
 enum BookingStatus {
