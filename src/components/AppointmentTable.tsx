@@ -152,7 +152,7 @@ type Props = {
 const colorMapping = {
   CONFIRMED: "bg-blue-600",
   PENDING: "bg-blue-400",
-  CANCELED: "bg-red-500",
+  CANCELLED: "bg-red-500",
   COMPLETED: "bg-green-500",
   Cleaning: "bg-blue-300",
   Maintenance: "bg-yellow-500",
