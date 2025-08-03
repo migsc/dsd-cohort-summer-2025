@@ -56,16 +56,18 @@ model Customer {
 }
 
 type CoreService {
-  name         String
-  description  String
-  durationMin  Int
-  durationMax  Int
-  typicalCleanersAssigned Int
-  pricingModel String
-  priceMin     Float
-  priceMax     Float
-  id           String @default(cuid())
+    name                    String
+    description             String
+    durationMin             Int
+    durationMax             Int
+    typicalCleanersAssigned Int
+    pricingModel            PricingModel
+    priceMin                Float
+    priceMax                Float
+    rate                    Float
+    id                      String @default(cuid())
 }
+
 
 type OperatingHours {
   monday    DayOperatingHours
@@ -85,27 +87,28 @@ type DayOperatingHours {
 
 
 model Booking {
-  id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  serviceName     String
-  date            String
-  timeSlot        String
-  notes           String?
-  serviceId       String
-  serviceDuration String?
-  servicePrice    String?
-  status          BookingStatus @default(PENDING)
-
-  // Demetrius additions
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String   @db.ObjectId
-
-  business   Business @relation(fields: [businessId], references: [id])
-  businessId String   @db.ObjectId
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("booking")
+    id              String        @id @default(auto()) @map("_id") @db.ObjectId
+    date            String
+    startTime       String
+    endTime         String
+    notes           String?
+    serviceId       String
+    duration        Int
+    price           Float
+    rooms           Float?
+    squareFootage   Float?
+    status          BookingStatus @default(PENDING)
+  
+    customer   Customer @relation(fields: [customerId], references: [id])
+    customerId String   @db.ObjectId
+  
+    business   Business @relation(fields: [businessId], references: [id])
+    businessId String   @db.ObjectId
+  
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  
+    @@map("booking")
 }
 
 enum BookingStatus {
@@ -114,4 +117,11 @@ enum BookingStatus {
   IN_PROGRESS
   CANCELED
   COMPLETED
+}
+
+enum PricingModel {
+  HOUR
+  SQFT 
+  ROOM
+  JOB
 }
