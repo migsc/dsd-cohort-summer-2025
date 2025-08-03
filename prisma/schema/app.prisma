@@ -47,6 +47,8 @@ model Customer {
   addressState           String?
   addressZip             String?
   addressCountry         String?
+  rooms                  Float
+  squareFootage          Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

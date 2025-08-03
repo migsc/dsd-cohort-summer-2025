@@ -9,7 +9,6 @@ import { auth } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
 
-// Slugify function (as before)
 function slugify(text: string): string {
   return text
     .toString()
@@ -22,14 +21,12 @@ function slugify(text: string): string {
     .replace(/--+/g, "-");
 }
 
-// Helper to get a date string for N days from now
 const getDateString = (daysOffset: number) => {
   const d = new Date();
   d.setDate(d.getDate() + daysOffset);
   return d.toISOString().split("T")[0];
 };
 
-// Helper to convert AM/PM to 24-hour HH:MM format
 const convertTo24Hour = (timeAmPm: string): string => {
   const [time, period] = timeAmPm.split(" ");
   let [hours, minutes] = time.split(":").map(Number);
@@ -38,7 +35,6 @@ const convertTo24Hour = (timeAmPm: string): string => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 };
 
-// Helper to parse time slot into start and end times in 24-hour format
 const parseTimeSlot24Hour = (timeSlot: string) => {
   const [startAmPm, endAmPm] = timeSlot.split(" - ");
   return {
@@ -60,7 +56,6 @@ async function main() {
   await prisma.user.deleteMany();
   console.log("Cleared existing data.");
 
-  // --- Create Admin User and Business ---
   const adminEmail = "admin@example.com";
   const adminPassword = "password123";
   const adminName = "Admin Business Owner";
@@ -237,7 +232,6 @@ async function main() {
     process.exit(1);
   }
 
-  // --- Create Multiple Customer Accounts ---
   const numCustomers = 3;
   const customersAndProfiles = [];
 
@@ -247,6 +241,8 @@ async function main() {
     const custName = `Customer ${i}`;
     const custPassword = "password123";
     const custPhoneNumber = `555-000-000${i}`;
+    const custRooms = i * 2;
+    const custSquareFootage = i * 1000;
 
     try {
       await auth.api.signUpEmail({
@@ -268,6 +264,8 @@ async function main() {
           addressState: "TX",
           addressZip: `7500${i}`,
           addressCountry: "USA",
+          rooms: custRooms,
+          squareFootage: custSquareFootage,
         },
       });
       customersAndProfiles.push({ user, customerProfile });
@@ -277,8 +275,6 @@ async function main() {
     }
   }
 
-  // --- Create Bookings ---
-  // Ensure adminBusiness, customers, and services were created successfully
   if (
     adminBusiness &&
     customersAndProfiles.length > 0 &&
@@ -289,8 +285,6 @@ async function main() {
     const services = adminCoreServices;
     const bookingPromises = [];
 
-    // --- Customer 1: Multiple bookings to cover various statuses ---
-    // Booking 1.1: PENDING
     const { startTime: s1_1, endTime: e1_1 } = parseTimeSlot24Hour(
       "09:00 AM - 11:00 AM"
     );
@@ -312,7 +306,6 @@ async function main() {
       })
     );
 
-    // Booking 1.2: CONFIRMED (for day after tomorrow)
     const { startTime: s1_2, endTime: e1_2 } = parseTimeSlot24Hour(
       "01:00 PM - 03:00 PM"
     );
@@ -333,7 +326,6 @@ async function main() {
       })
     );
 
-    // Booking 1.3: ON_WAY (for today, implied soon)
     const { startTime: s1_3, endTime: e1_3 } = parseTimeSlot24Hour(
       "04:00 PM - 06:00 PM"
     );
@@ -354,7 +346,6 @@ async function main() {
       })
     );
 
-    // Booking 1.4: IN_PROGRESS (for a past date, to show completion flow)
     const { startTime: s1_4, endTime: e1_4 } = parseTimeSlot24Hour(
       "09:00 AM - 01:00 PM"
     );
@@ -377,7 +368,6 @@ async function main() {
       })
     );
 
-    // Booking 1.5: CANCELED (for a future date)
     const { startTime: s1_5, endTime: e1_5 } = parseTimeSlot24Hour(
       "10:00 AM - 12:00 PM"
     );
@@ -398,7 +388,6 @@ async function main() {
       })
     );
 
-    // Booking 1.6: COMPLETED (for a past date)
     const { startTime: s1_6, endTime: e1_6 } = parseTimeSlot24Hour(
       "02:00 PM - 05:00 PM"
     );
@@ -420,8 +409,6 @@ async function main() {
       })
     );
 
-    // --- Customer 2: A few diverse bookings ---
-    // Booking 2.1: CONFIRMED (future)
     const { startTime: s2_1, endTime: e2_1 } = parseTimeSlot24Hour(
       "10:00 AM - 12:00 PM"
     );
@@ -443,7 +430,6 @@ async function main() {
       })
     );
 
-    // Booking 2.2: PENDING (future)
     const { startTime: s2_2, endTime: e2_2 } = parseTimeSlot24Hour(
       "09:00 AM - 04:00 PM"
     );
@@ -464,8 +450,6 @@ async function main() {
       })
     );
 
-    // --- Customer 3: One simple booking ---
-    // Booking 3.1: COMPLETED (past)
     const { startTime: s3_1, endTime: e3_1 } = parseTimeSlot24Hour(
       "08:00 AM - 11:00 AM"
     );
