@@ -1,4 +1,7 @@
+"use client"
+
 import React from "react";
+
 
 import {
   Sheet,
@@ -20,126 +23,149 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "./ui/button";
 
 //ADD DUMMY DATA HERE FOR NOW
-const dummyAppointments = [
-  {
-    id: 1,
-    dateCreated: "2023-10-01",
-    timeCreated: "10:00 AM", //Could be taking the actual time of creation using javascript and formatting it.
-    workOrderInfo: {
-      orderId: 1001,
-      status: "Pending",
-      Type: "Cleaning",
-      fulfillmentDate: "2023-10-05",
-      fulfillmentTime: "2:00 PM",
-      address: "123 Main St, Springfield, IL",
-      description:
-        "I have a kitchen and living room that needs to be cleaned. Please detail appliances and wash the carpet.",
-    },
-    customerInfo: {
-      clientId: 101,
-      clientName: "John Doe",
-      clientPhone: "123-456-7890",
-      clientEmail: "johndoe@gmail.com",
-    },
-  },
-  {
-    id: 2,
-    dateCreated: "2023-10-02",
-    timeCreated: "11:30 AM",
-    workOrderInfo: {
-      orderId: 1002,
-      status: "Approved",
-      Type: "Maintenance",
-      fulfillmentDate: "2023-10-07",
-      fulfillmentTime: "9:00 AM",
-      address: "456 Oak Ave, Lincoln, NE",
-      description: "Bathroom deep cleaning and window washing.",
-    },
-    customerInfo: {
-      clientId: 102,
-      clientName: "Jane Smith",
-      clientPhone: "555-123-4567",
-      clientEmail: "janesmith@email.com",
-    },
-  },
-  {
-    id: 3,
-    dateCreated: "2023-10-03",
-    timeCreated: "2:15 PM",
-    workOrderInfo: {
-      orderId: 1003,
-      status: "Approved",
-      Type: "Cleaning",
-      fulfillmentDate: "2023-10-04",
-      fulfillmentTime: "1:00 PM",
-      address: "789 Pine Rd, Madison, WI",
-      description: "Carpet cleaning in two bedrooms.",
-    },
-    customerInfo: {
-      clientId: 103,
-      clientName: "Carlos Rivera",
-      clientPhone: "222-333-4444",
-      clientEmail: "carlos.rivera@mail.com",
-    },
-  },
-  {
-    id: 4,
-    dateCreated: "2023-10-04",
-    timeCreated: "4:45 PM",
-    workOrderInfo: {
-      orderId: 1004,
-      status: "Pending",
-      Type: "Move-Out",
-      fulfillmentDate: "2023-10-10",
-      fulfillmentTime: "3:30 PM",
-      address: "321 Maple St, Denver, CO",
-      description: "Move-out cleaning for apartment.",
-    },
-    customerInfo: {
-      clientId: 104,
-      clientName: "Emily Chen",
-      clientPhone: "777-888-9999",
-      clientEmail: "emily.chen@email.com",
-    },
-  },
-  {
-    id: 5,
-    dateCreated: "2023-10-05",
-    timeCreated: "9:00 AM",
-    workOrderInfo: {
-      orderId: 1005,
-      status: "Declined",
-      Type: "Cleaning",
-      fulfillmentDate: "2023-10-12",
-      fulfillmentTime: "10:00 AM",
-      address: "654 Cedar Blvd, Austin, TX",
-      description: "Garage cleaning and power washing.",
-    },
-    customerInfo: {
-      clientId: 105,
-      clientName: "Michael Brown",
-      clientPhone: "888-555-1212",
-      clientEmail: "michael.brown@email.com",
-    },
-  },
-];
+// const dummyAppointments = [
+//   {
+//     id: 1,
+//     dateCreated: "2023-10-01",
+//     timeCreated: "10:00 AM", //Could be taking the actual time of creation using javascript and formatting it.
+//     workOrderInfo: {
+//       orderId: 1001,
+//       status: "Pending",
+//       Type: "Cleaning",
+//       fulfillmentDate: "2023-10-05",
+//       fulfillmentTime: "2:00 PM",
+//       address: "123 Main St, Springfield, IL",
+//       description:
+//         "I have a kitchen and living room that needs to be cleaned. Please detail appliances and wash the carpet.",
+//     },
+//     customerInfo: {
+//       clientId: 101,
+//       clientName: "John Doe",
+//       clientPhone: "123-456-7890",
+//       clientEmail: "johndoe@gmail.com",
+//     },
+//   },
+//   {
+//     id: 2,
+//     dateCreated: "2023-10-02",
+//     timeCreated: "11:30 AM",
+//     workOrderInfo: {
+//       orderId: 1002,
+//       status: "Approved",
+//       Type: "Maintenance",
+//       fulfillmentDate: "2023-10-07",
+//       fulfillmentTime: "9:00 AM",
+//       address: "456 Oak Ave, Lincoln, NE",
+//       description: "Bathroom deep cleaning and window washing.",
+//     },
+//     customerInfo: {
+//       clientId: 102,
+//       clientName: "Jane Smith",
+//       clientPhone: "555-123-4567",
+//       clientEmail: "janesmith@email.com",
+//     },
+//   },
+//   {
+//     id: 3,
+//     dateCreated: "2023-10-03",
+//     timeCreated: "2:15 PM",
+//     workOrderInfo: {
+//       orderId: 1003,
+//       status: "Approved",
+//       Type: "Cleaning",
+//       fulfillmentDate: "2023-10-04",
+//       fulfillmentTime: "1:00 PM",
+//       address: "789 Pine Rd, Madison, WI",
+//       description: "Carpet cleaning in two bedrooms.",
+//     },
+//     customerInfo: {
+//       clientId: 103,
+//       clientName: "Carlos Rivera",
+//       clientPhone: "222-333-4444",
+//       clientEmail: "carlos.rivera@mail.com",
+//     },
+//   },
+//   {
+//     id: 4,
+//     dateCreated: "2023-10-04",
+//     timeCreated: "4:45 PM",
+//     workOrderInfo: {
+//       orderId: 1004,
+//       status: "Pending",
+//       Type: "Move-Out",
+//       fulfillmentDate: "2023-10-10",
+//       fulfillmentTime: "3:30 PM",
+//       address: "321 Maple St, Denver, CO",
+//       description: "Move-out cleaning for apartment.",
+//     },
+//     customerInfo: {
+//       clientId: 104,
+//       clientName: "Emily Chen",
+//       clientPhone: "777-888-9999",
+//       clientEmail: "emily.chen@email.com",
+//     },
+//   },
+//   {
+//     id: 5,
+//     dateCreated: "2023-10-05",
+//     timeCreated: "9:00 AM",
+//     workOrderInfo: {
+//       orderId: 1005,
+//       status: "Declined",
+//       Type: "Cleaning",
+//       fulfillmentDate: "2023-10-12",
+//       fulfillmentTime: "10:00 AM",
+//       address: "654 Cedar Blvd, Austin, TX",
+//       description: "Garage cleaning and power washing.",
+//     },
+//     customerInfo: {
+//       clientId: 105,
+//       clientName: "Michael Brown",
+//       clientPhone: "888-555-1212",
+//       clientEmail: "michael.brown@email.com",
+//     },
+//   },
+// ];
 
+type Customer = {
+  id: string
+  name: string
+  email: string
+  phone: string
+}
+type Booking = {
+  id: string;
+  date: string;
+  timeSlot: string;
+  serviceName: string;
+  status: string;
+  notes: string | null;
+  serviceId: string;
+  customer: Customer;
+}
+
+type Props = {
+  filter: string
+  bookingInfo: Booking[];
+}
 // NEED TO MAKE IT TYPE SAFE
 const colorMapping = {
-  Approved: "bg-blue-600",
-  Pending: "bg-blue-400",
-  Declined: "bg-red-500",
+  CONFIRMED: "bg-blue-600",
+  PENDING: "bg-blue-400",
+  CANCELED: "bg-red-500",
+  COMPLETED: "bg-green-500",
   Cleaning: "bg-blue-300",
   Maintenance: "bg-yellow-500",
   "Move-Out": "bg-red-400",
 };
 
-export default function AppointmentTable({ filter }: { filter: string }) {
+export default function AppointmentTable({filter, bookingInfo}: Props) {
+
   return (
     <div>
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-b-gray-400 hover:bg-white">
             <TableHead>Order ID</TableHead>
             <TableHead>Customer Name</TableHead>
             <TableHead>Type</TableHead>
@@ -148,39 +174,39 @@ export default function AppointmentTable({ filter }: { filter: string }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {dummyAppointments
-            .filter(appointment => appointment.workOrderInfo.status === filter)
-            .map(appointment => (
-              <Sheet key={appointment.id}>
+          {bookingInfo
+            .map(booking => (
+              <Sheet key={booking.id}>
                 <SheetTrigger asChild>
                   <TableRow
-                    key={appointment.id}
-                    className="hover:cursor-pointer"
+                    key={booking.id}
+                    className="hover:cursor-pointer border-b-gray-100"
                   >
-                    <TableCell>{appointment.workOrderInfo.orderId}</TableCell>
-                    <TableCell>{appointment.customerInfo.clientName}</TableCell>
+                    <TableCell>{booking.id}</TableCell>
+                    <TableCell>{booking.customer.name}</TableCell>
                     <TableCell>
                       <Badge
                         variant="default"
-                        className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                        className={`${colorMapping[booking.serviceName as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
                       >
-                        {appointment.workOrderInfo.Type}
+                        {booking.serviceName}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {appointment.workOrderInfo.fulfillmentDate} at{" "}
-                      {appointment.workOrderInfo.fulfillmentTime}
+                      {booking.date} at {booking.timeSlot}
                     </TableCell>
                     <TableCell>
                       <Badge
                         variant="default"
-                        className={`${colorMapping[appointment.workOrderInfo.status as keyof typeof colorMapping]} text-xs text-white`}
+                        className={`${colorMapping[booking.status as keyof typeof colorMapping]} text-xs text-white`}
                       >
-                        {appointment.workOrderInfo.status}
+                        {booking.status}
                       </Badge>
                     </TableCell>
                   </TableRow>
                 </SheetTrigger>
+
+                {/* //TODO: Also change the sheet to be dynamic based on whether it is a profile or an appointment/work order. */}
                 <SheetContent
                   side="right"
                   className="sm:max-w-1/2 m-5 h-[95%] w-full rounded-lg [&>button:first-of-type]:hidden"
@@ -189,10 +215,10 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                     <SheetTitle className="flex h-full pt-2">
                       <div className="flex h-full w-[30%] flex-col gap-4 border-r pr-4">
                         <h1 className="font-blod text-2xl">
-                          {appointment.customerInfo.clientName}
+                          {booking.customer.name}
                         </h1>
                         <h2 className="text-blue-600">
-                          #{appointment.workOrderInfo.orderId}
+                          #{booking.serviceId}
                         </h2>
                       </div>
                       <div className="pl-4">
@@ -207,10 +233,10 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                       <section className="flex flex-col gap-2">
                         <h3 className="font-bold">Contact Info</h3>
                         <p className="text-sm">
-                          {appointment.customerInfo.clientPhone}
+                          {booking.customer.phone}
                         </p>
                         <p className="text-sm">
-                          {appointment.customerInfo.clientEmail}
+                          {booking.customer.email}
                         </p>
                       </section>
                     </div>
@@ -220,35 +246,35 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                           Status:{" "}
                           <Badge
                             variant="default"
-                            className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                            className={`${colorMapping[booking.status as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
                           >
-                            {appointment.workOrderInfo.status}
+                            {booking.status}
                           </Badge>
                         </p>
                         <p className="flex w-[150px] justify-between text-sm">
                           Type:{" "}
                           <Badge
                             variant="default"
-                            className={`${colorMapping[appointment.workOrderInfo.Type as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                            className={`${colorMapping[booking.serviceName as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
                           >
-                            {appointment.workOrderInfo.Type}
+                            {booking.serviceName}
                           </Badge>
                         </p>
                         <p className="flex w-[150px] justify-between text-sm">
                           Date:{" "}
                           <span>
-                            {appointment.workOrderInfo.fulfillmentDate}
+                            {booking.date}
                           </span>
                         </p>
                         <p className="flex w-[150px] justify-between text-sm">
                           Time:{" "}
                           <span>
-                            {appointment.workOrderInfo.fulfillmentTime}
+                            {booking.timeSlot}
                           </span>
                         </p>
                         <div>
                           <p className="flex w-full justify-between text-sm">
-                            Address: {appointment.workOrderInfo.address}
+                            Address: here going the address. {/* {booking.address} */}
                           </p>
                           <div>
                             <p>Here goes the google maps information</p>
@@ -256,7 +282,7 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                         </div>
                         <p className="flex w-full flex-col pb-4 text-sm">
                           Description:{" "}
-                          <span>{appointment.workOrderInfo.description}</span>
+                          <span>{booking.notes ?? "No Notes"}</span>
                         </p>
                       </div>
                     </div>
@@ -285,10 +311,25 @@ export default function AppointmentTable({ filter }: { filter: string }) {
                             This appointment is approved.
                           </p>
                         </div>
-                      ) : (
+                      ) : filter === "Decline" ? (
                         <p className="mr-4 text-sm text-red-500">
                           This appointment has been declined.
                         </p>
+                      ) : (
+                        <div>
+                          <Button
+                            variant="default"
+                            className="w-[130px] bg-blue-600 text-white hover:bg-blue-500"
+                          >
+                            Accept
+                          </Button>
+                          <Button
+                            variant="default"
+                            className="ml-2 w-[130px] bg-red-500 text-white hover:bg-red-400"
+                          >
+                            Decline
+                          </Button>
+                        </div>
                       )}
                     </div>
                   </SheetFooter>
@@ -300,3 +341,4 @@ export default function AppointmentTable({ filter }: { filter: string }) {
     </div>
   );
 }
+

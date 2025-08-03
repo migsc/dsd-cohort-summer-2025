@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+// Change to NextJS Link component to fix Hydration Error.
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {  SquareChevronRight } from "lucide-react";

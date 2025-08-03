@@ -218,7 +218,7 @@ async function main() {
         serviceId: "std-clean-002",
         serviceDuration: "2 hours",
         servicePrice: "100.00",
-        status: BookingStatus.CANCELED,
+        status: BookingStatus.CANCELLED,
         customerId: customerProfile.id,
         businessId: adminBusiness.id,
       },

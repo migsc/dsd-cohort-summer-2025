@@ -28,13 +28,6 @@ export default function Calendar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   
-// TODO: Uncomment the following lines to redirect unauthenticated users
-
-  // useEffect(() => {
-  //   if (!session && !isPending) {
-  //     router.push("/login");
-  //   }
-  // }, [session, isPending]);
 
   if (isPending) {
     return <div>Loading...</div>;

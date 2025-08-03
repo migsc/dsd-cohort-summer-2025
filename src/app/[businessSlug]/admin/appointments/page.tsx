@@ -1,7 +1,15 @@
 import React from "react";
 import AppointmentTable from "@/components/AppointmentTable";
+import { getBusinessWithCustomers } from "@/lib/queries/getBusinessWithCustomer";
 
-export default function Appointments() {
+export default async function Appointments({params}:{params: {businessSlug: string} }){
+  const businessData = await getBusinessWithCustomers(params.businessSlug)
+
+  if(!businessData){
+    return <div>Business Not Found.</div>
+  }
+
+
   return (
     <>
       <header className="border-b p-4">
@@ -11,18 +19,7 @@ export default function Appointments() {
       <main className="p-6 flex flex-col gap-6">
         {/* Approved Orders */}
         <section className="bg-background height-full w-5/6 rounded-md p-4">
-          <h2 className="mb-3 text-xl text-blue-600">Approved</h2>
-          <AppointmentTable filter="Approved" />
-        </section>
-
-        <section className="bg-background height-full w-5/6 rounded-md p-4">
-          <h2 className="mb-3 text-xl text-blue-400">Pending</h2>
-          <AppointmentTable filter="Pending" />
-        </section>
-
-        <section className="bg-background height-full w-5/6 rounded-md p-4">
-          <h2 className="mb-3 text-xl text-red-400">Declined</h2>
-          <AppointmentTable filter="Declined" />
+          <AppointmentTable filter="Approved" bookingInfo={businessData.bookings} />
         </section>
       </main>
     </>

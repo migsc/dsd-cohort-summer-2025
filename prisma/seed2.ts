@@ -330,7 +330,7 @@ async function main() {
           serviceId: services[4].id,
           serviceDuration: `${services[4].durationMin}-${services[4].durationMax} mins`,
           servicePrice: `$${services[4].priceMin}-${services[4].priceMax} ${services[4].pricingModel}`,
-          status: BookingStatus.CANCELED,
+          status: BookingStatus.CANCELLED,
           customerId: customersAndProfiles[4].customerProfile.id,
           businessId: adminBusiness.id,
         },

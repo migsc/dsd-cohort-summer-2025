@@ -112,6 +112,13 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   IN_PROGRESS
-  CANCELED
+  CANCELLED
   COMPLETED
+}
+
+enum PricingModel {
+  HOUR
+  SQFT
+  ROOM
+  JOB
 }
