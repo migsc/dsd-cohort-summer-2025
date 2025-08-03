@@ -40,6 +40,7 @@ model Customer {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
   userId                 String @unique
   user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phoneNumber            String 
   preferredContactMethod String?
   addressStreet          String?
   addressCity            String?
@@ -127,6 +128,7 @@ enum BookingStatus {
   IN_PROGRESS
   CANCELED
   COMPLETED
+  ON_WAY
 }
 
 enum PricingModel {
