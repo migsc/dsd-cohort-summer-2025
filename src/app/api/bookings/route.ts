@@ -32,8 +32,42 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  
+
+  
+
   const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
+
+  const tentativeFormData = {
+    'date': '',
+    'serviceId' : '',
+    'timeSlot': '',
+    'duration': 3,
+    'rooms' : 2,
+    'squareFootage': 1500,
+    'notes' : '',
+  }
+
+  // what is needed to derive correct info for Booking from the service
+  const tentativeCoreService = {
+    'pricingModel': '',
+    'rate': 1,
+  }
+
+  /*
+  Receive:
+  "8:00 AM - 10:00 AM",
+
+  Output:
+  start
+  "01:00"
+  end
+  "22:00"
+  */
+
+  const tentativeBookingObject = 
+
 
   if (!session || !session.user || !session.user.id) {
     console.log("Unauthorized");
@@ -79,6 +113,7 @@ export async function POST(request: Request) {
         serviceId: formData.serviceId,
         businessId: business.id,
         customerId: customer.id,
+        rate: formData.rate,
         status: "PENDING",
         serviceDuration: formData.serviceDuration,
         servicePrice: formData.servicePrice,

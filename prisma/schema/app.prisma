@@ -56,15 +56,16 @@ model Customer {
 }
 
 type CoreService {
-  name         String
-  description  String
-  durationMin  Int
-  durationMax  Int
+  name                    String
+  description             String
+  durationMin             Int
+  durationMax             Int
   typicalCleanersAssigned Int
-  pricingModel String
-  priceMin     Float
-  priceMax     Float
-  id           String @default(cuid())
+  pricingModel            PricingModel
+  priceMin                Float
+  priceMax                Float
+  rate                    Float
+  id                      String @default(cuid())
 }
 
 type OperatingHours {
@@ -86,16 +87,17 @@ type DayOperatingHours {
 
 model Booking {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  serviceName     String
   date            String
-  timeSlot        String
+  startTime       String
+  endTime         String
   notes           String?
   serviceId       String
-  serviceDuration String?
-  servicePrice    String?
+  duration        Int
+  price           Float
+  rooms           Float?
+  squareFootage   Float?
   status          BookingStatus @default(PENDING)
 
-  // Demetrius additions
   customer   Customer @relation(fields: [customerId], references: [id])
   customerId String   @db.ObjectId
 
@@ -114,4 +116,11 @@ enum BookingStatus {
   IN_PROGRESS
   CANCELED
   COMPLETED
+}
+
+enum PricingModel {
+  HOUR
+  SQFT 
+  ROOM
+  JOB
 }

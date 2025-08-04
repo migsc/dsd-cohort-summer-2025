@@ -1,9 +1,10 @@
 import "../envConfig";
 import { PrismaClient, BookingStatus } from "../prisma/generated/client";
-import { auth } from "../src/lib/auth";
+import { auth } from "../src/lib/auth"; // Assuming better-auth sign-up is used for users
 
 const prisma = new PrismaClient();
 
+// Slugify function (as before)
 function slugify(text: string): string {
   return text
     .toString()
@@ -19,6 +20,7 @@ function slugify(text: string): string {
 async function main() {
   console.log("Start seeding...");
 
+  // Order of deletion is crucial for foreign key constraints
   await prisma.booking.deleteMany();
   await prisma.business.deleteMany();
   await prisma.customer.deleteMany();
@@ -41,6 +43,7 @@ async function main() {
 
   try {
     await auth.api.signUpEmail({
+      // Use auth to create the user with hashed password
       body: { email: adminEmail, password: adminPassword, name: adminName },
     });
 
@@ -60,7 +63,7 @@ async function main() {
       data: {
         userId: adminUser.id,
         businessName: adminBusinessName,
-        businessSlug: adminBusinessSlug,
+        businessSlug: adminBusinessSlug, // Use the generated slug
         contactPersonName: adminName,
         contactPersonTitle: "Owner",
         contactPersonEmail: adminEmail,
@@ -75,12 +78,13 @@ async function main() {
         businessDescription:
           "A premier cleaning service managed by the app owner.",
         coreServices: [
+          // Initial 2 services + 5 new ones = 7 total
           {
-            id: "std-home-clean-001",
+            id: "std-home-clean-001", // Explicit ID for easier referencing later
             name: "Standard Home Cleaning",
             description: "Regular cleaning for homes.",
-            durationMin: 120,
-            durationMax: 240,
+            durationMin: 120, // mins
+            durationMax: 240, // mins
             typicalCleanersAssigned: 2,
             pricingModel: "Hourly",
             priceMin: 50,
@@ -189,7 +193,7 @@ async function main() {
     );
   } catch (error: any) {
     console.error(`Error creating admin user or business: ${error.message}`);
-    process.exit(1);
+    process.exit(1); // Exit if admin setup fails as it's critical
   }
 
   // --- Create Multiple Customer Accounts and Bookings ---
@@ -236,12 +240,14 @@ async function main() {
     const services = adminBusiness.coreServices;
     const bookingPromises = [];
 
+    // Helper to get a date string for N days from now
     const getDateString = (daysOffset: number) => {
       const d = new Date();
       d.setDate(d.getDate() + daysOffset);
       return d.toISOString().split("T")[0];
     };
 
+    // Booking 1: Standard Home Cleaning (Customer 1, tomorrow)
     bookingPromises.push(
       prisma.booking.create({
         data: {
@@ -259,6 +265,7 @@ async function main() {
       })
     );
 
+    // Booking 2: Deep Clean (Customer 2, day after tomorrow)
     bookingPromises.push(
       prisma.booking.create({
         data: {
@@ -276,6 +283,7 @@ async function main() {
       })
     );
 
+    // Booking 3: Office Cleaning (Customer 3, 3 days from now)
     bookingPromises.push(
       prisma.booking.create({
         data: {
@@ -311,6 +319,7 @@ async function main() {
       })
     );
 
+    // Booking 5: Post-Construction Clean-Up (Customer 5, 5 days from now, Cancelled)
     bookingPromises.push(
       prisma.booking.create({
         data: {
@@ -346,6 +355,7 @@ async function main() {
       })
     );
 
+    // Booking 7: Window Washing (Customer 7, 7 days from now, In Progress)
     bookingPromises.push(
       prisma.booking.create({
         data: {
@@ -399,6 +409,7 @@ async function main() {
       })
     );
 
+    // Booking 10: Office Cleaning (Customer 10, 10 days from now)
     bookingPromises.push(
       prisma.booking.create({
         data: {
@@ -416,7 +427,7 @@ async function main() {
       })
     );
 
-    await Promise.all(bookingPromises);
+    await Promise.all(bookingPromises); // Wait for all bookings to be created
     console.log(`Created ${bookingPromises.length} bookings successfully.`);
   } else {
     console.warn(
