@@ -40,12 +40,15 @@ model Customer {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
   userId                 String @unique
   user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phoneNumber            String 
   preferredContactMethod String?
   addressStreet          String?
   addressCity            String?
   addressState           String?
   addressZip             String?
   addressCountry         String?
+  rooms                  Float
+  squareFootage          Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -127,6 +130,7 @@ enum BookingStatus {
   IN_PROGRESS
   CANCELLED
   COMPLETED
+  ON_WAY
 }
 
 enum PricingModel {

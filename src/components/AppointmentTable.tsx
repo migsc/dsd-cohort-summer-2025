@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "./ui/button";
+import { BookingStatus } from "prisma/generated";
 
 //ADD DUMMY DATA HERE FOR NOW
 // const dummyAppointments = [
@@ -131,23 +132,24 @@ type Customer = {
   id: string
   name: string
   email: string
-  phone: string
-}
-type Booking = {
-  id: string;
-  date: string;
-  timeSlot: string;
-  serviceName: string;
-  status: string;
-  notes: string | null;
-  serviceId: string;
-  customer: Customer;
 }
 
+type BookingInfo = {
+  id: string;
+  date: string;
+  startTime: string;
+  status: BookingStatus;
+  timeSlot: string;
+  notes: string | null;
+  serviceName: string;
+  serviceID: string;
+  customer: Customer;
+};
+
 type Props = {
-  filter: string
-  bookingInfo: Booking[];
-}
+  filter: string;
+  bookingInfo: BookingInfo[]; // ✅ Not Booking[]
+};
 // NEED TO MAKE IT TYPE SAFE
 const colorMapping = {
   CONFIRMED: "bg-blue-600",
@@ -218,7 +220,7 @@ export default function AppointmentTable({filter, bookingInfo}: Props) {
                           {booking.customer.name}
                         </h1>
                         <h2 className="text-blue-600">
-                          #{booking.serviceId}
+                          #{booking.serviceID}
                         </h2>
                       </div>
                       <div className="pl-4">
@@ -233,7 +235,7 @@ export default function AppointmentTable({filter, bookingInfo}: Props) {
                       <section className="flex flex-col gap-2">
                         <h3 className="font-bold">Contact Info</h3>
                         <p className="text-sm">
-                          {booking.customer.phone}
+                          {"No phone number"}
                         </p>
                         <p className="text-sm">
                           {booking.customer.email}

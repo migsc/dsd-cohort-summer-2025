@@ -1,12 +1,17 @@
 import React from "react";
 import AppointmentTable from "@/components/AppointmentTable";
-import { getBusinessWithCustomers } from "@/lib/queries/getBusinessWithCustomer";
+import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries";
+type Props = {
+  params: {
+    businessSlug: string;
+  };
+};
 
-export default async function Appointments({params}:{params: {businessSlug: string} }){
-  const businessData = await getBusinessWithCustomers(params.businessSlug)
+export default async function Appointments({ params }: Props) {
+  const bookings = await getBookingsWithServiceAndCustomer(params.businessSlug);
 
-  if(!businessData){
-    return <div>Business Not Found.</div>
+  if (!bookings || bookings.length === 0) {
+    return <div>Business Not Found.</div>;
   }
 
 
@@ -16,10 +21,27 @@ export default async function Appointments({params}:{params: {businessSlug: stri
         <h1 className="text-3xl">Appointments</h1>
       </header>
 
-      <main className="p-6 flex flex-col gap-6">
+      <main className="flex flex-col gap-6 p-6">
         {/* Approved Orders */}
         <section className="bg-background height-full w-5/6 rounded-md p-4">
-          <AppointmentTable filter="Approved" bookingInfo={businessData.bookings} />
+            <AppointmentTable
+    filter="Approved"
+    bookingInfo={bookings.map(booking => ({
+      id: booking.id,
+      date: booking.date,
+      startTime: booking.startTime,
+      status: booking.status,
+      timeSlot: booking.startTime, // <-- timeSlot? not in your model
+      notes: booking.notes,
+      serviceName: booking.service?.name ?? "Unknown",
+      serviceID: booking.service?.id,
+      customer:{
+        id: booking.customer.id,
+        name: booking.customer.user?.name ?? "No Name", 
+        email: booking.customer.user?.email ?? "No Email", 
+      } // <-- customer.name not in model
+    }))}
+  />
         </section>
       </main>
     </>
