@@ -57,13 +57,16 @@ export default async function OurServices(props: PageProps) {
       {(!session || !session.user) ? (
         <LoggedOutPortalHeader pageName="Our Services"></LoggedOutPortalHeader>
       ) : (
-        <PortalHeader pageName="Our Services" userName="Jane Doe"></PortalHeader>
+        <PortalHeader 
+        pageName="Our Services" 
+        userName={session.user.name || "Customer"}
+        />
       )}
-      <h2 className="mb-4 mt-2 text-center text-2xl">
+      <h2 className="mb-1 md:mb-4 mt-2 text-center text-lg md:text-2xl">
         {business.businessName}
       </h2>
 
-      <p className="text-center">{business.businessDescription}</p>
+      <p className="text-center text-base">{business.businessDescription}</p>
 
       <div className="my-5 flex w-full justify-center">
         <SearchBar placeholder="Search services..." />
