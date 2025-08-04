@@ -3,7 +3,9 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SearchBar from "@/components/ui/custom/searchbar";
 import prisma from "@/lib/prisma";
-import PortalHeader from "@/components/ui/custom/portalHeader";
+import { LoggedOutPortalHeader, PortalHeader } from "@/components/ui/custom/portalHeader";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 interface PageProps {
   params: Promise<{
@@ -31,10 +33,6 @@ export default async function OurServices(props: PageProps) {
     if (!business) {
       return (
         <div>
-          {/* <PortalHeader
-            pageName="Our Services"
-            userName="Jane Doe"
-          ></PortalHeader> */}
           <div>Business not found for slug: {businessSlug}</div>
         </div>
       );
@@ -51,14 +49,24 @@ export default async function OurServices(props: PageProps) {
 
   console.log(business.businessName);
 
+  // check if logged in
+  const session = await auth.api.getSession({ headers: await headers() });
+
   return (
     <div className="mx-1 sm:mx-10">
-      <PortalHeader pageName="Our Services" userName="Jane Doe"></PortalHeader>
-      <h2 className="mb-4 mt-2 text-center text-2xl">
+      {(!session || !session.user) ? (
+        <LoggedOutPortalHeader pageName="Our Services"></LoggedOutPortalHeader>
+      ) : (
+        <PortalHeader 
+        pageName="Our Services" 
+        userName={session.user.name || "Customer"}
+        />
+      )}
+      <h2 className="mb-1 md:mb-4 mt-2 text-center text-lg md:text-2xl">
         {business.businessName}
       </h2>
 
-      <p className="text-center text-black">{business.businessDescription}</p>
+      <p className="text-center text-base">{business.businessDescription}</p>
 
       <div className="my-5 flex w-full justify-center">
         <SearchBar placeholder="Search services..." />
