@@ -38,6 +38,19 @@ import {
   type BusinessFormData,
 } from "./schema/business.schema";
 
+// TEMP. Its the same function that generates in the backend so it may just stay this way.
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+}
+
 export default function BusinessOnboarding() {
   const router = useRouter();
   const form = useForm({
@@ -46,6 +59,7 @@ export default function BusinessOnboarding() {
       onSubmit: BusinessOnboardingSchema,
     },
     onSubmit: async ({ value }) => {
+      const businessSlug = slugify(value.businessName);
       try {
         const response = await fetch("/api/onboarding/business", {
           method: "POST",
@@ -60,7 +74,7 @@ export default function BusinessOnboarding() {
           console.log(responseError);
         }
         toast.success("Business onboarding successful!");
-        router.push("/business");
+        router.push(`/${businessSlug}/admin`);
       } catch (err) {
         console.log(err);
       }

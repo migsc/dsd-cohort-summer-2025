@@ -92,6 +92,39 @@ export default function BookingForm({
       } catch (error) {
         console.log(error);
       }
+
+      // ***************************************** //
+      try {
+        const HARDCODED_PRICE_CENTS = 21400;
+
+        const HARDCODED_DEFAULTS = {
+          serviceType: serviceName,
+          bedrooms: 3,
+          addons: ["Window Cleaning", "Oven Cleaning"],
+          customerEmail: "test@example.com",
+        };
+        const response = await fetch("/api/stripe/generate-stripe-checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...HARDCODED_DEFAULTS,
+            totalAmountInCents: HARDCODED_PRICE_CENTS,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to initiate checkout.");
+        }
+
+        const data = await response.json();
+        console.log("data: ", data);
+        window.location.href = data.url;
+      } catch (err: any) {
+        console.log(err);
+      }
     },
   });
 

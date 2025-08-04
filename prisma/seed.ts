@@ -28,22 +28,20 @@ async function main() {
   await prisma.verification.deleteMany();
   console.log("Cleared existing data.");
 
+  // --- Create Admin User and Business ---
   const adminEmail = "admin@example.com";
   const adminPassword = "password123";
   const adminName = "Admin Business Owner";
   const adminBusinessName = "Admin Cleaning Co.";
 
-  console.log(`Creating admin user via Better Auth: ${adminEmail}`);
-  let adminUser;
-  let adminBusiness;
+  let adminUser: { id: string; email: string; name: string } | undefined;
+  let adminBusiness:
+    | Awaited<ReturnType<typeof prisma.business.create>>
+    | undefined;
 
   try {
-    const adminUserResult = await auth.api.signUpEmail({
-      body: {
-        email: adminEmail,
-        password: adminPassword,
-        name: adminName,
-      },
+    await auth.api.signUpEmail({
+      body: { email: adminEmail, password: adminPassword, name: adminName },
     });
 
     adminUser = await prisma.user.findUniqueOrThrow({
@@ -78,24 +76,85 @@ async function main() {
           "A premier cleaning service managed by the app owner.",
         coreServices: [
           {
+            id: "std-home-clean-001",
             name: "Standard Home Cleaning",
             description: "Regular cleaning for homes.",
-            durationMin: 2,
-            durationMax: 4,
+            durationMin: 120,
+            durationMax: 240,
             typicalCleanersAssigned: 2,
             pricingModel: "Hourly",
             priceMin: 50,
             priceMax: 100,
           },
           {
+            id: "deep-clean-001",
             name: "Deep Clean",
             description: "Thorough, detailed cleaning.",
-            durationMin: 4,
-            durationMax: 8,
+            durationMin: 240,
+            durationMax: 480,
             typicalCleanersAssigned: 3,
             pricingModel: "Per Job",
             priceMin: 200,
             priceMax: 400,
+          },
+          // --- 5 NEW CORE SERVICES ---
+          {
+            id: "office-clean-001",
+            name: "Office Cleaning",
+            description:
+              "Daily or weekly cleaning for small to medium offices.",
+            durationMin: 90,
+            durationMax: 180,
+            typicalCleanersAssigned: 1,
+            pricingModel: "Monthly Contract",
+            priceMin: 300,
+            priceMax: 800,
+          },
+          {
+            id: "move-in-out-clean-001",
+            name: "Move-In/Out Cleaning",
+            description:
+              "Comprehensive cleaning for empty homes before/after moving.",
+            durationMin: 300,
+            durationMax: 600,
+            typicalCleanersAssigned: 3,
+            pricingModel: "Per Sq Ft",
+            priceMin: 400,
+            priceMax: 1000,
+          },
+          {
+            id: "post-construction-clean-001",
+            name: "Post-Construction Clean-Up",
+            description:
+              "Removal of debris and deep cleaning after construction.",
+            durationMin: 480,
+            durationMax: 960,
+            typicalCleanersAssigned: 4,
+            pricingModel: "Per Project",
+            priceMin: 800,
+            priceMax: 2500,
+          },
+          {
+            id: "carpet-shampoo-001",
+            name: "Carpet Shampoo & Steam",
+            description: "Deep cleaning and sanitization of carpets.",
+            durationMin: 60,
+            durationMax: 240,
+            typicalCleanersAssigned: 1,
+            pricingModel: "Per Room",
+            priceMin: 75,
+            priceMax: 200,
+          },
+          {
+            id: "window-wash-001",
+            name: "Window Washing",
+            description: "Interior and exterior window cleaning.",
+            durationMin: 60,
+            durationMax: 300,
+            typicalCleanersAssigned: 1,
+            pricingModel: "Per Window",
+            priceMin: 10,
+            priceMax: 20,
           },
         ],
         operatingHours: {
@@ -130,107 +189,240 @@ async function main() {
     );
   } catch (error: any) {
     console.error(`Error creating admin user or business: ${error.message}`);
+    process.exit(1);
   }
 
-  const customerEmail = "customer@example.com";
-  const customerPassword = "password123";
-  const customerName = "Regular Customer User";
+  // --- Create Multiple Customer Accounts and Bookings ---
+  const numCustomers = 10;
+  const customersAndProfiles = [];
 
-  console.log(`Creating customer user via Better Auth: ${customerEmail}`);
-  let customerUser;
-  let customerProfile;
+  console.log(`Creating ${numCustomers} customer users and profiles...`);
+  for (let i = 1; i <= numCustomers; i++) {
+    const custEmail = `customer${i}@example.com`;
+    const custName = `Customer ${i}`;
+    const custPassword = "password123";
 
-  try {
-    const customerUserResult = await auth.api.signUpEmail({
-      body: {
-        email: customerEmail,
-        password: customerPassword,
-        name: customerName,
-      },
-    });
+    try {
+      await auth.api.signUpEmail({
+        body: { email: custEmail, password: custPassword, name: custName },
+      });
 
-    customerUser = await prisma.user.findUniqueOrThrow({
-      where: { email: customerEmail },
-      select: { id: true, email: true, name: true },
-    });
+      const user = await prisma.user.findUniqueOrThrow({
+        where: { email: custEmail },
+        select: { id: true, email: true, name: true },
+      });
 
-    customerProfile = await prisma.customer.create({
-      data: {
-        userId: customerUser.id,
-        preferredContactMethod: "Email",
-        addressStreet: "456 Oak Ave",
-        addressCity: "Anytown",
-        addressState: "CA",
-      },
-    });
-
-    console.log("Created customer user and profile:", customerUser.email);
-  } catch (error: any) {
-    console.error(`Error creating customer user or profile: ${error.message}`);
+      const customerProfile = await prisma.customer.create({
+        data: {
+          userId: user.id,
+          preferredContactMethod: i % 2 === 0 ? "Phone" : "Email",
+          addressStreet: `${100 + i} Pine St`,
+          addressCity: "Clientville",
+          addressState: "TX",
+          addressZip: `7500${i}`,
+        },
+      });
+      customersAndProfiles.push({ user, customerProfile });
+      console.log(`- Created customer: ${custEmail}`);
+    } catch (error: any) {
+      console.error(`- Error creating customer ${custEmail}: ${error.message}`);
+    }
   }
 
-  // --- ADD BOOKINGS ---
-  if (adminBusiness && customerProfile) {
-    console.log("Creating bookings...");
+  // --- Create 10 Bookings ---
+  if (adminBusiness && customersAndProfiles.length > 0) {
+    console.log("Creating 10 bookings...");
 
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    const dayAfterTomorrow = new Date(today);
-    dayAfterTomorrow.setDate(today.getDate() + 2);
+    const services = adminBusiness.coreServices;
+    const bookingPromises = [];
 
-    await prisma.booking.create({
-      data: {
-        serviceName: "Standard Home Cleaning",
-        date: tomorrow.toISOString().split("T")[0],
-        timeSlot: "10:00 AM - 12:00 PM",
-        notes: "First booking test - standard service.",
-        serviceId: "std-clean-001",
-        serviceDuration: "2 hours",
-        servicePrice: "100.00",
-        status: BookingStatus.PENDING,
-        customerId: customerProfile.id,
-        businessId: adminBusiness.id,
-      },
-    });
+    const getDateString = (daysOffset: number) => {
+      const d = new Date();
+      d.setDate(d.getDate() + daysOffset);
+      return d.toISOString().split("T")[0];
+    };
 
-    await prisma.booking.create({
-      data: {
-        serviceName: "Deep Clean",
-        date: dayAfterTomorrow.toISOString().split("T")[0],
-        timeSlot: "01:00 PM - 05:00 PM",
-        notes: "Second booking test - deep clean for a larger house.",
-        serviceId: "deep-clean-001",
-        serviceDuration: "4 hours",
-        servicePrice: "350.00",
-        status: BookingStatus.CONFIRMED,
-        customerId: customerProfile.id,
-        businessId: adminBusiness.id,
-      },
-    });
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[0].name,
+          date: getDateString(1),
+          timeSlot: "09:00 AM - 11:00 AM",
+          notes: "Initial booking by customer 1.",
+          serviceId: services[0].id,
+          serviceDuration: `${services[0].durationMin}-${services[0].durationMax} mins`,
+          servicePrice: `$${services[0].priceMin}-${services[0].priceMax} ${services[0].pricingModel}`,
+          status: BookingStatus.PENDING,
+          customerId: customersAndProfiles[0].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
 
-    await prisma.booking.create({
-      data: {
-        serviceName: "Standard Home Cleaning",
-        date: tomorrow.toISOString().split("T")[0],
-        timeSlot: "03:00 PM - 05:00 PM",
-        notes: "Cancelled booking example.",
-        serviceId: "std-clean-002",
-        serviceDuration: "2 hours",
-        servicePrice: "100.00",
-        status: BookingStatus.CANCELED,
-        customerId: customerProfile.id,
-        businessId: adminBusiness.id,
-      },
-    });
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[1].name,
+          date: getDateString(2),
+          timeSlot: "01:00 PM - 05:00 PM",
+          notes: "Complex deep clean.",
+          serviceId: services[1].id,
+          serviceDuration: `${services[1].durationMin}-${services[1].durationMax} mins`,
+          servicePrice: `$${services[1].priceMin}-${services[1].priceMax} ${services[1].pricingModel}`,
+          status: BookingStatus.CONFIRMED,
+          customerId: customersAndProfiles[1].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
 
-    console.log("Bookings created successfully.");
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[2].name,
+          date: getDateString(3),
+          timeSlot: "10:00 AM - 01:00 PM",
+          notes: "Weekly office cleaning.",
+          serviceId: services[2].id,
+          serviceDuration: `${services[2].durationMin}-${services[2].durationMax} mins`,
+          servicePrice: `$${services[2].priceMin}-${services[2].priceMax} ${services[2].pricingModel}`,
+          status: BookingStatus.PENDING,
+          customerId: customersAndProfiles[2].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    // Booking 4: Move-In/Out Cleaning (Customer 4, 4 days from now, Confirmed)
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[3].name,
+          date: getDateString(4),
+          timeSlot: "09:00 AM - 05:00 PM",
+          notes: "Post-tenant move-out clean.",
+          serviceId: services[3].id,
+          serviceDuration: `${services[3].durationMin}-${services[3].durationMax} mins`,
+          servicePrice: `$${services[3].priceMin}-${services[3].priceMax} ${services[3].pricingModel}`,
+          status: BookingStatus.CONFIRMED,
+          customerId: customersAndProfiles[3].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[4].name,
+          date: getDateString(5),
+          timeSlot: "08:00 AM - 06:00 PM",
+          notes: "Cancelled due to project delay.",
+          serviceId: services[4].id,
+          serviceDuration: `${services[4].durationMin}-${services[4].durationMax} mins`,
+          servicePrice: `$${services[4].priceMin}-${services[4].priceMax} ${services[4].pricingModel}`,
+          status: BookingStatus.CANCELED,
+          customerId: customersAndProfiles[4].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    // Booking 6: Carpet Shampoo & Steam (Customer 6, 6 days from now, Completed)
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[5].name, // services[5] is the 6th service
+          date: getDateString(6),
+          timeSlot: "02:00 PM - 04:00 PM",
+          notes: "Standard carpet clean for living room.",
+          serviceId: services[5].id,
+          serviceDuration: `${services[5].durationMin}-${services[5].durationMax} mins`,
+          servicePrice: `$${services[5].priceMin}-${services[5].priceMax} ${services[5].pricingModel}`,
+          status: BookingStatus.COMPLETED,
+          customerId: customersAndProfiles[5].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[6].name, // services[6] is the 7th service
+          date: getDateString(7),
+          timeSlot: "11:00 AM - 01:00 PM",
+          notes: "Exterior windows for a two-story house.",
+          serviceId: services[6].id,
+          serviceDuration: `${services[6].durationMin}-${services[6].durationMax} mins`,
+          servicePrice: `$${services[6].priceMin}-${services[6].priceMax} ${services[6].pricingModel}`,
+          status: BookingStatus.IN_PROGRESS,
+          customerId: customersAndProfiles[6].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    // Booking 8: Standard Home Cleaning (Customer 8, 8 days from now)
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[0].name,
+          date: getDateString(8),
+          timeSlot: "09:00 AM - 01:00 PM",
+          notes: "Recurring service, every other week.",
+          serviceId: services[0].id,
+          serviceDuration: `${services[0].durationMin}-${services[0].durationMax} mins`,
+          servicePrice: `$${services[0].priceMin}-${services[0].priceMax} ${services[0].pricingModel}`,
+          status: BookingStatus.CONFIRMED,
+          customerId: customersAndProfiles[7].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    // Booking 9: Deep Clean (Customer 9, 9 days from now)
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[1].name,
+          date: getDateString(9),
+          timeSlot: "10:00 AM - 03:00 PM",
+          notes: "Special request for kitchen and bathroom deep clean.",
+          serviceId: services[1].id,
+          serviceDuration: `${services[1].durationMin}-${services[1].durationMax} mins`,
+          servicePrice: `$${services[1].priceMin}-${services[1].priceMax} ${services[1].pricingModel}`,
+          status: BookingStatus.PENDING,
+          customerId: customersAndProfiles[8].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    bookingPromises.push(
+      prisma.booking.create({
+        data: {
+          serviceName: services[2].name,
+          date: getDateString(10),
+          timeSlot: "04:00 PM - 07:00 PM",
+          notes: "Evening office cleaning after hours.",
+          serviceId: services[2].id,
+          serviceDuration: `${services[2].durationMin}-${services[2].durationMax} mins`,
+          servicePrice: `$${services[2].priceMin}-${services[2].priceMax} ${services[2].pricingModel}`,
+          status: BookingStatus.PENDING,
+          customerId: customersAndProfiles[9].customerProfile.id,
+          businessId: adminBusiness.id,
+        },
+      })
+    );
+
+    await Promise.all(bookingPromises);
+    console.log(`Created ${bookingPromises.length} bookings successfully.`);
   } else {
     console.warn(
-      "Skipping booking creation: Admin business or customer profile not created successfully."
+      "Skipping booking creation: Admin business or customer profiles not created successfully."
     );
   }
-  // --- END ADD BOOKINGS ---
 
   console.log("Seeding finished.");
 }
