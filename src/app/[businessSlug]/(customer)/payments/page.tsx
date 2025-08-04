@@ -1,4 +1,4 @@
-import PortalHeader from '@/components/ui/custom/portalHeader';
+import { PortalHeader } from '@/components/ui/custom/portalHeader';
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

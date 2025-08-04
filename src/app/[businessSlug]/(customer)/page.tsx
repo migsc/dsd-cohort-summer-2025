@@ -3,7 +3,9 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SearchBar from "@/components/ui/custom/searchbar";
 import prisma from "@/lib/prisma";
-import PortalHeader from "@/components/ui/custom/portalHeader";
+import { LoggedOutPortalHeader, PortalHeader } from "@/components/ui/custom/portalHeader";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 interface PageProps {
   params: Promise<{
@@ -47,9 +49,16 @@ export default async function OurServices(props: PageProps) {
 
   console.log(business.businessName);
 
+  // check if logged in
+  const session = await auth.api.getSession({ headers: await headers() });
+
   return (
     <div className="mx-1 sm:mx-10">
-      <PortalHeader pageName="Our Services" userName="Jane Doe"></PortalHeader>
+      {(!session || !session.user) ? (
+        <LoggedOutPortalHeader pageName="Our Services"></LoggedOutPortalHeader>
+      ) : (
+        <PortalHeader pageName="Our Services" userName="Jane Doe"></PortalHeader>
+      )}
       <h2 className="mb-4 mt-2 text-center text-2xl">
         {business.businessName}
       </h2>

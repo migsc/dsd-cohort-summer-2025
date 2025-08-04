@@ -5,7 +5,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import PortalHeader from '@/components/ui/custom/portalHeader';
+import { PortalHeader } from '@/components/ui/custom/portalHeader';
 import { PreviousBookingRow } from '@/components/ui/custom/tableRows'
 import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 import { auth } from "@/lib/auth";
