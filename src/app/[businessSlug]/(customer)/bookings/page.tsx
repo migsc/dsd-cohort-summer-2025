@@ -37,7 +37,7 @@ export default async function MyBookings() {
     const currentBooking = activeBookings.length > 0 ? activeBookings[0] : null;
 
     return (
-    <div>
+    <div className="mx-1 sm:mx-10">
         <PortalHeader 
         pageName='My Bookings' 
         userName={session.user.name || "Customer"}

@@ -31,10 +31,6 @@ export default async function OurServices(props: PageProps) {
     if (!business) {
       return (
         <div>
-          {/* <PortalHeader
-            pageName="Our Services"
-            userName="Jane Doe"
-          ></PortalHeader> */}
           <div>Business not found for slug: {businessSlug}</div>
         </div>
       );

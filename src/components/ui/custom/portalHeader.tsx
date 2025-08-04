@@ -1,6 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Notifications from "./notifications";
+// import Notifications from "./notifications";
 
 interface PortalHeaderProps {
   pageName?: string;
@@ -22,7 +22,7 @@ export default function PortalHeader({
       {/* Notifications */}
       <div className="flex items-center gap-3">
         {/* ***TODO: MAKE NOTIFICATIONS COMPONENT THAT UPDATES */}
-        <Notifications></Notifications>
+        {/* <Notifications></Notifications> */}
 
         {/* Profile */}
         {/* ***TODO: MAKE PROFILE DYNAMIC COMPONENT, PULL FROM DB */}
