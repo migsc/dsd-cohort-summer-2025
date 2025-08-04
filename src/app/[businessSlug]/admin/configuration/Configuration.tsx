@@ -591,6 +591,8 @@ export default function Cofiguration({
             <div>
               {activeTab === "services" && (
                 <div>
+                  <h3 className="mb-4 text-lg font-semibold">Core Services</h3>
+
                   <form.Field
                     name="coreServices"
                     mode="array"
@@ -604,7 +606,10 @@ export default function Cofiguration({
                         ) : (
                           coreServicesField.state.value.map(
                             (serviceItem, index) => (
-                              <div key={serviceItem.id} className="mb-8">
+                              <div
+                                key={serviceItem.id}
+                                className="bg-accent/20 mt-6 rounded-md border p-4"
+                              >
                                 <div className="flex items-center justify-between">
                                   <h4 className="mb-3 font-semibold">
                                     Core Service {index + 1}
@@ -762,6 +767,7 @@ export default function Cofiguration({
                                       </div>
                                     )}
                                   />
+
                                   <form.Field
                                     name={`coreServices[${index}].pricingModel`}
                                     children={field => (
@@ -809,56 +815,92 @@ export default function Cofiguration({
                                       </div>
                                     )}
                                   />
+
                                   <form.Field
-                                    name={`coreServices[${index}].priceMin`}
-                                    children={field => (
-                                      <div className="space-y-2">
-                                        <Label htmlFor={field.name}>
-                                          Minimum Price ($)
-                                        </Label>
-                                        <Input
-                                          id={field.name}
-                                          name={field.name}
-                                          type="number"
-                                          step="1"
-                                          min={0}
-                                          value={field.state.value}
-                                          onBlur={field.handleBlur}
-                                          onChange={e =>
-                                            field.handleChange(
-                                              Number(e.target.value)
-                                            )
-                                          }
-                                          disabled={!isEditing}
-                                        />
-                                      </div>
-                                    )}
+                                    name={`coreServices[${index}].rate`}
+                                    children={field => {
+                                      return (
+                                        <div className="space-y-2">
+                                          <Label htmlFor={field.name}>
+                                            Rate
+                                          </Label>
+                                          <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            type="number"
+                                            min={0}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={e =>
+                                              field.handleChange(
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            disabled={!isEditing}
+                                          />
+                                        </div>
+                                      );
+                                    }}
                                   />
-                                  <form.Field
-                                    name={`coreServices[${index}].priceMax`}
-                                    children={field => (
-                                      <div className="space-y-2">
-                                        <Label htmlFor={field.name}>
-                                          Maximum Price ($)
-                                        </Label>
-                                        <Input
-                                          id={field.name}
-                                          name={field.name}
-                                          type="number"
-                                          step="1"
-                                          min={0}
-                                          value={field.state.value}
-                                          onBlur={field.handleBlur}
-                                          onChange={e =>
-                                            field.handleChange(
-                                              Number(e.target.value)
-                                            )
-                                          }
-                                          disabled={!isEditing}
-                                        />
-                                      </div>
-                                    )}
-                                  />
+                                </div>
+
+                                {/* Marketing Prices Section */}
+                                <div className="mt-8 rounded-md border border-dashed p-4">
+                                  <h4 className="mb-4 text-center text-lg font-semibold text-gray-700">
+                                    Marketing Prices (Display Only)
+                                  </h4>
+                                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <form.Field
+                                      name={`coreServices[${index}].priceMin`}
+                                      children={field => (
+                                        <div className="space-y-2">
+                                          <Label htmlFor={field.name}>
+                                            Minimum Price ($)
+                                          </Label>
+                                          <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            type="number"
+                                            step="1"
+                                            min={0}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={e =>
+                                              field.handleChange(
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            disabled={!isEditing}
+                                          />
+                                        </div>
+                                      )}
+                                    />
+                                    <form.Field
+                                      name={`coreServices[${index}].priceMax`}
+                                      children={field => (
+                                        <div className="space-y-2">
+                                          <Label htmlFor={field.name}>
+                                            Maximum Price ($)
+                                          </Label>
+                                          <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            type="number"
+                                            step="1"
+                                            min={0}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={e =>
+                                              field.handleChange(
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            disabled={!isEditing}
+                                          />
+                                        </div>
+                                      )}
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             )
