@@ -24,7 +24,6 @@ export default function SignUpForm({
   if (business) {
     redirectURL = `/onboarding/customer?business=${business}`;
   }
-  console.log("sign-up, searchParams: ", business);
 
   const form = useForm({
     defaultValues: {

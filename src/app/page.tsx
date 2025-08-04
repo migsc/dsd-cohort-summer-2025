@@ -8,6 +8,10 @@ import { HamburgerMenu } from "@/components/HamburgerMenu";
 export default function Home() {
   const router = useRouter();
 
+  const handleLoginClick = () => {
+    router.push("/login");
+  };
+
   return (
     <header className="grid-background flex h-screen w-screen flex-col items-center md:gap-7">
       <nav className="flex w-full max-w-[2000px] justify-center p-4 px-20 md:justify-between">
@@ -28,13 +32,7 @@ export default function Home() {
             </li>
           </ul>
           <div>
-            <Button
-              onClick={() => {
-                router.push("/login?form=signin");
-              }}
-            >
-              Login
-            </Button>
+            <Button onClick={handleLoginClick}>Login</Button>
           </div>
         </div>
         {/* Hamburger Menu */}
