@@ -65,7 +65,7 @@ export default async function MyBookings() {
             />
             </div>
         </section>
-        )};
+        )}
 
         {/* No active bookings message */}
         {activeBookings.length === 0 && (
@@ -74,7 +74,7 @@ export default async function MyBookings() {
             <p>No active bookings at this time.</p>
             </div>
         </section>
-        )};
+        )}
 
         {/* Previous Bookings */}
         <h2 className="text-center font-bold text-lg mt-4 mb-2">Previous Bookings</h2>
@@ -117,7 +117,7 @@ export default async function MyBookings() {
         </Table>
         )}
     </div>
-    );
+    )
 };
 
 interface Booking {

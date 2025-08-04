@@ -58,7 +58,7 @@ export default async function OurServices(props: PageProps) {
         {business.businessName}
       </h2>
 
-      <p className="text-center text-black">{business.businessDescription}</p>
+      <p className="text-center">{business.businessDescription}</p>
 
       <div className="my-5 flex w-full justify-center">
         <SearchBar placeholder="Search services..." />
