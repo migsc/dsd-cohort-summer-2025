@@ -879,6 +879,7 @@ export default function Cofiguration({
                               priceMin: 0,
                               priceMax: 10,
                               id: crypto.randomUUID(),
+                              rate: 0,
                             })
                           }
                           disabled={!isEditing}

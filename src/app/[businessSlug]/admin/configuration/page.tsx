@@ -81,24 +81,18 @@ export default async function Cofiguration() {
       averageTravelTimeMinutes: formFieldsFromDb.averageTravelTimeMinutes,
       currentSchedulingMethod: formFieldsFromDb.currentSchedulingMethod,
 
-      logoUrl:
-        formFieldsFromDb.logoUrl === "" ? null : formFieldsFromDb.logoUrl,
-      brandColorPrimary:
-        formFieldsFromDb.brandColorPrimary === ""
-          ? null
-          : formFieldsFromDb.brandColorPrimary,
-      brandColorSecondary:
-        formFieldsFromDb.brandColorSecondary === ""
-          ? null
-          : formFieldsFromDb.brandColorSecondary,
-
+      logoUrl: formFieldsFromDb.logoUrl,
+      brandColorPrimary: formFieldsFromDb.brandColorPrimary,
+      brandColorSecondary: formFieldsFromDb.brandColorSecondary,
       preferredCustomerCommunicationMethods:
         formFieldsFromDb.preferredCustomerCommunicationMethods,
       additionalNotes: formFieldsFromDb.additionalNotes,
     };
 
-    // I MADE TOO MANY MISTAKES IN THE SCHEMAS, I HATE THIS
-    businessData = transformedDataForForm as BusinessFormData;
+    const validatedData = BusinessOnboardingSchema.parse(
+      transformedDataForForm
+    );
+    businessData = validatedData;
   } catch (err) {
     console.log(err);
     return <div>Error retrieving business profile.</div>;
