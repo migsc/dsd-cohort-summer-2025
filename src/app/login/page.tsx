@@ -8,9 +8,6 @@ import SignUpForm from "@/components/forms/sign-up-form";
 export default function LoginPage() {
   const [showSignIn, setShowSignIn] = useState(true);
 
-  return showSignIn ? (
-      <SignInForm onSwitchToSignUp={() => setShowSignIn(false)} />
-  ) : (
-      <SignUpForm onSwitchToSignIn={() => setShowSignIn(true)} />
-  );
+  return <SignUpForm onSwitchToSignIn={() => setShowSignIn(!showSignIn)} />
+      
 }
