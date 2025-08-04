@@ -1,31 +1,34 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import AppCalendar, { type CalendarEvent } from "@/components/app-calendar";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
-const tempEvents: CalendarEvent[] = [
-  {
-    title: "Standard Clean",
-    start: new Date(2025, 7, 1, 9, 0),
-    end: new Date(2025, 7, 1, 10, 0),
-    location: "101 Test St., Dallas TX 75230",
-    contact: "(469)111-1111",
-  },
-  {
-    title: "Premium Clean",
-    start: new Date(2025, 7, 2, 9, 0),
-    end: new Date(2025, 7, 2, 17, 0),
-    location: "111 Test St., Dallas TX 75230",
-    contact: "(469)111-1112",
-    allDay: true,
-  },
-];
+type Booking = {
+  id: string;
+  serviceName: string;
+  date: string;
+  timeSlot: string;
+  notes: string | null;
+};
 
-export default function Calendar() {
+type APIResponse = {
+  appointments: Booking[];
+};
+
+interface AdminPageProps {
+  params: {
+    businessSlug: string;
+  };
+}
+
+export default function Calendar({ params }: AdminPageProps) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+  const [resData, setData] = useState<APIResponse[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { businessSlug } = params;
 
   useEffect(() => {
     if (!session && !isPending) {
@@ -33,8 +36,36 @@ export default function Calendar() {
     }
   }, [session, isPending]);
 
+  useEffect(() => {
+    if (!session?.user?.id) {
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`api/${businessSlug}`);
+        if (!res.ok) {
+          throw new Error("Failed to get business slug");
+        }
+
+        const json = await res.json();
+        setData(json);
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+
+    fetchData();
+  }, [session]);
+
   if (isPending) {
     return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  if (!resData) {
+    return <div>Loadng bookings data...</div>;
   }
 
   return (
