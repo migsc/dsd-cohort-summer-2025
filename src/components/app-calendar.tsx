@@ -9,8 +9,6 @@ export type CalendarEvent = {
   title: string;
   start: Date;
   end: Date;
-  location: string;
-  contact: string;
   allDay?: boolean;
 };
 
