@@ -44,7 +44,7 @@ export default function PreviousBooking({
         <AccordionItem 
             key={bookingId} 
             value={bookingId}>
-            <AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
                 <div className="grid grid-cols-4 text-base">
                     <span>#{orderNum.toUpperCase()}</span>
                     <span>{new Date(dateFulfilled).toLocaleDateString()}</span>
