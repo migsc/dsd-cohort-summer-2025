@@ -109,8 +109,10 @@ export default async function MyBookings() {
                     year: 'numeric' 
                 })}
                 service={booking.serviceName}
-                paymentMethod="Credit Card" // ***TODO: This needs to come from payment data
+                paymentMethod="Credit Card"
                 amount={booking.servicePrice}
+                serviceId={booking.serviceId}
+                serviceDuration={booking.serviceDuration}
                 />
             ))}
             </TableBody>

@@ -6,59 +6,27 @@ import {
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
 import React from "react";
-import { RebookingForm } from "@/components/forms/book-service-form";
+import BookingForm from "@/components/forms/book-service-form";
 
-interface CurrentBookingProps {
-    orderNum: string,
-    service: string,
-    paymentMethod: 'Credit Card' | 'Cash' | 'Check',
-    amount: string,
-    status: 'Under Review' | 'Approved' | 'On The Way' | 'In Progress' | 'Completed'
-}
-
-export function CurrentBookingRow({ 
-    orderNum, 
-    service, 
-    paymentMethod, 
-    amount, 
-    status 
-}: CurrentBookingProps) {
-    return (
-        <TableRow>
-            <TableCell className="font-medium">
-                {orderNum}
-            </TableCell>
-            <TableCell>
-                {service}
-            </TableCell>
-            <TableCell>
-                {paymentMethod}
-            </TableCell>
-            <TableCell className="text-right">
-                {amount}
-            </TableCell>
-            <TableCell className="text-right">
-                {status}
-            </TableCell>
-        </TableRow>
-    )
-}
 interface PreviousBookingProps {
     bookingId: string,
     orderNum: string,
     dateFulfilled: string,
     service: string,
     paymentMethod: 'Credit Card' | 'Cash' | 'Check',
-    amount: string
+    amount: string,
+    serviceId: string,
+    serviceDuration: string
 }
 
 export function PreviousBookingRow({ 
-    bookingId,
     orderNum, 
     dateFulfilled, 
     service, 
     paymentMethod, 
-    amount 
+    amount,
+    serviceId,
+    serviceDuration
 }: PreviousBookingProps) {
     const [isRebookingModalOpen, setIsRebookingModalOpen] = useState(false);
 
@@ -91,13 +59,12 @@ export function PreviousBookingRow({
                     </Button>
                 </TableCell>
             </TableRow>
-            <RebookingForm
-                    isOpen={isRebookingModalOpen}
-                    onClose={() => setIsRebookingModalOpen(false)}
-                    bookingId={bookingId}
-                    // serviceId={id} // can demetrius get this info just from the service name? ** what is this being used for -- is it necssary for the rebook form?
-                    serviceName={service}
-                    // serviceDuration={`${durationMin}-${durationMax} mins`}
+            <BookingForm
+                isOpen={isRebookingModalOpen}
+                onClose={() => setIsRebookingModalOpen(false)}
+                serviceId={serviceId} 
+                serviceName={service}
+                serviceDuration={serviceDuration}
                     servicePrice={amount}
                   />
         </React.Fragment>
