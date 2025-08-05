@@ -10,7 +10,7 @@
 
 html,
 body {
-  @apply bg-white dark:bg-background;
+  @apply bg-background;
 }
 
  :root {
@@ -56,7 +56,7 @@ body {
    --popover: oklch(0.21 0.006 285.885);
    --popover-foreground: oklch(0.985 0 0);
    --primary: oklch(0.546 0.245 262.881);
-   --primary-foreground: oklch(0.379 0.146 265.522);
+   --primary-foreground: oklch(0.985 0 0);
    --secondary: oklch(0.274 0.006 286.033);
    --secondary-foreground: oklch(0.985 0 0);
    --muted: oklch(0.274 0.006 286.033);
@@ -81,7 +81,6 @@ body {
    --sidebar-border: oklch(1 0 0 / 10%);
    --sidebar-ring: oklch(0.488 0.243 264.376);
  }
-
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -126,11 +125,9 @@ body {
 		@apply border-border outline-ring/50;
 	}
 }
-.button-styling{
-	@apply py-3 rounded-md w-[150px] font-light bg-primary cursor-pointer
-}
-.grid-background{
-	@apply absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px];
+
+.grid-background {
+	@apply absolute inset-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px];
 }
 
 .floatAnimation {
