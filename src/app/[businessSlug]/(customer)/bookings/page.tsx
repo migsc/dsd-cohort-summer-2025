@@ -1,12 +1,6 @@
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Accordion } from "@/components/ui/accordion"
+import PreviousBooking from '@/components/ui/custom/previousBookings'
 import { PortalHeader } from '@/components/ui/custom/portalHeader';
-import { PreviousBookingRow } from '@/components/ui/custom/tableRows'
 import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -85,21 +79,10 @@ export default async function MyBookings() {
             <p>No previous bookings found.</p>
         </div>
         ) : (
-        <Table>
-            <TableHeader className="bg-blue-500">
-            <TableRow>
-                <TableHead className="w-[100px]">Order No.</TableHead>
-                <TableHead className="w-[100px]">Date Fulfilled</TableHead>
-                <TableHead>Service</TableHead>
-                <TableHead className="text-left w-[200px]">Payment Method</TableHead>
-                <TableHead className="text-left w-[120px]">Amount</TableHead>
-                <TableHead className="text-center w-[120px]">Rebook</TableHead>
-            </TableRow>
-            </TableHeader>
-            <TableBody>
-            {/* Map previous bookings to table rows */}
+        <Accordion type="multiple">
+            {/* Map previous bookings to accordion */}
             {previousBookings.map((booking) => (
-                <PreviousBookingRow 
+                <PreviousBooking
                 key={booking.id}
                 bookingId={booking.id}
                 orderNum={booking.id.slice(-6)}
@@ -108,15 +91,15 @@ export default async function MyBookings() {
                     day: '2-digit', 
                     year: 'numeric' 
                 })}
-                service={booking.serviceName}
-                paymentMethod="Credit Card"
-                amount={booking.servicePrice}
+                serviceName={booking.serviceName}
+                servicePrice={booking.servicePrice}
                 serviceId={booking.serviceId}
                 serviceDuration={booking.serviceDuration}
+                timeSlot={booking.timeSlot}
+                notes={booking.notes}
                 />
             ))}
-            </TableBody>
-        </Table>
+          </Accordion>
         )}
     </div>
     )
