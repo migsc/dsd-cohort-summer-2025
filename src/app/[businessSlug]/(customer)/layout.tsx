@@ -47,11 +47,6 @@ export default async function Layout({ children, params }: LayoutProps) {
       icon: Calendar,
     },
     {
-      title: "Payments",
-      url: `/${businessSlug}/payments`,
-      icon: CreditCard,
-    },
-    {
       title: "Settings",
       url: `/${businessSlug}/settings`,
       icon: Settings,
