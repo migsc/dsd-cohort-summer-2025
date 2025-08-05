@@ -1,16 +1,23 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Notifications from "./notifications";
+// import Notifications from "./notifications";
 
 interface PortalHeaderProps {
-  pageName: string;
-  userName: string;
+  pageName?: string;
+  userName?: string;
 }
 
-export default function PortalHeader({
-  pageName,
-  userName,
-}: PortalHeaderProps) {
+export function LoggedOutPortalHeader({ pageName }: { pageName: string }) {
+  return (
+    <header className="z-10 flex items-center justify-between gap-2 border-b p-4">
+      <div className="flex items-center gap-5">
+        <h1 className="text-center text-xl font-bold">{pageName}</h1>
+      </div>
+    </header>
+  );
+}
+
+export function PortalHeader({ pageName, userName }: PortalHeaderProps) {
   return (
     <header className="z-10 flex items-center justify-between gap-2 border-b p-4">
       <div className="flex items-center gap-5">
@@ -19,7 +26,7 @@ export default function PortalHeader({
       {/* Notifications */}
       <div className="flex items-center gap-3">
         {/* ***TODO: MAKE NOTIFICATIONS COMPONENT THAT UPDATES */}
-        <Notifications></Notifications>
+        {/* <Notifications></Notifications> */}
 
         {/* Profile */}
         {/* ***TODO: MAKE PROFILE DYNAMIC COMPONENT, PULL FROM DB */}

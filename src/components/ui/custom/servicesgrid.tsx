@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import BookingForm, {
-  type BookingFormData,
-} from "@/components/forms/book-service-form";
+import BookingForm from "@/components/forms/book-service-form";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -116,7 +114,7 @@ export function ServiceCard({
       <Card>
         <CardHeader>
           <CardTitle>
-            <h2 className="text-xl">{name}</h2>
+            <h2 className="text-lg md:text-xl">{name}</h2>
           </CardTitle>
           <CardDescription>
             <p>{description}</p>
@@ -126,7 +124,7 @@ export function ServiceCard({
           <p>
             {durationMin}-{durationMax} hours
           </p>
-          <p className="text-xl font-bold text-lime-500">
+          <p className="text-lg md:text-xl font-bold text-lime-500">
             ${priceMin}-${priceMax} {pricingModel}
           </p>
         </CardContent>

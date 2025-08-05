@@ -1,7 +1,7 @@
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod/v4";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,13 @@ export default function SignUpForm({
 }) {
   const router = useRouter();
   const { isPending } = authClient.useSession();
+  const searchParams = useSearchParams();
+
+  let redirectURL = "/onboarding";
+  const business = searchParams.get("business");
+  if (business) {
+    redirectURL = `/onboarding/customer?business=${business}`;
+  }
 
   const form = useForm({
     defaultValues: {
@@ -33,7 +40,7 @@ export default function SignUpForm({
         },
         {
           onSuccess: () => {
-            router.push("/onboarding");
+            router.push(redirectURL);
             toast.success("Sign up successful");
           },
           onError: error => {
@@ -151,7 +158,7 @@ export default function SignUpForm({
         <Button
           variant="link"
           onClick={onSwitchToSignIn}
-          className="text-indigo-600 hover:text-indigo-800"
+          className="text-secondary-foreground"
         >
           Already have an account? Sign In
         </Button>
