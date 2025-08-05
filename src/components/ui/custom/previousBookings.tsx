@@ -45,23 +45,28 @@ export default function PreviousBooking({
             key={bookingId} 
             value={bookingId}>
             <AccordionTrigger className="cursor-pointer">
-                <div className="grid grid-cols-4 text-base">
-                    <span>#{orderNum.toUpperCase()}</span>
-                    <span>{new Date(dateFulfilled).toLocaleDateString()}</span>
-                    <span>{serviceName}</span>
-                    {/* ***TODO: have this be the price they actually paid rather than the price range of the service */}
-                    <span>{servicePrice}</span>
+                <div className="text-base">
+                    <p>
+                        #{orderNum.toUpperCase()}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {new Date(dateFulfilled).toLocaleDateString()}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {serviceName}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {/* ***TODO: have this be the price they actually paid rather than the price range of the service */}
+                        {servicePrice}
+                        </p>
                 </div>
             </AccordionTrigger>
             <AccordionContent>
                 <div className="p-4 space-y-2 text-sm">
-                    <p><strong>Date:</strong> {new Date(dateFulfilled).toLocaleDateString()}</p>
-                    <p><strong>Service Type:</strong> {serviceName}</p>
-                    <p><strong>Time:</strong> {timeSlot}</p>
-                    <p><strong>Payment Method:</strong> Credit Card</p>
-                    <p><strong>Amount Paid: </strong> {servicePrice}</p>
-                    <p><strong>Duration:</strong> {serviceDuration}</p>
-                    <p><strong>Notes:</strong> {notes}</p>
+                    <p><span  className="font-bold">Date:</span> {new Date(dateFulfilled).toLocaleDateString()}</p>
+                    <p><span  className="font-bold">Service Type:</span> {serviceName}</p>
+                    <p><span  className="font-bold">Time:</span> {timeSlot}</p>
+                    <p><span  className="font-bold">Payment Method:</span> Credit Card</p>
+                    <p><span  className="font-bold">Amount Paid:</span>  {servicePrice}</p>
+                    <p><span  className="font-bold">Duration:</span> {serviceDuration}</p>
+                    <p><span  className="font-bold">Notes:</span> {notes}</p>
                     <Button 
                     onClick={handleRebook} 
                     className="cursor-pointer">
