@@ -21,9 +21,9 @@ export default function Home() {
           <img
             src="/images/small_logo.png"
             alt="Logo"
-            className=" hidden h-10 w-10 lg:block"
+            className=" hidden h-10 w-10 md:block"
           />
-          <p className="ml-2 hidden text-2xl font-bold text-blue-600 md:block">
+          <p className="ml-2 hidden text-2xl font-bold text-blue-500 md:block">
             CleanHub
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function Home() {
         <div className="w-3/4 md:flex md:w-full md:items-center md:justify-evenly ">
           {/* content */}
           <div className=" w-full max-w-[900px] md:w-1/2">
-            <hr className="mb-5 h-1.5 w-[100px] rounded-sm bg-blue-600" />
+            <hr className="mb-5 h-1.5 w-[100px] rounded-sm bg-blue-500" />
             <h1 className="mb-5 mt-3 text-6xl font-black uppercase">
               Your assistant who manages your customers cleaning needs.
             </h1>

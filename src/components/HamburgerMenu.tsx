@@ -1,20 +1,16 @@
-import { Button } from "@/components/ui/button"
-import {Separator} from "@/components/ui/separator"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import React from "react";
 import { useRouter } from "next/navigation";
 
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Navigation } from "lucide-react"
 import Link from "next/link";
 
 export function HamburgerMenu() {
@@ -22,7 +18,7 @@ export function HamburgerMenu() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-blue-600 text-white hover:bg-blue-700">
+        <Button className={buttonVariants({variant: "default"})}>
             <Menu />
         </Button>
       </SheetTrigger>
@@ -38,7 +34,7 @@ export function HamburgerMenu() {
             <Link href="/" className="hover:text-blue-600">Contact</Link>
         </nav>
         <SheetFooter>
-            <Button onClick={()=>{router.push("/login")}} className="py-3 rounded-md text-white font-light bg-blue-600 cursor-pointer hover:text-black">Login</Button>
+            <Button onClick={()=>{router.push("/login")}} className={buttonVariants({variant: "default"})}>Login</Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

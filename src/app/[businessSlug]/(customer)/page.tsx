@@ -23,18 +23,15 @@ export default async function OurServices(props: PageProps) {
   const query = searchParams?.query || "";
 
   let business;
-  let coreService;
   try {
     business = await prisma.business.findFirst({
       where: {
         businessSlug: businessSlug,
       },
-    });
-    coreService = await prisma.coreService.findMany({
-      where:{
-        businessId: business?.id
+      include:{
+        coreServices: true,
       }
-    })
+    });
 
     if (!business) {
       return (
@@ -79,7 +76,7 @@ export default async function OurServices(props: PageProps) {
       </div>
       <Suspense fallback={<Skeleton className="h-4 w-[250px]" />}>
         <ServicesGrid
-          services={coreService}
+          services={business.coreServices}
           query={query}
         ></ServicesGrid>
       </Suspense>
