@@ -93,7 +93,6 @@ export default async function MyBookings() {
                 <TableHead>Service</TableHead>
                 <TableHead className="text-left w-[200px]">Payment Method</TableHead>
                 <TableHead className="text-left w-[120px]">Amount</TableHead>
-                <TableHead className="text-center w-[120px]">Rating</TableHead>
                 <TableHead className="text-center w-[120px]">Rebook</TableHead>
             </TableRow>
             </TableHeader>
@@ -102,6 +101,7 @@ export default async function MyBookings() {
             {previousBookings.map((booking) => (
                 <PreviousBookingRow 
                 key={booking.id}
+                bookingId={booking.id}
                 orderNum={booking.id.slice(-6)}
                 dateFulfilled={new Date(booking.date).toLocaleDateString('en-US', { 
                     month: '2-digit', 
