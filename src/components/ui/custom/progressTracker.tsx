@@ -12,7 +12,7 @@ import { Progress } from '@/components/ui/progress';
 interface BookingProgressTrackerProps {
   orderNum: string;
   service: string;
-  amount: string;
+  servicePrice: string;
   currentStatus: 'PENDING' | 'CONFIRMED' | 'ON_WAY' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';
   expectedCompletion?: string;
   placedDate?: string;
@@ -21,7 +21,7 @@ interface BookingProgressTrackerProps {
 export default function BookingProgressTracker({ 
   orderNum, 
   service, 
-  amount, 
+  servicePrice, 
   currentStatus, 
   expectedCompletion,
   placedDate 
@@ -46,7 +46,7 @@ export default function BookingProgressTracker({
   const currentStepIndex = statusOrder[currentStatus] || 0;
 
   return (
-    <Card className="border border-gray-500 p-3 sm:p-6 mb-6 shadow-sm">
+    <Card className="border border-gray-500 shadow-sm px-2 md:p-6 mb-5 w-full">
       {/* Order Header */}
       <CardHeader>
         <CardTitle className="text-center text-base">
@@ -59,7 +59,7 @@ export default function BookingProgressTracker({
       
       <CardContent className="text-center px-0 sm:px-6 pb-3 sm:pb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-4 text-sm">
-          <span className="font-semibold text-base sm:text-lg">{amount}</span>
+          <span className="font-semibold text-sm md:text-lg">{servicePrice}</span>
           {placedDate && <span className="text-xs sm:text-sm">Placed: {placedDate}</span>}
         </div>
         {expectedCompletion && (

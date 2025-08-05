@@ -45,7 +45,7 @@ export default function PreviousBooking({
             key={bookingId} 
             value={bookingId}>
             <AccordionTrigger className="cursor-pointer">
-                <div className="text-base">
+                <div className="text-sm md:text-base">
                     <p>
                         #{orderNum.toUpperCase()}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

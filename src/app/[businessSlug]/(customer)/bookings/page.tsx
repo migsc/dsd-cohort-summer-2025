@@ -1,6 +1,7 @@
 import { Accordion } from "@/components/ui/accordion"
 import PreviousBooking from '@/components/ui/custom/previousBookings'
 import { PortalHeader } from '@/components/ui/custom/portalHeader';
+import { Separator } from '@/components/ui/separator';
 import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -39,24 +40,24 @@ export default async function MyBookings() {
 
         {/* In Progress Bookings */}
         {currentBooking && (
-        <section className="w-full flex justify-center mt-5">
-            <div className="w-2xl">
-            <BookingProgressTracker 
-                orderNum={currentBooking.id.slice(-6).toUpperCase()} // Use last 6 chars of ID as order number
-                service={currentBooking.serviceName}
-                amount={currentBooking.servicePrice}
-                currentStatus={currentBooking.status}
-                expectedCompletion={`${currentBooking.timeSlot} ${new Date(currentBooking.date).toLocaleDateString('en-US', { 
-                month: 'long', 
-                day: 'numeric', 
-                year: 'numeric' 
-                })}`}
-                placedDate={new Date(currentBooking.createdAt).toLocaleDateString('en-US', { 
-                month: 'long', 
-                day: 'numeric', 
-                year: 'numeric' 
-                })}
-            />
+        <section className="mt-5">
+            <div className="flex justify-center">
+              <BookingProgressTracker 
+                  orderNum={currentBooking.id.slice(-6).toUpperCase()} // Use last 6 chars of ID as order number
+                  service={currentBooking.serviceName}
+                  servicePrice={currentBooking.servicePrice}
+                  currentStatus={currentBooking.status}
+                  expectedCompletion={`${currentBooking.timeSlot} ${new Date(currentBooking.date).toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  day: 'numeric', 
+                  year: 'numeric' 
+                  })}`}
+                  placedDate={new Date(currentBooking.createdAt).toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  day: 'numeric', 
+                  year: 'numeric' 
+                  })}
+              />
             </div>
         </section>
         )}
@@ -69,6 +70,8 @@ export default async function MyBookings() {
             </div>
         </section>
         )}
+        
+        <Separator />
 
         {/* Previous Bookings */}
         <h2 className="text-center font-bold text-lg mt-4 mb-2">Previous Bookings</h2>
