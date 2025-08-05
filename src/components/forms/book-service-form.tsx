@@ -351,7 +351,7 @@ export function RebookingForm({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Book {serviceName}
+            Rebook {serviceName}
           </DialogTitle>
           <DialogDescription>
             Select your preferred date and time for this service. We'll confirm
