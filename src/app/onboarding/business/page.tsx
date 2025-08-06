@@ -438,6 +438,7 @@ export default function BusinessOnboarding() {
           <Separator />
 
           {/* === Section: Core Services === */}
+
           <div>
             <h3 className="mb-4 text-lg font-semibold">Core Services</h3>
 
@@ -464,7 +465,7 @@ export default function BusinessOnboarding() {
                             type="button"
                             variant="destructive"
                             size="sm"
-                            onClick={() => coreServicesField.removeValue(index)} // Use removeValue from the array field API
+                            onClick={() => coreServicesField.removeValue(index)}
                           >
                             Remove
                           </Button>
@@ -589,6 +590,7 @@ export default function BusinessOnboarding() {
                               </div>
                             )}
                           />
+
                           <form.Field
                             name={`coreServices[${index}].pricingModel`}
                             children={field => (
@@ -629,50 +631,81 @@ export default function BusinessOnboarding() {
                               </div>
                             )}
                           />
+
                           <form.Field
-                            name={`coreServices[${index}].priceMin`}
-                            children={field => (
-                              <div className="space-y-2">
-                                <Label htmlFor={field.name}>
-                                  Minimum Price ($)
-                                </Label>
-                                <Input
-                                  id={field.name}
-                                  name={field.name}
-                                  type="number"
-                                  step="1"
-                                  min={0}
-                                  value={field.state.value}
-                                  onBlur={field.handleBlur}
-                                  onChange={e =>
-                                    field.handleChange(Number(e.target.value))
-                                  }
-                                />
-                              </div>
-                            )}
+                            name={`coreServices[${index}].rate`}
+                            children={field => {
+                              return (
+                                <div className="space-y-2">
+                                  <Label htmlFor={field.name}>Rate</Label>
+                                  <Input
+                                    id={field.name}
+                                    name={field.name}
+                                    type="number"
+                                    min={0}
+                                    value={field.state.value}
+                                    onBlur={field.handleBlur}
+                                    onChange={e =>
+                                      field.handleChange(Number(e.target.value))
+                                    }
+                                  />
+                                </div>
+                              );
+                            }}
                           />
-                          <form.Field
-                            name={`coreServices[${index}].priceMax`}
-                            children={field => (
-                              <div className="space-y-2">
-                                <Label htmlFor={field.name}>
-                                  Maximum Price ($)
-                                </Label>
-                                <Input
-                                  id={field.name}
-                                  name={field.name}
-                                  type="number"
-                                  step="1"
-                                  min={0}
-                                  value={field.state.value}
-                                  onBlur={field.handleBlur}
-                                  onChange={e =>
-                                    field.handleChange(Number(e.target.value))
-                                  }
-                                />
-                              </div>
-                            )}
-                          />
+                        </div>
+
+                        {/* Marketing Prices Section */}
+                        <div className="mt-8 rounded-md border border-dashed p-4">
+                          <h4 className="mb-4 text-center text-lg font-semibold text-gray-700">
+                            Marketing Prices (Display Only)
+                          </h4>
+                          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <form.Field
+                              name={`coreServices[${index}].priceMin`}
+                              children={field => (
+                                <div className="space-y-2">
+                                  <Label htmlFor={field.name}>
+                                    Minimum Price ($)
+                                  </Label>
+                                  <Input
+                                    id={field.name}
+                                    name={field.name}
+                                    type="number"
+                                    step="1"
+                                    min={0}
+                                    value={field.state.value}
+                                    onBlur={field.handleBlur}
+                                    onChange={e =>
+                                      field.handleChange(Number(e.target.value))
+                                    }
+                                  />
+                                </div>
+                              )}
+                            />
+                            <form.Field
+                              name={`coreServices[${index}].priceMax`}
+                              children={field => (
+                                <div className="space-y-2">
+                                  <Label htmlFor={field.name}>
+                                    Maximum Price ($)
+                                  </Label>
+                                  <Input
+                                    id={field.name}
+                                    name={field.name}
+                                    type="number"
+                                    step="1"
+                                    min={0}
+                                    value={field.state.value}
+                                    onBlur={field.handleBlur}
+                                    onChange={e =>
+                                      field.handleChange(Number(e.target.value))
+                                    }
+                                  />
+                                </div>
+                              )}
+                            />
+                          </div>
                         </div>
                       </div>
                     ))
@@ -692,6 +725,7 @@ export default function BusinessOnboarding() {
                         priceMin: 0,
                         priceMax: 10,
                         id: crypto.randomUUID(),
+                        rate: 0,
                       })
                     }
                   >
@@ -701,6 +735,7 @@ export default function BusinessOnboarding() {
               )}
             />
           </div>
+
           <Separator />
 
           {/* === Section: Operating Hours === */}

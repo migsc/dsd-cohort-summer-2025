@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -9,22 +8,35 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function CardDemo() {
+export default function OnboardingOptionsCard() {
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <Card className="container mx-auto h-80 w-full max-w-lg px-4 py-2">
-        <CardHeader>
-          <CardTitle className="text-4xl">Onboarding Options</CardTitle>
-          <CardDescription>
-            Choose whether you want to onboard as Business or Customer
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <Card className="mx-auto w-full max-w-lg px-6 py-8 shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="mb-2 text-4xl font-bold tracking-tight">
+            Onboarding Options
+          </CardTitle>
+          <CardDescription className="text-md text-gray-600">
+            Choose whether you want to onboard as a Business or a Customer.
           </CardDescription>
         </CardHeader>
-        <CardFooter className="flex-col gap-2">
-          <Link href={"/onboarding/customer"} className="w-full ">
-            <Button className="w-full cursor-pointer">Customer</Button>
+        <CardFooter className="flex-col gap-4 pt-6">
+          <Link href={"/onboarding/customer"} className="w-full">
+            <Button
+              className="w-full cursor-pointer py-6 text-lg"
+              aria-label="Onboard as Customer"
+            >
+              Customer
+            </Button>
           </Link>
           <Link href={"/onboarding/business"} className="w-full">
-            <Button className="w-full cursor-pointer">Business</Button>
+            <Button
+              className="w-full cursor-pointer py-6 text-lg"
+              variant="outline"
+              aria-label="Onboard as Business"
+            >
+              Business
+            </Button>
           </Link>
         </CardFooter>
       </Card>

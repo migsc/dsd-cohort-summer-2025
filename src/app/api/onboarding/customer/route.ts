@@ -14,43 +14,43 @@ export async function POST(request: Request) {
 
   const userId = session.user.id;
 
-  try {
-    const result = await prisma.$transaction(async tx => {
-      // Update the User's role to 'customer'
-      await tx.user.update({
-        where: { id: userId },
-        data: { role: "customer" },
-      });
+  // try {
+  //   const result = await prisma.$transaction(async tx => {
+  //     // Update the User's role to 'customer'
+  //     await tx.user.update({
+  //       where: { id: userId },
+  //       data: { role: "customer" },
+  //     });
 
-      // Create the customer profile
-      const newCustomer = await tx.customer.create({
-        data: {
-          userId: userId,
-          preferredContactMethod: formData.preferredContactMethod,
-          addressStreet: formData.addressStreet,
-          addressCity: formData.addressCity,
-          addressState: formData.addressState,
-          addressZip: formData.addressZip,
-          addressCountry: formData.addressCountry,
-        },
-      });
-      return newCustomer;
-    });
+  //     // Create the customer profile
+  //     const newCustomer = await tx.customer.create({
+  //       data: {
+  //         userId: userId,
+  //         preferredContactMethod: formData.preferredContactMethod,
+  //         addressStreet: formData.addressStreet,
+  //         addressCity: formData.addressCity,
+  //         addressState: formData.addressState,
+  //         addressZip: formData.addressZip,
+  //         addressCountry: formData.addressCountry,
+  //       },
+  //     });
+  //     return newCustomer;
+  //   });
 
-    console.log("Customer onboarding done for user: ", userId);
-    return NextResponse.json(
-      { message: "Customer onboarding successful" },
-      { status: 200 }
-    );
-  } catch (err) {
-    console.log("Error: ", err);
-    return NextResponse.json(
-      {
-        message: "Server error processing customer onboarding",
-      },
-      { status: 500 }
-    );
-  } finally {
-    await prisma.$disconnect();
-  }
+  //   console.log("Customer onboarding done for user: ", userId);
+  //   return NextResponse.json(
+  //     { message: "Customer onboarding successful" },
+  //     { status: 200 }
+  //   );
+  // } catch (err) {
+  //   console.log("Error: ", err);
+  //   return NextResponse.json(
+  //     {
+  //       message: "Server error processing customer onboarding",
+  //     },
+  //     { status: 500 }
+  //   );
+  // } finally {
+  //   await prisma.$disconnect();
+  // }
 }

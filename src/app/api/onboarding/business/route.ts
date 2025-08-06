@@ -2,22 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import type {
-  BusinessFormData,
-  CoreService,
-} from "@/app/onboarding/business/schema/business.schema";
-
-function slugify(text: string): string {
-  return text
-    .toString()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "")
-    .replace(/--+/g, "-");
-}
+import type { BusinessFormData } from "@/app/onboarding/business/schema/business.schema";
+import { mapPricingModelStringToEnum, slugify } from "./utils";
 
 export async function POST(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -57,18 +43,6 @@ export async function POST(request: Request) {
           yearsInBusiness: formData.yearsInBusiness,
           businessDescription: formData.businessDescription,
 
-          coreServices: formData.coreServices.map((service: CoreService) => ({
-            name: service.name,
-            description: service.description,
-            durationMin: service.durationMin,
-            durationMax: service.durationMax,
-            typicalCleanersAssigned: service.typicalCleanersAssigned,
-            pricingModel: service.pricingModel,
-            priceMin: service.priceMin,
-            priceMax: service.priceMax,
-            id: service.id,
-          })),
-
           operatingHours: {
             monday: formData.operatingHours.monday,
             tuesday: formData.operatingHours.tuesday,
@@ -89,6 +63,28 @@ export async function POST(request: Request) {
           additionalNotes: formData.additionalNotes,
         },
       });
+
+      // Create associated core services record
+      if (formData.coreServices && formData.coreServices.length > 0) {
+        // Prepare data for CoreService creation
+        const coreServicesData = formData.coreServices.map(service => ({
+          businessId: newBusiness.id,
+          name: service.name,
+          description: service.description,
+          durationMin: service.durationMin,
+          durationMax: service.durationMax,
+          typicalCleanersAssigned: service.typicalCleanersAssigned,
+          pricingModel: mapPricingModelStringToEnum(service.pricingModel), // Map the front end display strings to the pricing model enum
+          priceMin: service.priceMin,
+          priceMax: service.priceMax,
+          rate: service.rate,
+        }));
+
+        // Attempt to create many core services
+        await tx.coreService.createMany({
+          data: coreServicesData,
+        });
+      }
 
       return newBusiness;
     });
