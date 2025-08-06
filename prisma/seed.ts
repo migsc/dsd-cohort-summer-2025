@@ -43,6 +43,11 @@ const parseTimeSlot24Hour = (timeSlot: string) => {
   };
 };
 
+// Helper function to convert minutes to hours in steps of 0.5
+const minutesToHalfHours = (minutes: number): number => {
+  return Math.round(minutes / 30) / 2;
+};
+
 async function main() {
   console.log("Start seeding...");
 
@@ -130,8 +135,8 @@ async function main() {
         {
           name: "Standard Home Cleaning",
           description: "Regular cleaning for homes.",
-          durationMin: 120,
-          durationMax: 240,
+          durationMin: minutesToHalfHours(120), // 2 hours
+          durationMax: minutesToHalfHours(240), // 4 hours
           typicalCleanersAssigned: 2,
           pricingModel: PricingModel.HOUR,
           priceMin: 50,
@@ -141,8 +146,8 @@ async function main() {
         {
           name: "Deep Clean",
           description: "Thorough, detailed cleaning.",
-          durationMin: 240,
-          durationMax: 480,
+          durationMin: minutesToHalfHours(240), // 4 hours
+          durationMax: minutesToHalfHours(480), // 8 hours
           typicalCleanersAssigned: 3,
           pricingModel: PricingModel.JOB,
           priceMin: 200,
@@ -152,8 +157,8 @@ async function main() {
         {
           name: "Office Cleaning",
           description: "Daily or weekly cleaning for small to medium offices.",
-          durationMin: 90,
-          durationMax: 180,
+          durationMin: minutesToHalfHours(90), // 1.5 hours
+          durationMax: minutesToHalfHours(180), // 3 hours
           typicalCleanersAssigned: 1,
           pricingModel: PricingModel.HOUR,
           priceMin: 300,
@@ -164,8 +169,8 @@ async function main() {
           name: "Move-In/Out Cleaning",
           description:
             "Comprehensive cleaning for empty homes before/after moving.",
-          durationMin: 300,
-          durationMax: 600,
+          durationMin: minutesToHalfHours(300), // 5 hours
+          durationMax: minutesToHalfHours(600), // 10 hours
           typicalCleanersAssigned: 3,
           pricingModel: PricingModel.SQFT,
           priceMin: 400,
@@ -176,8 +181,8 @@ async function main() {
           name: "Post-Construction Clean-Up",
           description:
             "Removal of debris and deep cleaning after construction.",
-          durationMin: 480,
-          durationMax: 960,
+          durationMin: minutesToHalfHours(480), // 8 hours
+          durationMax: minutesToHalfHours(960), // 16 hours
           typicalCleanersAssigned: 4,
           pricingModel: PricingModel.JOB,
           priceMin: 800,
@@ -187,8 +192,8 @@ async function main() {
         {
           name: "Carpet Shampoo & Steam",
           description: "Deep cleaning and sanitization of carpets.",
-          durationMin: 60,
-          durationMax: 240,
+          durationMin: minutesToHalfHours(60), // 1 hour
+          durationMax: minutesToHalfHours(240), // 4 hours
           typicalCleanersAssigned: 1,
           pricingModel: PricingModel.ROOM,
           priceMin: 75,
@@ -198,8 +203,8 @@ async function main() {
         {
           name: "Window Washing",
           description: "Interior and exterior window cleaning.",
-          durationMin: 60,
-          durationMax: 300,
+          durationMin: minutesToHalfHours(60), // 1 hour
+          durationMax: minutesToHalfHours(300), // 5 hours
           typicalCleanersAssigned: 1,
           pricingModel: PricingModel.JOB,
           priceMin: 10,
@@ -296,7 +301,7 @@ async function main() {
           endTime: e1_1,
           notes: "Initial booking by Customer 1.",
           serviceId: services[0].id,
-          duration: 150,
+          duration: minutesToHalfHours(150), // 2.5 hours
           price: 150,
           rooms: 3,
           status: BookingStatus.PENDING,
@@ -317,7 +322,7 @@ async function main() {
           endTime: e1_2,
           notes: "Confirmed follow-up clean for Customer 1.",
           serviceId: services[2].id,
-          duration: 120,
+          duration: minutesToHalfHours(120), // 2 hours
           price: 400,
           status: BookingStatus.CONFIRMED,
           customerId: customersAndProfiles[0].customerProfile.id,
@@ -337,7 +342,7 @@ async function main() {
           endTime: e1_3,
           notes: "Team is en route to Customer 1 for deep clean.",
           serviceId: services[1].id,
-          duration: 240,
+          duration: minutesToHalfHours(240), // 4 hours
           price: 300,
           status: BookingStatus.ON_WAY,
           customerId: customersAndProfiles[0].customerProfile.id,
@@ -358,7 +363,7 @@ async function main() {
           notes:
             "Service started, still working. (Should technically be Completed now).",
           serviceId: services[3].id,
-          duration: 360,
+          duration: minutesToHalfHours(360), // 6 hours
           price: 800,
           squareFootage: 3500,
           status: BookingStatus.IN_PROGRESS,
@@ -379,7 +384,7 @@ async function main() {
           endTime: e1_5,
           notes: "Cancelled by customer 1 due to schedule conflict.",
           serviceId: services[4].id,
-          duration: 480,
+          duration: minutesToHalfHours(480), // 8 hours
           price: 1500,
           status: BookingStatus.CANCELED,
           customerId: customersAndProfiles[0].customerProfile.id,
@@ -399,7 +404,7 @@ async function main() {
           endTime: e1_6,
           notes: "Service successfully completed for Customer 1.",
           serviceId: services[5].id,
-          duration: 180,
+          duration: minutesToHalfHours(180), // 3 hours
           price: 180,
           rooms: 2,
           status: BookingStatus.COMPLETED,
@@ -420,7 +425,7 @@ async function main() {
           endTime: e2_1,
           notes: "Regular cleaning for Customer 2.",
           serviceId: services[0].id,
-          duration: 180,
+          duration: minutesToHalfHours(180), // 3 hours
           price: 180,
           rooms: 4,
           status: BookingStatus.CONFIRMED,
@@ -441,7 +446,7 @@ async function main() {
           endTime: e2_2,
           notes: "Full window wash requested for Customer 2.",
           serviceId: services[6].id,
-          duration: 300,
+          duration: minutesToHalfHours(300), // 5 hours
           price: 450,
           status: BookingStatus.PENDING,
           customerId: customersAndProfiles[1].customerProfile.id,
@@ -461,7 +466,7 @@ async function main() {
           endTime: e3_1,
           notes: "First cleaning for Customer 3, successful.",
           serviceId: services[0].id,
-          duration: 200,
+          duration: minutesToHalfHours(200), // 3.5 hours
           price: 200,
           rooms: 4,
           status: BookingStatus.COMPLETED,

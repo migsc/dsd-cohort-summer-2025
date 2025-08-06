@@ -89,10 +89,10 @@ export default async function Cofiguration() {
       additionalNotes: formFieldsFromDb.additionalNotes,
     };
 
-    const validatedData = BusinessOnboardingSchema.parse(
-      transformedDataForForm
-    );
-    businessData = validatedData;
+    // const validatedData = BusinessOnboardingSchema.parse(
+    //   transformedDataForForm
+    // );
+    businessData = transformedDataForForm;
   } catch (err) {
     console.log(err);
     return <div>Error retrieving business profile.</div>;

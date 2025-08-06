@@ -36,6 +36,14 @@ model Business {
   @@map("business")
 }
 
+enum ContactPersonTitle {
+  Owner
+  Manager
+  Sales_Lead @map("Sales Lead")
+  Customer_Service   @map("Customer Service")
+  Other
+}
+
 model Customer {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
   userId                 String @unique

@@ -22,19 +22,17 @@ export default async function OurServices(props: PageProps) {
 
   let business;
   try {
-    business = await prisma.business.findFirst({
+    business = await prisma.business.findUnique({
       where: {
         businessSlug: businessSlug,
       },
+      include: {
+        coreServices: true,
+      },
     });
-
     if (!business) {
       return (
         <div>
-          {/* <PortalHeader
-            pageName="Our Services"
-            userName="Jane Doe"
-          ></PortalHeader> */}
           <div>Business not found for slug: {businessSlug}</div>
         </div>
       );
@@ -49,7 +47,11 @@ export default async function OurServices(props: PageProps) {
     );
   }
 
-  console.log(business.businessName);
+  const servicesWithOperatingHours = {
+    operatingHours: business.operatingHours,
+    coreServices: business.coreServices,
+    businessSlug: businessSlug,
+  };
 
   return (
     <div className="mx-1 sm:mx-10">
@@ -65,7 +67,7 @@ export default async function OurServices(props: PageProps) {
       </div>
       <Suspense fallback={<Skeleton className="h-4 w-[250px]" />}>
         <ServicesGrid
-          services={business.coreServices}
+          servicesWithOperatingHours={servicesWithOperatingHours}
           query={query}
         ></ServicesGrid>
       </Suspense>
