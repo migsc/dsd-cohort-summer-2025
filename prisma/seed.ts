@@ -381,7 +381,7 @@ async function main() {
           serviceId: services[4].id,
           duration: 480,
           price: 1500,
-          status: BookingStatus.CANCELED,
+          status: BookingStatus.CANCELLED,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
         },
@@ -430,100 +430,8 @@ async function main() {
       })
     );
 
-<<<<<<< HEAD
-    // Booking 3: Office Cleaning (Customer 3, 3 days from now)
-    const { startTime: s3, endTime: e3 } = parseTimeSlot24Hour(
-      "10:00 AM - 01:00 PM"
-    );
-    bookingPromises.push(
-      prisma.booking.create({
-        data: {
-          date: getDateString(3),
-          startTime: s3,
-          endTime: e3,
-          notes: "Weekly office cleaning.",
-          serviceId: services[2].id,
-          duration: 180,
-          price: 500,
-          status: BookingStatus.PENDING,
-          customerId: customersAndProfiles[2].customerProfile.id,
-          businessId: adminBusiness.id,
-        },
-      })
-    );
-
-    // Booking 4: Move-In/Out Cleaning (Customer 4, 4 days from now, Confirmed)
-    const { startTime: s4, endTime: e4 } = parseTimeSlot24Hour(
-      "09:00 AM - 05:00 PM"
-    );
-    bookingPromises.push(
-      prisma.booking.create({
-        data: {
-          date: getDateString(4),
-          startTime: s4,
-          endTime: e4,
-          notes: "Post-tenant move-out clean.",
-          serviceId: services[3].id,
-          duration: 480,
-          price: 750,
-          squareFootage: 3000,
-          status: BookingStatus.CONFIRMED,
-          customerId: customersAndProfiles[3].customerProfile.id,
-          businessId: adminBusiness.id,
-        },
-      })
-    );
-
-    // Booking 5: Post-Construction Clean-Up (Customer 5, 5 days from now, Cancelled)
-    const { startTime: s5, endTime: e5 } = parseTimeSlot24Hour(
-      "08:00 AM - 06:00 PM"
-    );
-    bookingPromises.push(
-      prisma.booking.create({
-        data: {
-          date: getDateString(5),
-          startTime: s5,
-          endTime: e5,
-          notes: "Cancelled due to project delay.",
-          serviceId: services[4].id,
-          duration: 600,
-          price: 1800,
-          status: BookingStatus.CANCELLED,
-          customerId: customersAndProfiles[4].customerProfile.id,
-          businessId: adminBusiness.id,
-        },
-      })
-    );
-
-    // Booking 6: Carpet Shampoo & Steam (Customer 6, 6 days from now, Completed)
-    const { startTime: s6, endTime: e6 } = parseTimeSlot24Hour(
-      "02:00 PM - 04:00 PM"
-    );
-    bookingPromises.push(
-      prisma.booking.create({
-        data: {
-          date: getDateString(6),
-          startTime: s6,
-          endTime: e6,
-          notes: "Standard carpet clean for living room.",
-          serviceId: services[5].id,
-          duration: 120,
-          price: 150,
-          rooms: 2,
-          status: BookingStatus.COMPLETED,
-          customerId: customersAndProfiles[5].customerProfile.id,
-          businessId: adminBusiness.id,
-        },
-      })
-    );
-
-    // Booking 7: Window Washing (Customer 7, 7 days from now, In Progress)
-    const { startTime: s7, endTime: e7 } = parseTimeSlot24Hour(
-      "11:00 AM - 01:00 PM"
-=======
     const { startTime: s2_2, endTime: e2_2 } = parseTimeSlot24Hour(
       "09:00 AM - 04:00 PM"
->>>>>>> ff32df7ad5460a9bda26d50b8e607f78e4c33252
     );
     bookingPromises.push(
       prisma.booking.create({
