@@ -5,22 +5,21 @@ import { Button } from "@/components/ui/button";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 
 const bussinesInfo = {
-	name: "Suzy's Cleaning Services",
-	slogan:
-	"We take care of your cleaning needs so you can focus on what matters most.",
-	callToAction: "Book Now",
-	bgAccentColor: "bg-green-600", // Example accent color
-	textAccentColor: "bg-green-600", // Example accent color
-	logo: "/images/small_logo.png", // Example logo path
-	logoAlt: "Suzy's Cleaning Services Logo",
-	description:
-	"Suzy's Cleaning Services is dedicated to providing top-notch cleaning solutions tailored to your needs. Our team of professionals ensures a spotless environment, allowing you to enjoy a clean and healthy space.",
-	services: [
-	"Residential Cleaning",
-	"Commercial Cleaning",
-	"Deep Cleaning",
-	"Move-In/Move-Out Cleaning",
-	
+  name: "Suzy's Cleaning Services",
+  slogan:
+    "We take care of your cleaning needs so you can focus on what matters most.",
+  callToAction: "Book Now",
+  bgAccentColor: "bg-green-600", // Example accent color
+  textAccentColor: "bg-green-600", // Example accent color
+  logo: "/images/small_logo.png", // Example logo path
+  logoAlt: "Suzy's Cleaning Services Logo",
+  description:
+    "Suzy's Cleaning Services is dedicated to providing top-notch cleaning solutions tailored to your needs. Our team of professionals ensures a spotless environment, allowing you to enjoy a clean and healthy space.",
+  services: [
+    "Residential Cleaning",
+    "Commercial Cleaning",
+    "Deep Cleaning",
+    "Move-In/Move-Out Cleaning",
   ],
 };
 
@@ -31,7 +30,7 @@ export default function BusinessSite() {
 
   return (
     <>
-      <header className=" bg-purple-200 flex h-screen w-screen flex-col items-center text-black md:gap-7">
+      <header className=" flex h-screen w-screen flex-col items-center bg-purple-200 text-black md:gap-7">
         {/* Navigation For Main site in Desktop mode */}
         <nav className="flex w-full max-w-[2000px] justify-center p-4 px-20 md:justify-between">
           {/* Custom Logo for each business and name of business */}
@@ -42,7 +41,7 @@ export default function BusinessSite() {
               className=" hidden h-10 w-10 lg:block"
             />
           </div>
-          {/* Navigation Links */}
+          {/* Navigation Links : Turn these links into something that can be changes, add smaller componets for this business page.*/}
           <div className="hidden items-center gap-2.5 space-x-4 md:flex">
             <ul className="flex space-x-4">
               <li>
