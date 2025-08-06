@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import BookingForm from "@/components/forms/book-service-form";
+import RebookingForm from "@/components/forms/rebook-form";
 import { useState } from "react";
 import React from "react";
 
@@ -19,7 +19,8 @@ interface PreviousBookingProps {
     serviceId: string,
     serviceDuration: string,
     timeSlot: string,
-    notes: any
+    notes: any,
+    status: string
 }
 
 export default function PreviousBooking({
@@ -31,7 +32,8 @@ export default function PreviousBooking({
     serviceId, 
     serviceDuration, 
     timeSlot,
-    notes
+    notes,
+    status
 }: PreviousBookingProps) {
     const [isRebookingModalOpen, setIsRebookingModalOpen] = useState(false);
 
@@ -45,17 +47,15 @@ export default function PreviousBooking({
             key={bookingId} 
             value={bookingId}>
             <AccordionTrigger className="cursor-pointer">
-                <div className="text-sm md:text-base">
-                    <p>
-                        #{orderNum.toUpperCase()}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div className="text-sm md:text-base flex items-center justify-between w-full">
+                    <span>#{orderNum.toUpperCase()}</span>
+                    <span>
                         {new Date(dateFulfilled).toLocaleDateString()}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {serviceName}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>           
+                    <span>{serviceName}</span>
                         {/* ***TODO: have this be the price they actually paid rather than the price range of the service */}
-                        {servicePrice}
-                        </p>
+                        <span>${servicePrice}</span>
+                        <span>{status}</span>
                 </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -75,13 +75,11 @@ export default function PreviousBooking({
                 </div>
             </AccordionContent>
         </AccordionItem>
-        <BookingForm
-            isOpen={isRebookingModalOpen}
-            onClose={() => setIsRebookingModalOpen(false)}
-            serviceId={serviceId} 
-            serviceName={serviceName}
-            serviceDuration={serviceDuration}
-            servicePrice={servicePrice}
+        {/* TODO: Fix this once made new rebooking form */}
+        <RebookingForm
+                isOpen={isRebookingModalOpen}
+                onClose={() => setIsRebookingModalOpen(false)}
+                // serviceId={serviceId} operatingHours={undefined} notes={""}            
         />
         </React.Fragment>
     )

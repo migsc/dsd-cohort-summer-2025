@@ -59,7 +59,7 @@ export default function BookingProgressTracker({
       
       <CardContent className="text-center px-0 sm:px-6 pb-3 sm:pb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-4 text-sm">
-          <span className="font-semibold text-sm md:text-lg">{servicePrice}</span>
+          <span className="font-semibold text-sm md:text-lg">${servicePrice}</span>
           {placedDate && <span className="text-xs sm:text-sm">Placed: {placedDate}</span>}
         </div>
         {expectedCompletion && (

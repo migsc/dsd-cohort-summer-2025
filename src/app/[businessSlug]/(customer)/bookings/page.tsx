@@ -18,10 +18,11 @@ export default async function MyBookings() {
 
     // Fetch bookings from API
     const bookings = await fetchBookings();
+    console.log([...bookings.entries()])
 
     // Separate active bookings from completed/canceled ones
     const activeBookings = bookings.filter(booking => 
-        booking.status === 'PENDING' || booking.status === 'CONFIRMED'
+        booking.status === 'PENDING' || booking.status === 'CONFIRMED' || booking.status === 'ON_WAY' || booking.status == 'IN_PROGRESS'
     );
   
     const previousBookings = bookings.filter(booking => 
@@ -48,7 +49,7 @@ export default async function MyBookings() {
                   servicePrice={currentBooking.servicePrice}
                   currentStatus={currentBooking.status}
                   expectedCompletion={`${currentBooking.timeSlot} ${new Date(currentBooking.date).toLocaleDateString('en-US', { 
-                  month: 'long', 
+                  month: 'short', 
                   day: 'numeric', 
                   year: 'numeric' 
                   })}`}
@@ -64,7 +65,7 @@ export default async function MyBookings() {
 
         {/* No active bookings message */}
         {activeBookings.length === 0 && (
-        <section className="w-full flex justify-center mt-5">
+        <section className="w-full flex justify-center my-5">
             <div className="text-center text-gray-500">
             <p>No active bookings at this time.</p>
             </div>
@@ -74,8 +75,7 @@ export default async function MyBookings() {
         <Separator />
 
         {/* Previous Bookings */}
-        <h2 className="text-center font-bold text-lg mt-4 mb-2">Previous Bookings</h2>
-        
+        <h2 className="text-center font-bold text-lg  mt-4">Previous Bookings</h2>
         {/* No previous bookings message */}
         {previousBookings.length === 0 ? (
         <div className="text-center text-gray-500 py-8">
@@ -100,6 +100,7 @@ export default async function MyBookings() {
                 serviceDuration={booking.serviceDuration}
                 timeSlot={booking.timeSlot}
                 notes={booking.notes}
+                status={booking.status}
                 />
             ))}
           </Accordion>
@@ -144,7 +145,13 @@ async function fetchBookings(): Promise<Booking[]> {
     };
 
     const bookings = await response.json();
-    return bookings;
+    return bookings.map((booking: any) => ({
+      ...booking,
+      timeSlot: `${booking.startTime} - ${booking.endTime}`,
+      serviceName: booking.service?.name ?? booking.serviceName, // fallback
+      servicePrice: booking.price?.toString() ?? booking.servicePrice, // fallback
+      serviceDuration: booking.duration?.toString() ?? booking.serviceDuration, // fallback
+    }));
   } catch (error) {
     console.error('Error fetching bookings:', error);
     return [];

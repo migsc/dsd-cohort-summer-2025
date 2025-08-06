@@ -29,8 +29,6 @@ export default async function Layout({ children, params }: LayoutProps) {
     console.log("Unauthorized.");
     redirect("/");
   }
-  console.log(businessSlug);
-  console.log(session);
 
   const userId = session.user.id;
 
