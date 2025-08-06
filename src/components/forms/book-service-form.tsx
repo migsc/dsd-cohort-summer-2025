@@ -47,6 +47,8 @@ export default function BookingForm({
 }: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Helper function to get valid durations from durationMin and durationMax
+  // returns array, (e.g. If the durationMin = "3" and durationMax = "7" this returns ["3", "4", "5", "6", "7"])
   const validDurationOptions = createInclusiveRange(
     service.durationMin,
     service.durationMax
@@ -59,7 +61,7 @@ export default function BookingForm({
       date: "",
       timeSlot: "",
       notes: "",
-      duration: validDurationOptions[0],
+      duration: validDurationOptions[0], // The first value in validDurationOptions
     },
 
     onSubmit: async value => {
@@ -153,6 +155,7 @@ export default function BookingForm({
                   onValueChange={value => {
                     field.handleChange(value);
 
+                    // Every time the value of duration changes, reset the value of time slot.
                     field.form.setFieldValue("timeSlot", "");
                   }}
                   defaultValue={field.state.value}
@@ -183,6 +186,9 @@ export default function BookingForm({
             {field => {
               const duration = field.form.getFieldValue("duration");
 
+              // Given a duration and operating hours, (We only use monday, too complicated to derive day of week from date string)
+              // this helper function returns an array of string of the form "10:00 AM - 02:00 PM" representing all valid
+              // time slots in a presentable format.
               const validTimeSlots = getFormattedTimeSlots(
                 duration,
                 operatingHours.monday.start,
