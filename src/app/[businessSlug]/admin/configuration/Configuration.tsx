@@ -105,7 +105,6 @@ export default function Cofiguration({
   const form = useForm({
     defaultValues: initialData,
     onSubmit: async ({ value }) => {
-      console.log("submit");
       try {
         const response = await fetch("/api/business/update-configuration", {
           method: "POST",
@@ -144,7 +143,7 @@ export default function Cofiguration({
           <div className="">
             <div className="text-xl font-bold">Business Profile</div>
             <div className="text-md">
-              Manage your business inforamtion, services, and settings.
+              Manage your business information, services, and settings.
             </div>
           </div>
           <div className="flex items-center gap-2">
