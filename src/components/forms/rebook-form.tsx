@@ -49,6 +49,7 @@ export default function RebookingForm({
     return (
         <div>
             ***TODO:Rebooking Form
+            User should enter new date, time slot, and notes
         </div>
     )
 }
