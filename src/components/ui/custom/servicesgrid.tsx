@@ -10,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import BookingForm from "@/components/forms/book-service-form";
-import BookingForm from "@/components/forms/book-service-form";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
