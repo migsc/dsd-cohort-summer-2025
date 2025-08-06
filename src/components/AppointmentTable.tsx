@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
 import React from "react";
-
 
 import {
   Sheet,
@@ -19,11 +18,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "./ui/button";
 import { BookingStatus } from "prisma/generated";
 
-//ADD DUMMY DATA HERE FOR NOW
 // const dummyAppointments = [
 //   {
 //     id: 1,
@@ -46,93 +52,12 @@ import { BookingStatus } from "prisma/generated";
 //       clientEmail: "johndoe@gmail.com",
 //     },
 //   },
-//   {
-//     id: 2,
-//     dateCreated: "2023-10-02",
-//     timeCreated: "11:30 AM",
-//     workOrderInfo: {
-//       orderId: 1002,
-//       status: "Approved",
-//       Type: "Maintenance",
-//       fulfillmentDate: "2023-10-07",
-//       fulfillmentTime: "9:00 AM",
-//       address: "456 Oak Ave, Lincoln, NE",
-//       description: "Bathroom deep cleaning and window washing.",
-//     },
-//     customerInfo: {
-//       clientId: 102,
-//       clientName: "Jane Smith",
-//       clientPhone: "555-123-4567",
-//       clientEmail: "janesmith@email.com",
-//     },
-//   },
-//   {
-//     id: 3,
-//     dateCreated: "2023-10-03",
-//     timeCreated: "2:15 PM",
-//     workOrderInfo: {
-//       orderId: 1003,
-//       status: "Approved",
-//       Type: "Cleaning",
-//       fulfillmentDate: "2023-10-04",
-//       fulfillmentTime: "1:00 PM",
-//       address: "789 Pine Rd, Madison, WI",
-//       description: "Carpet cleaning in two bedrooms.",
-//     },
-//     customerInfo: {
-//       clientId: 103,
-//       clientName: "Carlos Rivera",
-//       clientPhone: "222-333-4444",
-//       clientEmail: "carlos.rivera@mail.com",
-//     },
-//   },
-//   {
-//     id: 4,
-//     dateCreated: "2023-10-04",
-//     timeCreated: "4:45 PM",
-//     workOrderInfo: {
-//       orderId: 1004,
-//       status: "Pending",
-//       Type: "Move-Out",
-//       fulfillmentDate: "2023-10-10",
-//       fulfillmentTime: "3:30 PM",
-//       address: "321 Maple St, Denver, CO",
-//       description: "Move-out cleaning for apartment.",
-//     },
-//     customerInfo: {
-//       clientId: 104,
-//       clientName: "Emily Chen",
-//       clientPhone: "777-888-9999",
-//       clientEmail: "emily.chen@email.com",
-//     },
-//   },
-//   {
-//     id: 5,
-//     dateCreated: "2023-10-05",
-//     timeCreated: "9:00 AM",
-//     workOrderInfo: {
-//       orderId: 1005,
-//       status: "Declined",
-//       Type: "Cleaning",
-//       fulfillmentDate: "2023-10-12",
-//       fulfillmentTime: "10:00 AM",
-//       address: "654 Cedar Blvd, Austin, TX",
-//       description: "Garage cleaning and power washing.",
-//     },
-//     customerInfo: {
-//       clientId: 105,
-//       clientName: "Michael Brown",
-//       clientPhone: "888-555-1212",
-//       clientEmail: "michael.brown@email.com",
-//     },
-//   },
-// ];
 
 type Customer = {
-  id: string
-  name: string
-  email: string
-}
+  id: string;
+  name: string;
+  email: string;
+};
 
 type BookingInfo = {
   id: string;
@@ -144,6 +69,14 @@ type BookingInfo = {
   serviceName: string;
   serviceID: string;
   customer: Customer;
+  //Add the type of what ever the invoice is, as something like pricing: Invoice; to lead into the invoice information.
+};
+
+type Invoice = {
+  id: string;
+  status: string;
+  cardInfo: string;
+  pricing: number;
 };
 
 type Props = {
@@ -161,8 +94,7 @@ const colorMapping = {
   "Move-Out": "bg-red-400",
 };
 
-export default function AppointmentTable({filter, bookingInfo}: Props) {
-
+export default function AppointmentTable({ filter, bookingInfo }: Props) {
   return (
     <div>
       <Table>
@@ -176,171 +108,157 @@ export default function AppointmentTable({filter, bookingInfo}: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bookingInfo
-            .map(booking => (
-              <Sheet key={booking.id}>
-                <SheetTrigger asChild>
-                  <TableRow
-                    key={booking.id}
-                    className="hover:cursor-pointer border-b-gray-100"
-                  >
-                    <TableCell>{booking.id}</TableCell>
-                    <TableCell>{booking.customer.name}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="default"
-                        className={`${colorMapping[booking.serviceName as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
-                      >
-                        {booking.serviceName}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {booking.date} at {booking.timeSlot}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="default"
-                        className={`${colorMapping[booking.status as keyof typeof colorMapping]} text-xs text-white`}
-                      >
-                        {booking.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                </SheetTrigger>
-
-                {/* //TODO: Also change the sheet to be dynamic based on whether it is a profile or an appointment/work order. */}
-                <SheetContent
-                  side="right"
-                  className="sm:max-w-1/2 m-5 h-[95%] w-full rounded-lg [&>button:first-of-type]:hidden"
+          {bookingInfo.map(booking => (
+            <Sheet key={booking.id}>
+              <SheetTrigger asChild>
+                <TableRow
+                  key={booking.id}
+                  className="border-b-gray-100 hover:cursor-pointer"
                 >
-                  <SheetHeader>
-                    <SheetTitle className="flex h-full pt-2">
-                      <div className="flex h-full w-[30%] flex-col gap-4 border-r pr-4">
-                        <h1 className="font-blod text-2xl">
-                          {booking.customer.name}
-                        </h1>
-                        <h2 className="text-blue-600">
-                          #{booking.serviceID}
-                        </h2>
-                      </div>
-                      <div className="pl-4">
-                        <p className="text-md font-semibold text-gray-400">
-                          Order Details
-                        </p>
-                      </div>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="flex h-full gap-4 p-4">
+                  <TableCell>{booking.id}</TableCell>
+                  <TableCell>{booking.customer.name}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="default"
+                      className={`${colorMapping[booking.serviceName as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                    >
+                      {booking.serviceName}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {booking.date} at {booking.timeSlot}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="default"
+                      className={`${colorMapping[booking.status as keyof typeof colorMapping]} text-xs text-white`}
+                    >
+                      {booking.status}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              </SheetTrigger>
+
+              {/* //TODO: Also change the sheet to be dynamic based on whether it is a profile or an appointment/work order. */}
+              <SheetContent
+                side="right"
+                className="sm:max-w-1/2 m-5 h-[95%] w-full rounded-lg [&>button:first-of-type]:hidden"
+              >
+                <SheetHeader>
+                  <SheetTitle className="flex h-full pt-2">
                     <div className="flex h-full w-[30%] flex-col gap-4 border-r pr-4">
-                      <section className="flex flex-col gap-2">
-                        <h3 className="font-bold">Contact Info</h3>
-                        <p className="text-sm">
-                          {"No phone number"}
-                        </p>
-                        <p className="text-sm">
-                          {booking.customer.email}
-                        </p>
-                      </section>
+                      <h1 className="font-blod text-2xl">
+                        {booking.customer.name}
+                      </h1>
+                      <h2 className="text-blue-600">#{booking.serviceID}</h2>
                     </div>
-                    <div>
-                      <div className="flex flex-col gap-2">
-                        <p className="flex w-[150px] justify-between text-sm">
-                          Status:{" "}
-                          <Badge
-                            variant="default"
-                            className={`${colorMapping[booking.status as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
-                          >
-                            {booking.status}
-                          </Badge>
-                        </p>
-                        <p className="flex w-[150px] justify-between text-sm">
-                          Type:{" "}
-                          <Badge
-                            variant="default"
-                            className={`${colorMapping[booking.serviceName as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
-                          >
-                            {booking.serviceName}
-                          </Badge>
-                        </p>
-                        <p className="flex w-[150px] justify-between text-sm">
-                          Date:{" "}
-                          <span>
-                            {booking.date}
-                          </span>
-                        </p>
-                        <p className="flex w-[150px] justify-between text-sm">
-                          Time:{" "}
-                          <span>
-                            {booking.timeSlot}
-                          </span>
+                    <div className="pl-4">
+                      <p className="text-md font-semibold text-gray-400">
+                        Order Details
+                      </p>
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex h-full gap-4 p-4">
+                  <div className="flex h-full w-[30%] flex-col gap-4 border-r pr-4">
+                    <section className="flex flex-col gap-2">
+                      <h3 className="font-bold">Contact Info</h3>
+                      <p className="text-sm">{"No phone number"}</p>
+                      <p className="text-sm">{booking.customer.email}</p>
+                    </section>
+                  </div>
+                  <div>
+                    <div className="flex flex-col gap-2">
+                      <p className="flex w-[150px] justify-between text-sm">
+                        Status:{" "}
+                        <Badge
+                          variant="default"
+                          className={`${colorMapping[booking.status as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                        >
+                          {booking.status}
+                        </Badge>
+                      </p>
+                      <p className="flex w-[150px] justify-between text-sm">
+                        Type:{" "}
+                        <Badge
+                          variant="default"
+                          className={`${colorMapping[booking.serviceName as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
+                        >
+                          {booking.serviceName}
+                        </Badge>
+                      </p>
+                      <p className="flex w-[150px] justify-between text-sm">
+                        Date: <span>{booking.date}</span>
+                      </p>
+                      <p className="flex w-[150px] justify-between text-sm">
+                        Time: <span>{booking.timeSlot}</span>
+                      </p>
+                      <div>
+                        <p className="flex w-full justify-between text-sm">
+                          Address: here going the address.{" "}
+                          {/* {booking.address} */}
                         </p>
                         <div>
-                          <p className="flex w-full justify-between text-sm">
-                            Address: here going the address. {/* {booking.address} */}
-                          </p>
-                          <div>
-                            <p>Here goes the google maps information</p>
-                          </div>
+                          <p>Here goes the google maps information</p>
                         </div>
-                        <p className="flex w-full flex-col pb-4 text-sm">
-                          Description:{" "}
-                          <span>{booking.notes ?? "No Notes"}</span>
-                        </p>
                       </div>
+                      <p className="flex w-full flex-col pb-4 text-sm">
+                        Description: <span>{booking.notes ?? "No Notes"}</span>
+                      </p>
                     </div>
                   </div>
-                  <SheetFooter className="border-t">
-                    {/* each one should have a function that when you click it it ends up changing the status from pendnig to another status.*/}
-                    <div className="flex justify-end">
-                      {filter === "Pending" ? (
-                        <div>
-                          <Button
-                            variant="default"
-                            className="w-[130px] bg-blue-600 text-white hover:bg-blue-500"
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            variant="default"
-                            className="ml-2 w-[130px] bg-red-500 text-white hover:bg-red-400"
-                          >
-                            Decline
-                          </Button>
-                        </div>
-                      ) : filter === "Approved" ? (
-                        <div className="mr-4 text-sm text-gray-500">
-                          <p className="text-blue-600">
-                            This appointment is approved.
-                          </p>
-                        </div>
-                      ) : filter === "Decline" ? (
-                        <p className="mr-4 text-sm text-red-500">
-                          This appointment has been declined.
+                </div>
+                <SheetFooter className="border-t">
+                  {/* each one should have a function that when you click it it ends up changing the status from pendnig to another status.*/}
+                  <div className="flex justify-end">
+                    {filter === "Pending" ? (
+                      <div>
+                        <Button
+                          variant="default"
+                          className="w-[130px] bg-blue-600 text-white hover:bg-blue-500"
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          variant="default"
+                          className="ml-2 w-[130px] bg-red-500 text-white hover:bg-red-400"
+                        >
+                          Decline
+                        </Button>
+                      </div>
+                    ) : filter === "Approved" ? (
+                      <div className="mr-4 text-sm text-gray-500">
+                        <p className="text-blue-600">
+                          This appointment is approved.
                         </p>
-                      ) : (
-                        <div>
-                          <Button
-                            variant="default"
-                            className="w-[130px] bg-blue-600 text-white hover:bg-blue-500"
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            variant="default"
-                            className="ml-2 w-[130px] bg-red-500 text-white hover:bg-red-400"
-                          >
-                            Decline
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
-            ))}
+                      </div>
+                    ) : filter === "Decline" ? (
+                      <p className="mr-4 text-sm text-red-500">
+                        This appointment has been declined.
+                      </p>
+                    ) : (
+                      <div>
+                        <Button
+                          variant="default"
+                          className="w-[130px] bg-blue-600 text-white hover:bg-blue-500"
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          variant="default"
+                          className="ml-2 w-[130px] bg-red-500 text-white hover:bg-red-400"
+                        >
+                          Decline
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          ))}
         </TableBody>
       </Table>
     </div>
   );
 }
-

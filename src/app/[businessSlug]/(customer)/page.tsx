@@ -3,7 +3,10 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SearchBar from "@/components/ui/custom/searchbar";
 import prisma from "@/lib/prisma";
-import { LoggedOutPortalHeader, PortalHeader } from "@/components/ui/custom/portalHeader";
+import {
+  LoggedOutPortalHeader,
+  PortalHeader,
+} from "@/components/ui/custom/portalHeader";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -28,15 +31,9 @@ export default async function OurServices(props: PageProps) {
       where: {
         businessSlug: businessSlug,
       },
-<<<<<<< HEAD
-      include:{
-        coreServices: true,
-      }
-=======
       include: {
         coreServices: true,
       },
->>>>>>> 913deae0197e9811499238b3a5f586a0241ecf8a
     });
     if (!business) {
       return (
@@ -66,15 +63,15 @@ export default async function OurServices(props: PageProps) {
 
   return (
     <div className="mx-1 sm:mx-10">
-      {(!session || !session.user) ? (
+      {!session || !session.user ? (
         <LoggedOutPortalHeader pageName="Our Services"></LoggedOutPortalHeader>
       ) : (
-        <PortalHeader 
-        pageName="Our Services" 
-        userName={session.user.name || "Customer"}
+        <PortalHeader
+          pageName="Our Services"
+          userName={session.user.name || "Customer"}
         />
       )}
-      <h2 className="mb-1 md:mb-4 mt-2 text-center text-lg md:text-2xl">
+      <h2 className="mb-1 mt-2 text-center text-lg md:mb-4 md:text-2xl">
         {business.businessName}
       </h2>
 
