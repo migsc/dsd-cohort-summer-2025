@@ -7,8 +7,8 @@ interface PortalHeaderProps {
   userName?: string;
 }
 
-export function LoggedOutPortalHeader({pageName}: {pageName: string}) {
-return (
+export function LoggedOutPortalHeader({ pageName }: { pageName: string }) {
+  return (
     <header className="z-10 flex items-center justify-between gap-2 border-b p-4">
       <div className="flex items-center gap-5">
         <h1 className="text-center text-xl font-bold">{pageName}</h1>
@@ -17,10 +17,7 @@ return (
   );
 }
 
-export function PortalHeader({
-  pageName,
-  userName,
-}: PortalHeaderProps) {
+export function PortalHeader({ pageName, userName }: PortalHeaderProps) {
   return (
     <header className="z-10 flex items-center justify-between gap-2 border-b p-4">
       <div className="flex items-center gap-5">
