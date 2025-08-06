@@ -1,5 +1,4 @@
 import z from "zod/v4";
-import { Business, CoreService } from "prisma/generated";
 
 export const usStates = [
   "AL",
