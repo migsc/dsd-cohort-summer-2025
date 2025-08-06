@@ -27,7 +27,7 @@ import {
 } from "./ui/accordion";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { BookingStatus } from "prisma/generated";
 
 // const dummyAppointments = [
@@ -200,6 +200,12 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
                         </p>
                         <div>
                           <p>Here goes the google maps information</p>
+                          <Button
+                            className={buttonVariants({ variant: "default" })}
+                            onClick={openInGoogleMaps}
+                          >
+                            Open In Google Maps
+                          </Button>
                         </div>
                       </div>
                       <p className="flex w-full flex-col pb-4 text-sm">
@@ -261,4 +267,11 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
       </Table>
     </div>
   );
+}
+
+//GOOGLE MAPS FUNCTION
+function openInGoogleMaps() {
+  const address = "1600 Amphitheatre Parkway, Mountain View, CA"; // Example address
+  const url = `https://www.google.com/maps/place/${encodeURIComponent(address)}`;
+  window.open(url, "_blank"); // Opens in a new tab/window
 }
