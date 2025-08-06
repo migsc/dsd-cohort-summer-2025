@@ -27,7 +27,6 @@ export const mapPricingModelStringToEnum = (
 export const mapPricingModelEnumToString = (
   enumValue: PricingModel
 ): (typeof pricingModelDisplayValues)[number] => {
-  // <--- Correct return type
   switch (enumValue) {
     case PricingModel.HOUR:
       return "Hourly";

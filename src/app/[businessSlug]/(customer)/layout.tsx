@@ -27,11 +27,11 @@ export default async function Layout({ children, params }: LayoutProps) {
     });
 
     if (!business) {
-      console.log("Business not found.");
+      // console.log("Business not found.");
       redirect("/");
     }
   } catch (error) {
-    console.log("Error getting business: ", error);
+    // console.log("Error getting business: ", error);
     redirect("/");
   }
 

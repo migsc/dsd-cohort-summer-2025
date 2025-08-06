@@ -97,7 +97,7 @@ export const CoreServiceSchema = z.object({
   rate: z.number().min(0, "Rate must be non-negative."),
 });
 
-export type CoreService = z.infer<typeof CoreServiceSchema>;
+export type CoreServiceForm = z.infer<typeof CoreServiceSchema>;
 
 export const DayOperatingHoursSchema = z
   .object({

@@ -36,6 +36,14 @@ model Business {
   @@map("business")
 }
 
+enum ContactPersonTitle {
+  Owner
+  Manager
+  Sales_Lead @map("Sales Lead")
+  Customer_Service   @map("Customer Service")
+  Other
+}
+
 model Customer {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
   userId                 String @unique
@@ -59,7 +67,7 @@ model Customer {
 }
 
 model CoreService {
-    id                      String       @id @default(auto()) @map("_id") @db.ObjectId
+    id                      String       @id @map("_id") @default(uuid())
     businessId              String       @db.ObjectId
     business                Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
@@ -93,8 +101,8 @@ model Booking {
     squareFootage   Float?
     status          BookingStatus @default(PENDING)
 
-    serviceId       String        @db.ObjectId 
-    service         CoreService   @relation(fields: [serviceId], references: [id])
+    serviceId       String 
+    service         CoreService   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
     customerId String   @db.ObjectId
     customer   Customer @relation(fields: [customerId], references: [id])

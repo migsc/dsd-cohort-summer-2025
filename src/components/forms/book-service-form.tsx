@@ -24,44 +24,35 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { type CoreService, type OperatingHours } from "prisma/generated";
+import {
+  createInclusiveRange,
+  getFormattedTimeSlots,
+} from "@/app/[businessSlug]/(customer)/utils";
 
 export interface BookingFormProps {
   isOpen: boolean;
   onClose: () => void;
-  serviceId: string;
-  serviceName: string;
-  serviceDuration: string;
-  servicePrice: string;
+  service: CoreService;
+  operatingHours: OperatingHours;
+  businessSlug: string;
 }
-
-export interface BookingFormData {
-  serviceId: string;
-  serviceName: string;
-  date: string;
-  timeSlot: string;
-  notes?: string;
-  serviceDuration: string;
-  servicePrice: string;
-}
-
-const timeSlots = [
-  "8:00 AM - 10:00 AM",
-  "10:00 AM - 12:00 PM",
-  "12:00 PM - 2:00 PM",
-  "2:00 PM - 4:00 PM",
-  "4:00 PM - 6:00 PM",
-  "6:00 PM - 8:00 PM",
-];
 
 export default function BookingForm({
   isOpen,
   onClose,
-  serviceId,
-  serviceName,
-  serviceDuration,
-  servicePrice,
+  service,
+  operatingHours,
+  businessSlug,
 }: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Helper function to get valid durations from durationMin and durationMax
+  // returns array, (e.g. If the durationMin = "3" and durationMax = "7" this returns ["3", "4", "5", "6", "7"])
+  const validDurationOptions = createInclusiveRange(
+    service.durationMin,
+    service.durationMax
+  );
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -70,60 +61,26 @@ export default function BookingForm({
       date: "",
       timeSlot: "",
       notes: "",
+      duration: validDurationOptions[0], // The first value in validDurationOptions
     },
+
     onSubmit: async value => {
-      const bookingInfo = {
+      const bookingFormValues = {
         ...value.value,
-        serviceId,
-        serviceName,
-        serviceDuration,
-        servicePrice,
+        service,
       };
 
-      console.log("bookingInfo: ", bookingInfo);
+      console.log("bookingInfo: ", bookingFormValues);
       try {
-        const response = await fetch(`/api/bookings`, {
+        const response = await fetch(`/api/${businessSlug}/customer/bookings`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(bookingInfo),
+          body: JSON.stringify(bookingFormValues),
         });
       } catch (error) {
         console.log(error);
-      }
-
-      // ***************************************** //
-      try {
-        const HARDCODED_PRICE_CENTS = 21400;
-
-        const HARDCODED_DEFAULTS = {
-          serviceType: serviceName,
-          bedrooms: 3,
-          addons: ["Window Cleaning", "Oven Cleaning"],
-          customerEmail: "test@example.com",
-        };
-        const response = await fetch("/api/stripe/generate-stripe-checkout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...HARDCODED_DEFAULTS,
-            totalAmountInCents: HARDCODED_PRICE_CENTS,
-          }),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to initiate checkout.");
-        }
-
-        const data = await response.json();
-        console.log("data: ", data);
-        window.location.href = data.url;
-      } catch (err: any) {
-        console.log(err);
       }
     },
   });
@@ -141,7 +98,7 @@ export default function BookingForm({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Book {serviceName}
+            Book {service.name}
           </DialogTitle>
           <DialogDescription>
             Select your preferred date and time for this service. We'll confirm
@@ -157,7 +114,13 @@ export default function BookingForm({
           }}
           className="space-y-6"
         >
-          <form.Field name="date">
+          <form.Field
+            name="date"
+            validators={{
+              onChange: ({ value }) =>
+                value ? undefined : "Preferred Date is required.",
+            }}
+          >
             {field => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Preferred Date</Label>
@@ -171,27 +134,38 @@ export default function BookingForm({
                   onBlur={field.handleBlur}
                   onChange={e => field.handleChange(e.target.value)}
                 />
+                {field.state.meta?.errors?.length > 0 ? (
+                  <div className="mt-1 text-sm text-red-500">
+                    {field.state.meta.errors.map((error, index) => (
+                      <p key={index}>{error}</p>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             )}
           </form.Field>
 
-          <form.Field name="timeSlot">
+          <form.Field name="duration">
             {field => (
               <div className="space-y-2">
                 <Label htmlFor={field.name} className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  Time Slot
+                  Duration (hrs)
                 </Label>
                 <Select
-                  onValueChange={field.handleChange}
+                  onValueChange={value => {
+                    field.handleChange(value);
+
+                    // Every time the value of duration changes, reset the value of time slot.
+                    field.form.setFieldValue("timeSlot", "");
+                  }}
                   defaultValue={field.state.value}
                   onOpenChange={open => !open && field.handleBlur()}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a time slot" />
+                    <SelectValue placeholder="Select a duration" />
                   </SelectTrigger>
                   <SelectContent>
-                    {timeSlots.map(slot => (
+                    {validDurationOptions.map(slot => (
                       <SelectItem key={slot} value={slot}>
                         {slot}
                       </SelectItem>
@@ -200,6 +174,62 @@ export default function BookingForm({
                 </Select>
               </div>
             )}
+          </form.Field>
+
+          <form.Field
+            name="timeSlot"
+            validators={{
+              onChange: ({ value }) =>
+                value ? undefined : "Time Slot is required.",
+            }}
+          >
+            {field => {
+              const duration = field.form.getFieldValue("duration");
+
+              // Given a duration and operating hours, (We only use monday, too complicated to derive day of week from date string)
+              // this helper function returns an array of string of the form "10:00 AM - 02:00 PM" representing all valid
+              // time slots in a presentable format.
+              const validTimeSlots = getFormattedTimeSlots(
+                duration,
+                operatingHours.monday.start,
+                operatingHours.monday.end
+              );
+
+              return (
+                <div className="space-y-2">
+                  <Label
+                    htmlFor={field.name}
+                    className="flex items-center gap-2"
+                  >
+                    <Clock className="h-4 w-4" />
+                    Time Slot
+                  </Label>
+                  <Select
+                    onValueChange={field.handleChange}
+                    defaultValue={field.state.value}
+                    onOpenChange={open => !open && field.handleBlur()}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a time slot" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {validTimeSlots.map(slot => (
+                        <SelectItem key={slot} value={slot}>
+                          {slot}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {field.state.meta?.errors?.length > 0 ? (
+                    <div className="mt-1 text-sm text-red-500">
+                      {field.state.meta.errors.map((error, index) => (
+                        <p key={index}>{error}</p>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }}
           </form.Field>
 
           <form.Field name="notes">
