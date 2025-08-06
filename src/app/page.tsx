@@ -1,16 +1,19 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { SquareChevronRight } from "lucide-react";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 
 export default function Home() {
   const router = useRouter();
 
+  const handleLoginClick = () => {
+    router.push("/login");
+  };
+
   return (
-    <header className="grid-background flex h-screen w-screen flex-col items-center text-black md:gap-7">
-      {/* Navigation For Main site in Desktop mode */}
+    <header className="grid-background flex h-screen w-screen flex-col items-center md:gap-7">
       <nav className="flex w-full max-w-[2000px] justify-center p-4 px-20 md:justify-between">
         <div className="flex items-center justify-center">
           <img
@@ -29,14 +32,7 @@ export default function Home() {
             </li>
           </ul>
           <div>
-            <Button
-              onClick={() => {
-                router.push("/login");
-              }}
-              className="w-[150px] cursor-pointer rounded-md bg-blue-600 py-3 font-light text-white hover:text-black"
-            >
-              Login
-            </Button>
+            <Button onClick={handleLoginClick}>Login</Button>
           </div>
         </div>
         {/* Hamburger Menu */}
@@ -61,10 +57,7 @@ export default function Home() {
             </p>
 
             {/* UPDATE: a to be Link component. And add some JSX conditionals for when to show something based on screen size. */}
-            <a
-              href="./onboarding"
-              className=" flex w-fit cursor-pointer gap-2.5 rounded-xl border border-blue-600 bg-white p-4 text-blue-600 transition-colors duration-300 hover:bg-blue-600 hover:text-white"
-            >
+            <a href="/login" className={buttonVariants({ variant: "default" })}>
               Get Started
               <span className="hidden md:inline">Managing Your Business</span>
               <SquareChevronRight />
