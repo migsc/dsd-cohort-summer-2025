@@ -22,6 +22,11 @@ function slugify(text: string): string {
     .replace(/--+/g, "-");
 }
 
+const fakeStripeUrls = Array.from({ length: 9 }, (_, i) => ({
+  checkoutUrl: `https://checkout.stripe.com/pay/cs_test_fake_checkout_${i}`,
+  receiptUrl: `https://pay.stripe.com/receipts/acct_test123/rcpt_test_receipt_${i}`,
+}));
+
 const getDateString = (daysOffset: number) => {
   const d = new Date();
   d.setDate(d.getDate() + daysOffset);
@@ -310,6 +315,11 @@ async function main() {
           status: BookingStatus.PENDING,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_pending_1",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[0].checkoutUrl,
+          receiptUrl: fakeStripeUrls[0].receiptUrl,
         },
       })
     );
@@ -330,6 +340,11 @@ async function main() {
           status: BookingStatus.CONFIRMED,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_confirmed_1",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[1].checkoutUrl,
+          receiptUrl: fakeStripeUrls[1].receiptUrl,
         },
       })
     );
@@ -350,6 +365,11 @@ async function main() {
           status: BookingStatus.ON_WAY,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_onway_1",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[2].checkoutUrl,
+          receiptUrl: fakeStripeUrls[2].receiptUrl,
         },
       })
     );
@@ -372,6 +392,11 @@ async function main() {
           status: BookingStatus.IN_PROGRESS,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_inprogress_1",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[3].checkoutUrl,
+          receiptUrl: fakeStripeUrls[3].receiptUrl,
         },
       })
     );
@@ -392,6 +417,11 @@ async function main() {
           status: BookingStatus.CANCELED,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_canceled_1",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[4].checkoutUrl,
+          receiptUrl: fakeStripeUrls[4].receiptUrl,
         },
       })
     );
@@ -413,6 +443,11 @@ async function main() {
           status: BookingStatus.COMPLETED,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_completed_1",
+          completedAt: new Date(),
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[5].checkoutUrl,
+          receiptUrl: fakeStripeUrls[5].receiptUrl,
         },
       })
     );
@@ -434,6 +469,11 @@ async function main() {
           status: BookingStatus.CONFIRMED,
           customerId: customersAndProfiles[1].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_confirmed_2",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[6].checkoutUrl,
+          receiptUrl: fakeStripeUrls[6].receiptUrl,
         },
       })
     );
@@ -454,6 +494,11 @@ async function main() {
           status: BookingStatus.PENDING,
           customerId: customersAndProfiles[1].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_pending_2",
+          completedAt: null,
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[7].checkoutUrl,
+          receiptUrl: fakeStripeUrls[7].receiptUrl,
         },
       })
     );
@@ -475,6 +520,11 @@ async function main() {
           status: BookingStatus.COMPLETED,
           customerId: customersAndProfiles[2].customerProfile.id,
           businessId: adminBusiness.id,
+          paymentIntentId: "pi_fake_completed_2",
+          completedAt: new Date(),
+          originalBookingId: null,
+          checkoutUrl: fakeStripeUrls[8].checkoutUrl,
+          receiptUrl: fakeStripeUrls[8].receiptUrl,
         },
       })
     );

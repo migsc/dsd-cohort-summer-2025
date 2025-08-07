@@ -2,60 +2,41 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-
-async function findCustomer(userId: string) {
-  return prisma.customer.findUnique({
-    where: { userId },
-  });
-}
-
-async function findBusiness(userId: string) {
-  return prisma.business.findUnique({
-    where: { userId },
-  });
-}
+import {
+  getSessionUser,
+  findBusinessBySlug,
+  findBooking,
+} from "@/lib/bookings";
 
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ businessSlug: string }> }
 ) {
+  // GET returns all bookings from a business given
   const { businessSlug } = await params;
-  const session = await auth.api.getSession({ headers: await headers() });
+  const userId = await getSessionUser();
 
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  const business = await findBusinessBySlug(businessSlug, userId);
+
+  console.log(business);
+  if (!business) {
+    return NextResponse.json(
+      { message: "Business not found." },
+      { status: 404 }
+    );
   }
 
-  const userId = session.user.id;
-
   try {
-    const businessProfileWithBookings = await prisma.business.findUnique({
-      where: {
-        userId: userId,
-      },
-      include: {
-        bookings: true,
-      },
+    const bookings = await prisma.booking.findMany({
+      where: { businessId: business.id },
+      include: { service: true },
     });
 
-    if (!businessProfileWithBookings) {
-      return NextResponse.json(
-        { message: "Business profile not found." },
-        { status: 404 }
-      );
-    }
-
-    console.log(businessProfileWithBookings.bookings);
-    return NextResponse.json(
-      {
-        bookings: businessProfileWithBookings.bookings,
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({ bookings }, { status: 200 });
   } catch (err) {
-    console.log("Error fetching business profile: ", err);
+    console.error("Error fetching bookings:", err);
     return NextResponse.json(
-      { message: "Internal Server Error." },
+      { message: "Bookings fetch error" },
       { status: 500 }
     );
   }
@@ -66,47 +47,52 @@ export async function PATCH(
   { params }: { params: Promise<{ businessSlug: string }> }
 ) {
   const { businessSlug } = await params;
-  const session = await auth.api.getSession({ headers: await headers() });
+  const userId = await getSessionUser();
 
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  const { bookingId, status } = await req.json();
+  if (!bookingId || !status) {
+    return NextResponse.json(
+      { message: "Booking ID and status are required" },
+      { status: 400 }
+    );
   }
 
-  // Parse the incoming JSON
-  const body = await req.json();
-  const { bookingId, status } = body;
-
-  const business = await findBusiness(session.user.id);
-  console.log("Business", business);
-
+  const business = await findBusinessBySlug(businessSlug, userId);
   if (!business) {
     return NextResponse.json(
-      { message: "Businiess not found" },
+      { message: "Business not found." },
       { status: 404 }
     );
   }
 
-  // Validate required field
-  if (!bookingId) {
-    return NextResponse.json(
-      { message: "Booking ID is required" },
-      { status: 400 }
-    );
-  }
-  // Check if the booking exists and belongs to this customer
-  const booking = await prisma.booking.findUnique({
-    where: { id: bookingId },
-  });
+  const booking = await findBooking(bookingId);
 
   if (!booking) {
     return NextResponse.json({ message: "Booking not found" }, { status: 404 });
   }
 
-  console.log(booking.businessId, business.id);
   if (booking.businessId !== business.id) {
     return NextResponse.json(
       { message: "You are not authorized to update this booking" },
       { status: 403 }
+    );
+  }
+
+  const validStatuses = [
+    "PENDING",
+    "CONFIRMED",
+    "ON_WAY",
+    "IN_PROGRESS",
+    "CANCELED",
+    "COMPLETED",
+  ];
+
+  const statusUppercase = status.toUpperCase();
+
+  if (!validStatuses.includes(statusUppercase)) {
+    return NextResponse.json(
+      { message: "Invalid status value" },
+      { status: 400 }
     );
   }
 
@@ -116,6 +102,7 @@ export async function PATCH(
       where: { id: bookingId },
       data: {
         status: status.toUpperCase(),
+        ...(statusUppercase === "COMPLETED" && { completedAt: new Date() }),
       },
     });
 
@@ -126,7 +113,5 @@ export async function PATCH(
       { message: "Error updating booking" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
