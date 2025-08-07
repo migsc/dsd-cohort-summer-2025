@@ -72,7 +72,7 @@ export default async function Layout({ children, params }: LayoutProps) {
         <AppSidebar
           items={loggedOutItems}
           loggedIn={false}
-          title={`${businessSlug.split('-').join(' ').toUpperCase()}`}
+          title={`${businessSlug.split("-").join(" ").toUpperCase()}`}
         />
         <main className="w-full">
           <SidebarTrigger />
@@ -87,7 +87,7 @@ export default async function Layout({ children, params }: LayoutProps) {
       <AppSidebar
         items={loggedInItems}
         loggedIn={true}
-        title={`${businessSlug.split('-').join(' ').toUpperCase()}`}
+        title={`${businessSlug.split("-").join(" ").toUpperCase()}`}
       />
       <main className="w-full">
         <SidebarTrigger />

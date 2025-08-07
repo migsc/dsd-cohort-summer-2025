@@ -36,7 +36,7 @@ export interface BookingFormProps {
   service: CoreService;
   operatingHours: OperatingHours;
   businessSlug: string;
-} 
+}
 
 export default function BookingForm({
   isOpen,
