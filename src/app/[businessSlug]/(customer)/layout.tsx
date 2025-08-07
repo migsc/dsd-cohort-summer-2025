@@ -1,7 +1,6 @@
 import { Calendar, Home, CreditCard, Settings, LogIn } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import PortalHeader from "@/components/ui/custom/portalHeader";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
@@ -28,11 +27,11 @@ export default async function Layout({ children, params }: LayoutProps) {
     });
 
     if (!business) {
-      console.log("Business not found.");
+      // console.log("Business not found.");
       redirect("/");
     }
   } catch (error) {
-    console.log("Error getting business: ", error);
+    // console.log("Error getting business: ", error);
     redirect("/");
   }
 
@@ -78,15 +77,10 @@ export default async function Layout({ children, params }: LayoutProps) {
         <AppSidebar
           items={loggedOutItems}
           loggedIn={false}
-          title="CleanHub Customer Portal"
+          title={`${businessSlug.split('-').join(' ').toUpperCase()}`}
         />
         <main className="w-full">
           <SidebarTrigger />
-          {/* <PortalHeader
-            logoSrc="https://placehold.co/50x50"
-            logoAlt="logo"
-            businessName={businessSlug}
-          ></PortalHeader> */}
           {children}
         </main>
       </SidebarProvider>
@@ -98,15 +92,10 @@ export default async function Layout({ children, params }: LayoutProps) {
       <AppSidebar
         items={loggedInItems}
         loggedIn={true}
-        title="CleanHub Customer Portal"
+        title={`${businessSlug.split('-').join(' ').toUpperCase()}`}
       />
       <main className="w-full">
         <SidebarTrigger />
-        {/* <PortalHeader
-          logoSrc="https://placehold.co/50x50"
-          logoAlt="logo"
-          businessName={business.businessName}
-        ></PortalHeader> */}
         {children}
       </main>
     </SidebarProvider>

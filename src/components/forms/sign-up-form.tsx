@@ -24,7 +24,6 @@ export default function SignUpForm({
   if (business) {
     redirectURL = `/onboarding/customer?business=${business}`;
   }
-  console.log("sign-up, searchParams: ", business);
 
   const form = useForm({
     defaultValues: {
@@ -159,7 +158,7 @@ export default function SignUpForm({
         <Button
           variant="link"
           onClick={onSwitchToSignIn}
-          className="text-indigo-600 hover:text-indigo-800"
+          className="text-secondary-foreground"
         >
           Already have an account? Sign In
         </Button>

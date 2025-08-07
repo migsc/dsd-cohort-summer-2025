@@ -4,6 +4,13 @@ import AppCalendar, { type CalendarEvent } from "@/components/app-calendar";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import type { OperatingHours } from "prisma/generated";
+
+type APIResponse = {
+  operatingHours: OperatingHours;
+  businessSlug: string;
+  bookings: Booking[];
+};
 
 interface Booking {
   id: string;
@@ -13,11 +20,6 @@ interface Booking {
   endTime: string;
   duration?: string | null;
 }
-
-type APIResponse = {
-  businessSlug: string;
-  bookings: Booking[];
-};
 
 interface AdminPageProps {
   params: {
@@ -72,20 +74,36 @@ export default function Calendar({ params }: AdminPageProps) {
       }
 
       try {
-        console.log("This is the business slug: ", businessSlug);
-        const res = await fetch(`/api/${businessSlug}/bookings`);
-        if (!res.ok) {
-          const errorData = await res.json();
+        const hoursRes = await fetch("/api/business/calendar-events");
+        if (!hoursRes.ok) {
+          const hoursErr = await hoursRes.json();
           throw new Error(
-            errorData.error || `HTTP error! status ${res.status}`
+            hoursErr.error ||
+              `Error fetching operating hours! status ${hoursRes.status}`
           );
         }
+        const hoursJson = await hoursRes.json();
 
-        const json: APIResponse = await res.json();
-        setApiData(json);
+        const bookingsRes = await fetch(`/api/${businessSlug}/bookings`);
+        if (!bookingsRes.ok) {
+          const bookingsErr = await bookingsRes.json();
+          throw new Error(
+            bookingsErr.error ||
+              `Error fetching bookings! status ${bookingsRes.status}`
+          );
+        }
+        const bookingsJson = await bookingsRes.json();
+
+        setApiData({
+          operatingHours: hoursJson,
+          bookings: bookingsJson.bookings || [],
+          businessSlug: businessSlug,
+        });
       } catch (err: any) {
         console.error("Error fetching bookings data:", err);
         setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -115,7 +133,10 @@ export default function Calendar({ params }: AdminPageProps) {
     <div className="flex flex-col items-center">
       <p className="mb-4 text-xl font-bold">Welcome {session?.user.name}</p>
       <div>
-        <AppCalendar events={appointments} />
+        <AppCalendar
+          events={appointments}
+          operatingHours={apiData.operatingHours}
+        />
       </div>
     </div>
   );
