@@ -28,6 +28,8 @@ export default async function MyBookings({
 
   // Because this is a server component and runs in a node js runtime there is no access to the browser fetch api.
   // You get to use direct prisma calls right inside the component.
+  // I added the prisma calls here and the functions are below your fetchBookings function below.
+  // *************************** What I Added START *****************************
   const userId = session.user.id;
   let bookings;
   let business;
@@ -42,6 +44,8 @@ export default async function MyBookings({
     console.log("There was an error fetching bookings or business: ", err);
     return <div>There was an error fetching bookings or business.</div>;
   }
+
+  // *************************** What I Added END *****************************
 
   // Separate active bookings from completed/canceled ones
   const activeBookings = bookings.filter(
