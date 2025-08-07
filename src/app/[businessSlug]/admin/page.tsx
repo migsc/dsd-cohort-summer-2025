@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import AppCalendar, { type CalendarEvent } from "@/components/app-calendar";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -9,8 +9,9 @@ interface Booking {
   id: string;
   serviceName: string;
   date: string;
-  timeSlot: string;
-  serviceDuration?: string | null;
+  startTime: string;
+  endTime: string;
+  duration?: string | null;
 }
 
 type APIResponse = {
@@ -24,37 +25,20 @@ interface AdminPageProps {
   };
 }
 
-const mapBookingsToCalendarEvents = useMemo(() => {
-  return (rawBookings: Booking[] | null): CalendarEvent[] => {
-    if (!rawBookings) return [];
+function mapBookingsToCalendarEvents(
+  rawBookings: Booking[] | null
+): CalendarEvent[] {
+  if (!rawBookings) return [];
 
-    return rawBookings.map(booking => {
-      const startDateTimeString = `${booking.date}T${booking.timeSlot}`;
-      const startDate = new Date(startDateTimeString);
-
-      let endDate: Date;
-      if (booking.serviceDuration) {
-        const durationMatch = booking.serviceDuration.match(/(\d+)\s*hour(s)?/);
-        let durationInHours =
-          durationMatch && durationMatch[1]
-            ? parseInt(durationMatch[1], 10)
-            : 1;
-        endDate = new Date(
-          startDate.getTime() + durationInHours * 60 * 60 * 1000
-        );
-      } else {
-        endDate = new Date(startDate.getTime() + 1 * 60 * 60 * 1000);
-      }
-
-      return {
-        title: booking.serviceName,
-        start: startDate,
-        end: endDate,
-        allDay: false,
-      };
-    });
-  };
-}, []);
+  return rawBookings.map(booking => {
+    return {
+      title: booking.serviceName,
+      start: new Date(booking.startTime),
+      end: new Date(booking.endTime),
+      allDay: false,
+    };
+  });
+}
 
 export default function Calendar({ params }: AdminPageProps) {
   const router = useRouter();
@@ -62,7 +46,8 @@ export default function Calendar({ params }: AdminPageProps) {
   const [apiData, setApiData] = useState<APIResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { businessSlug } = params;
+
+  const businessSlug = params.businessSlug;
 
   useEffect(() => {
     if (!session && !isPending) {
@@ -87,18 +72,8 @@ export default function Calendar({ params }: AdminPageProps) {
       }
 
       try {
-        /* This has the business slug but I will console log it
-        const res = await fetch(`api/${businessSlug}`);
-        if (!res.ok) {
-          throw new Error("Failed to get business slug");
-        }
-
-        const json = await res.json();
-        setApiData(json);
-        */
-
         console.log("This is the business slug: ", businessSlug);
-        const res = await fetch(`api/${businessSlug}/bookings`);
+        const res = await fetch(`/api/${businessSlug}/bookings`);
         if (!res.ok) {
           const errorData = await res.json();
           throw new Error(
@@ -114,8 +89,10 @@ export default function Calendar({ params }: AdminPageProps) {
       }
     };
 
-    fetchData();
-  }, [session, businessSlug]);
+    if (!isPending && session?.user?.id && businessSlug) {
+      fetchData();
+    }
+  }, [session, businessSlug, isPending]);
 
   if (isPending) {
     return <div>Loading...</div>;
