@@ -33,7 +33,7 @@ export function AppSidebar({
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{title}</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-base">{title}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(item => (

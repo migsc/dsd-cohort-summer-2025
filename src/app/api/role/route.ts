@@ -5,8 +5,6 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
-  console.log("in the api");
-  console.log("session: ", session);
 
   if (!session || !session.user || !session.user.id) {
     return NextResponse.json({ message: "Unathorized" }, { status: 401 });

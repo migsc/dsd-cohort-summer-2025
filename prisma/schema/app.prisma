@@ -36,16 +36,27 @@ model Business {
   @@map("business")
 }
 
+enum ContactPersonTitle {
+  Owner
+  Manager
+  Sales_Lead @map("Sales Lead")
+  Customer_Service   @map("Customer Service")
+  Other
+}
+
 model Customer {
   id                     String @id @default(auto()) @map("_id") @db.ObjectId
   userId                 String @unique
   user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phoneNumber            String 
   preferredContactMethod String?
   addressStreet          String?
   addressCity            String?
   addressState           String?
   addressZip             String?
   addressCountry         String?
+  rooms                  Float
+  squareFootage          Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -55,17 +66,54 @@ model Customer {
   @@map("customer")
 }
 
-type CoreService {
-  name                    String
-  description             String
-  durationMin             Int
-  durationMax             Int
-  typicalCleanersAssigned Int
-  pricingModel            PricingModel
-  priceMin                Float
-  priceMax                Float
-  rate                    Float
-  id                      String @default(cuid())
+model CoreService {
+    id                      String       @id @map("_id") @default(uuid())
+    businessId              String       @db.ObjectId
+    business                Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+    name                    String
+    description             String
+    durationMin             Int
+    durationMax             Int
+    typicalCleanersAssigned Int
+    pricingModel            PricingModel
+    priceMin                Float
+    priceMax                Float
+    rate                    Float
+
+    bookings                Booking[]
+
+    createdAt               DateTime @default(now())
+    updatedAt               DateTime @updatedAt
+
+    @@map("coreService")
+}
+
+model Booking {
+    id              String        @id @default(auto()) @map("_id") @db.ObjectId
+    date            String
+    startTime       String
+    endTime         String
+    notes           String?
+    duration        Int
+    price           Float
+    rooms           Float?
+    squareFootage   Float?
+    status          BookingStatus @default(PENDING)
+
+    serviceId       String 
+    service         CoreService   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+    customerId String   @db.ObjectId
+    customer   Customer @relation(fields: [customerId], references: [id])
+
+    businessId String   @db.ObjectId
+    business   Business @relation(fields: [businessId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("booking")
 }
 
 type OperatingHours {
@@ -84,38 +132,20 @@ type DayOperatingHours {
   isOpen Boolean
 }
 
-
-model Booking {
-  id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  date            String
-  startTime       String
-  endTime         String
-  notes           String?
-  serviceId       String
-  duration        Int
-  price           Float
-  rooms           Float?
-  squareFootage   Float?
-  status          BookingStatus @default(PENDING)
-
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String   @db.ObjectId
-
-  business   Business @relation(fields: [businessId], references: [id])
-  businessId String   @db.ObjectId
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("booking")
-}
-
 enum BookingStatus {
   PENDING
   CONFIRMED
   IN_PROGRESS
   CANCELED
   COMPLETED
+  ON_WAY
+}
+
+enum PricingModel {
+  HOUR
+  SQFT 
+  ROOM
+  JOB
 }
 
 enum PricingModel {
