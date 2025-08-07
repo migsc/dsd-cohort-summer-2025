@@ -28,13 +28,13 @@ export async function getBookingsWithServiceAndCustomer(businessSlug: string) {
       service: true, // Include the full CoreService object for each booking
       customer: {
         include: {
-          user: true
-        }
+          user: true,
+        },
       }, // Uncomment if you also need customer data per booking
     },
     orderBy: [
-      {date: "asc"}, // Optional: order results
-      {startTime: "asc"},
+      { date: "asc" }, // Optional: order results
+      { startTime: "asc" },
     ],
   });
 
