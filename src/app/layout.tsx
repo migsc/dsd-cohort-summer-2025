@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
-          <div className="grid grid-rows-[auto_1fr]">{children}</div>
+          <div>{children}</div>
         </Providers>
       </body>
     </html>

@@ -32,9 +32,6 @@ const tempEvents: CalendarEvent[] = [
 export default function Calendar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
-<<<<<<< HEAD
-  
-=======
   const [data, setData] = useState<APIResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +40,6 @@ export default function Calendar() {
       router.push("/login");
     }
   }, [session, isPending]);
->>>>>>> 913deae0197e9811499238b3a5f586a0241ecf8a
 
   useEffect(() => {
     if (!session?.user?.id) {
