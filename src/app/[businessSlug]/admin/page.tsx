@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import type { OperatingHours } from "prisma/generated";
+import moment from "moment-timezone";
 
 type APIResponse = {
   operatingHours: OperatingHours;
@@ -14,8 +15,8 @@ type APIResponse = {
 
 interface Booking {
   id: string;
-  serviceName: string;
   date: string;
+  notes: string | null;
   startTime: string;
   endTime: string;
   duration?: string | null;
@@ -33,10 +34,18 @@ function mapBookingsToCalendarEvents(
   if (!rawBookings) return [];
 
   return rawBookings.map(booking => {
+    const startDateTimeString = `${booking.date} ${booking.startTime}`;
+    const startDateMoment = moment(startDateTimeString, "YYYY-MM-DD HH:mm A");
+    const startDate = startDateMoment.toDate();
+
+    const endDateTimeString = `${booking.date} ${booking.endTime}`;
+    const endDateMoment = moment(endDateTimeString, "YYYY-MM-DD HH:mm A");
+    const endDate = endDateMoment.toDate();
+
     return {
-      title: booking.serviceName,
-      start: new Date(booking.startTime),
-      end: new Date(booking.endTime),
+      title: booking.notes || booking.id,
+      start: startDate,
+      end: endDate,
       allDay: false,
     };
   });
@@ -77,20 +86,14 @@ export default function Calendar({ params }: AdminPageProps) {
         const hoursRes = await fetch("/api/business/calendar-events");
         if (!hoursRes.ok) {
           const hoursErr = await hoursRes.json();
-          throw new Error(
-            hoursErr.error ||
-              `Error fetching operating hours! status ${hoursRes.status}`
-          );
+          throw new Error(hoursErr.error || `Error fetching operating hours!`);
         }
         const hoursJson = await hoursRes.json();
 
         const bookingsRes = await fetch(`/api/${businessSlug}/bookings`);
         if (!bookingsRes.ok) {
           const bookingsErr = await bookingsRes.json();
-          throw new Error(
-            bookingsErr.error ||
-              `Error fetching bookings! status ${bookingsRes.status}`
-          );
+          throw new Error(bookingsErr.error || `Error fetching bookings!`);
         }
         const bookingsJson = await bookingsRes.json();
 
@@ -129,6 +132,7 @@ export default function Calendar({ params }: AdminPageProps) {
     ? mapBookingsToCalendarEvents(apiData.bookings)
     : [];
 
+  console.log(appointments);
   return (
     <div className="flex flex-col items-center">
       <p className="mb-4 text-xl font-bold">Welcome {session?.user.name}</p>
