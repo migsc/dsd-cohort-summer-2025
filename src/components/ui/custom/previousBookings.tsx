@@ -15,9 +15,7 @@ interface PreviousBookingProps {
     orderNum: string,
     dateFulfilled: string,
     serviceName: string,
-    servicePrice: string,
-    serviceId: string,
-    serviceDuration: string,
+    servicePrice: number,
     timeSlot: string,
     notes: any,
     status: string,
@@ -31,9 +29,7 @@ export default function PreviousBooking({
     orderNum, 
     dateFulfilled, 
     serviceName, 
-    servicePrice, 
-    serviceId, 
-    serviceDuration, 
+    servicePrice,
     timeSlot,
     notes,
     status,
@@ -72,7 +68,6 @@ export default function PreviousBooking({
                     <p><span  className="font-bold">Time:</span> {timeSlot}</p>
                     <p><span  className="font-bold">Payment Method:</span> Credit Card</p>
                     <p><span  className="font-bold">Amount Paid:</span>  ${servicePrice}</p>
-                    <p><span  className="font-bold">Duration:</span> {serviceDuration} hours</p>
                     <p><span  className="font-bold">Notes:</span> {notes}</p>
                     <Button 
                     onClick={handleRebook} 

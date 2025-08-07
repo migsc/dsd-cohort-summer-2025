@@ -48,8 +48,8 @@ export default async function MyBookings() {
             <div className="flex justify-center">
               <BookingProgressTracker 
                   orderNum={currentBooking.id.slice(-6).toUpperCase()} // Use last 6 chars of ID as order number
-                  service={currentBooking.serviceName}
-                  servicePrice={currentBooking.servicePrice}
+                  service={currentBooking.service.name}
+                  servicePrice={currentBooking.service.rate}
                   currentStatus={currentBooking.status}
                   expectedCompletion={`${currentBooking.timeSlot} ${new Date(currentBooking.date).toLocaleDateString('en-US', { 
                   month: 'short', 
@@ -97,10 +97,8 @@ export default async function MyBookings() {
                     day: '2-digit',
                     year: 'numeric',
                   })}
-                  serviceName={booking.serviceName}
-                  servicePrice={booking.servicePrice}
-                  serviceId={booking.serviceId}
-                  serviceDuration={booking.serviceDuration}
+                  serviceName={booking.service.name}
+                  servicePrice={booking.service.rate}
                   timeSlot={booking.timeSlot}
                   notes={booking.notes}
                   status={booking.status}
@@ -124,7 +122,6 @@ interface Booking {
   notes?: string;
   duration: number;
   price: number;
-  serviceId: string;
   customerId: string;
   businessId: string;
   status: 'PENDING' | 'CONFIRMED' | 'ON_WAY' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';
@@ -137,11 +134,6 @@ interface Booking {
     operatingHours: OperatingHours;
     businessSlug: string;
   };
-
-  // Derived for UI
-  serviceName: string;
-  servicePrice: string;
-  serviceDuration: string;
 }
 
 // Fetch bookings from API endpoint
@@ -173,7 +165,7 @@ async function fetchBookings(): Promise<Booking[]> {
     return {
       ...booking,
       timeSlot,
-      serviceName: service?.name ?? 'Unknown',
+      serviceName: service.name ?? 'Unknown',
       servicePrice: booking.price?.toString() ?? '0',
       serviceDuration: booking.duration?.toString() ?? '1',
       service: service,

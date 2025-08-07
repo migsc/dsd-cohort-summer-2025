@@ -12,7 +12,7 @@ import { Progress } from '@/components/ui/progress';
 interface BookingProgressTrackerProps {
   orderNum: string;
   service: string;
-  servicePrice: string;
+  servicePrice: number;
   currentStatus: 'PENDING' | 'CONFIRMED' | 'ON_WAY' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';
   expectedCompletion?: string;
   placedDate?: string;
