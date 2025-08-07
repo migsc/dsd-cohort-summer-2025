@@ -6,6 +6,7 @@ import BookingProgressTracker from '@/components/ui/custom/progressTracker'
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import type { CoreService, OperatingHours } from "prisma/generated";
 
 export default async function MyBookings() {
     // Get session for user info
@@ -28,6 +29,8 @@ export default async function MyBookings() {
     const previousBookings = bookings.filter(booking => 
         booking.status === 'COMPLETED' || booking.status === 'CANCELED'
     );
+
+    console.log('previous bookings: ', [...previousBookings.entries()])
 
     // Get the most recent active booking for the progress tracker
     const currentBooking = activeBookings.length > 0 ? activeBookings[0] : null;
@@ -86,21 +89,24 @@ export default async function MyBookings() {
             {/* Map previous bookings to accordion */}
             {previousBookings.map((booking) => (
                 <PreviousBooking
-                key={booking.id}
-                bookingId={booking.id}
-                orderNum={booking.id.slice(-6)}
-                dateFulfilled={new Date(booking.date).toLocaleDateString('en-US', { 
-                    month: '2-digit', 
-                    day: '2-digit', 
-                    year: 'numeric' 
-                })}
-                serviceName={booking.serviceName}
-                servicePrice={booking.servicePrice}
-                serviceId={booking.serviceId}
-                serviceDuration={booking.serviceDuration}
-                timeSlot={booking.timeSlot}
-                notes={booking.notes}
-                status={booking.status}
+                  key={booking.id}
+                  bookingId={booking.id}
+                  orderNum={booking.id.slice(-6)}
+                  dateFulfilled={new Date(booking.date).toLocaleDateString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                  })}
+                  serviceName={booking.serviceName}
+                  servicePrice={booking.servicePrice}
+                  serviceId={booking.serviceId}
+                  serviceDuration={booking.serviceDuration}
+                  timeSlot={booking.timeSlot}
+                  notes={booking.notes}
+                  status={booking.status}
+                  service={booking.service}
+                  operatingHours={booking.business.operatingHours}
+                  businessSlug={booking.business.businessSlug}
                 />
             ))}
           </Accordion>
@@ -111,19 +117,32 @@ export default async function MyBookings() {
 
 interface Booking {
   id: string;
-  serviceName: string;
   date: string;
+  startTime: string;
+  endTime: string;
   timeSlot: string;
   notes?: string;
+  duration: number;
+  price: number;
   serviceId: string;
-  serviceDuration: string;
-  servicePrice: string;
-  status: 'PENDING' | 'CONFIRMED' | 'ON_WAY' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';
   customerId: string;
   businessId: string;
+  status: 'PENDING' | 'CONFIRMED' | 'ON_WAY' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';
   createdAt: string;
   updatedAt: string;
-};
+
+  service: CoreService;
+
+  business: {
+    operatingHours: OperatingHours;
+    businessSlug: string;
+  };
+
+  // Derived for UI
+  serviceName: string;
+  servicePrice: string;
+  serviceDuration: string;
+}
 
 // Fetch bookings from API endpoint
 async function fetchBookings(): Promise<Booking[]> {
@@ -144,14 +163,27 @@ async function fetchBookings(): Promise<Booking[]> {
       return [];
     };
 
-    const bookings = await response.json();
-    return bookings.map((booking: any) => ({
+    const rawBookings = await response.json();
+    
+    return rawBookings.map((booking: any) => {
+      const timeSlot = `${booking.startTime} - ${booking.endTime}`;
+    const service = booking.service;
+    const business = booking.business;
+
+    return {
       ...booking,
-      timeSlot: `${booking.startTime} - ${booking.endTime}`,
-      serviceName: booking.service?.name ?? booking.serviceName, // fallback
-      servicePrice: booking.price?.toString() ?? booking.servicePrice, // fallback
-      serviceDuration: booking.duration?.toString() ?? booking.serviceDuration, // fallback
-    }));
+      timeSlot,
+      serviceName: service?.name ?? 'Unknown',
+      servicePrice: booking.price?.toString() ?? '0',
+      serviceDuration: booking.duration?.toString() ?? '1',
+      service: service,
+      business: {
+        operatingHours: business?.operatingHours ?? null,
+        businessSlug: business?.businessSlug ?? '',
+      },
+    };
+    });
+    
   } catch (error) {
     console.error('Error fetching bookings:', error);
     return [];

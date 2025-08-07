@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import RebookingForm from "@/components/forms/rebook-form";
+import BookingForm from "@/components/forms/book-service-form"
 import { useState } from "react";
 import React from "react";
 
@@ -20,7 +20,10 @@ interface PreviousBookingProps {
     serviceDuration: string,
     timeSlot: string,
     notes: any,
-    status: string
+    status: string,
+    service: any,
+    operatingHours: any,
+    businessSlug: string
 }
 
 export default function PreviousBooking({
@@ -33,7 +36,10 @@ export default function PreviousBooking({
     serviceDuration, 
     timeSlot,
     notes,
-    status
+    status,
+    service,
+    operatingHours,
+    businessSlug
 }: PreviousBookingProps) {
     const [isRebookingModalOpen, setIsRebookingModalOpen] = useState(false);
 
@@ -60,12 +66,13 @@ export default function PreviousBooking({
             </AccordionTrigger>
             <AccordionContent>
                 <div className="p-4 space-y-2 text-sm">
+                    <p><span  className="font-bold">Order #{orderNum.toUpperCase()}</span></p>
                     <p><span  className="font-bold">Date:</span> {new Date(dateFulfilled).toLocaleDateString()}</p>
                     <p><span  className="font-bold">Service Type:</span> {serviceName}</p>
                     <p><span  className="font-bold">Time:</span> {timeSlot}</p>
                     <p><span  className="font-bold">Payment Method:</span> Credit Card</p>
-                    <p><span  className="font-bold">Amount Paid:</span>  {servicePrice}</p>
-                    <p><span  className="font-bold">Duration:</span> {serviceDuration}</p>
+                    <p><span  className="font-bold">Amount Paid:</span>  ${servicePrice}</p>
+                    <p><span  className="font-bold">Duration:</span> {serviceDuration} hours</p>
                     <p><span  className="font-bold">Notes:</span> {notes}</p>
                     <Button 
                     onClick={handleRebook} 
@@ -76,10 +83,12 @@ export default function PreviousBooking({
             </AccordionContent>
         </AccordionItem>
         {/* TODO: Fix this once made new rebooking form */}
-        <RebookingForm
+        <BookingForm
                 isOpen={isRebookingModalOpen}
-                onClose={() => setIsRebookingModalOpen(false)}
-                // serviceId={serviceId} operatingHours={undefined} notes={""}            
+                onClose={() => setIsRebookingModalOpen(false)} 
+                service={service} 
+                operatingHours={operatingHours} 
+                businessSlug={""}                    
         />
         </React.Fragment>
     )
