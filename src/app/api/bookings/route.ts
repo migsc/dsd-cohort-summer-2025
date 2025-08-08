@@ -11,7 +11,6 @@ async function findCustomer(userId: string) {
 
 export async function GET(request: Request) {
   const session = await auth.api.getSession({ headers: await headers() });
-
   if (!session || !session.user || !session.user.id) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
@@ -19,7 +18,10 @@ export async function GET(request: Request) {
   const customer = await findCustomer(session.user.id);
 
   if (!customer) {
-    return NextResponse.json({ message: "Customer not found" }, { status: 404 });
+    return NextResponse.json(
+      { message: "Customer not found" },
+      { status: 404 }
+    );
   }
 
   // Fetch bookings with relations

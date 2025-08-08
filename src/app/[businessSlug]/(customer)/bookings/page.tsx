@@ -60,8 +60,6 @@ export default async function MyBookings({
     booking => booking.status === "COMPLETED" || booking.status === "CANCELED"
   );
 
-  console.log("previous bookings: ", [...previousBookings.entries()]);
-
   // Get the most recent active booking for the progress tracker
   const currentBooking = activeBookings.length > 0 ? activeBookings[0] : null;
 
