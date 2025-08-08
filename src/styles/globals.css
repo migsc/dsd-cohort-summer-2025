@@ -5,7 +5,7 @@
 
 @theme {
   --font-sans:
-    "Poppins", "Inter", "Geist", ui-sans-serif, system-ui, sans-serif,
+    "Inter", "Geist", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
@@ -14,8 +14,17 @@ body {
   @apply bg-background;
 }
 .grid-patterns {
-  @apply absolute inset-0 z-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px];
+  @apply absolute inset-0 z-0 h-screen w-screen bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px];
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in WebKit browsers */
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+
 
 :root {
   --radius: 0.65rem;

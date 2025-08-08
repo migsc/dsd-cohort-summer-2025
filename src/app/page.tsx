@@ -17,7 +17,8 @@ export default function Home() {
   return (
     <>
     {/* Header section */}
-      <header className=" flex h-screen w-screen flex-col items-center md:gap-7">
+    {/* <div className="grid-patterns"></div> */}
+      <header className="grid-patterns flex h-screen w-screen flex-col items-center md:gap-7">
         {/* Desktop Navigation */}
         <nav className="flex w-full max-w-[2000px] justify-center p-4 px-20 md:justify-between">
           <div className="flex items-center justify-center">
@@ -31,12 +32,6 @@ export default function Home() {
             </p>
           </div>
           <div className="hidden items-center gap-2.5 space-x-4 md:flex">
-            {/* For contact link or jumping aroun in the page. */}
-            {/* <ul className="flex space-x-4">
-              <li>
-                <a href="/">Contact</a>
-              </li>
-            </ul> */}
             <div>
               <Button onClick={handleLoginClick}>Login</Button>
             </div>

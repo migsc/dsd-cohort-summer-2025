@@ -86,7 +86,7 @@ export default async function MyBookings() {
         </div>
         ) : (
         <Table>
-            <TableHeader className="bg-blue-500">
+            <TableHeader className="bg-primary">
             <TableRow>
                 <TableHead className="w-[100px]">Order No.</TableHead>
                 <TableHead className="w-[100px]">Date Fulfilled</TableHead>

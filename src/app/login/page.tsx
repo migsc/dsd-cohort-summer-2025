@@ -23,7 +23,7 @@ export default function LoginPage() {
             <p className="ml-2 hidden text-6xl font-bold text-blue-950 md:block">
               CleanHub
             </p>
-            <p className="ml-2 hidden text-blue-950 md:block text-center">
+            <p className="ml-2 hidden text-blue-950 md:block text-center w-3/4">
               Your assistant who manages your customers cleaning needs
             </p>
           </div>

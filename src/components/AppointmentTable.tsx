@@ -31,6 +31,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "./ui/button";
 import { BookingStatus } from "prisma/generated";
 import { Separator } from "./ui/separator";
+import { useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 type Customer = {
   id: string;
@@ -64,7 +67,6 @@ type Invoice = {
 };
 
 type Props = {
-  filter: string;
   bookingInfo: BookingInfo[]; // ✅ Not Booking[]
 };
 // NEED TO MAKE IT TYPE SAFE
@@ -97,9 +99,24 @@ function openInGoogleMaps(address: string) {
   window.open(url, "_blank"); // Opens in a new tab/window
 }
 
-export default function AppointmentTable({ filter, bookingInfo }: Props) {
+export default function AppointmentTable({ bookingInfo }: Props) {
+
+  const [filter, setFilter] = useState("CONFIRMED"); // default tab
+
   return (
     <div>
+      {/* Tabs to switch filters */}
+      <section className="mb-4">
+        <Tabs value={filter} onValueChange={setFilter}>
+          <TabsList>
+            <TabsTrigger value="CONFIRMED">Confirmed</TabsTrigger>
+            <TabsTrigger value="PENDING">Pending</TabsTrigger>
+            <TabsTrigger value="CANCELLED">Cancelled</TabsTrigger>
+            <TabsTrigger value="COMPLETED">Completed</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </section>
+
       <Table>
         <TableHeader>
           <TableRow className="border-b-gray-300 hover:bg-white">
@@ -113,7 +130,7 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
         </TableHeader>
         <TableBody>
           {bookingInfo
-            // .filter(booking => booking.status === filter)
+            .filter(booking => booking.status === filter)
             .map(booking => (
               <Sheet key={booking.id}>
                 <SheetTrigger asChild>
@@ -172,7 +189,7 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
                     </SheetTitle>
                     <Separator className="mt-4" />
                   </SheetHeader>
-                  <div className="px-5">
+                  <div className="overflow-y-scroll no-scrollbar px-5">
                     {/* Order details title */}
                     <h2 className="text-foreground mb-4 text-xl font-bold">
                       Order Details
@@ -213,8 +230,7 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
                           <p className="w-16 font-semibold">Address:</p>
                           <p>{`${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState}, ${booking.customer.addressZip}`}</p>
                         </div>
-                        <Button
-                          className={`${buttonVariants({ variant: "outline" })}`}
+                        <Button variant= "outline"
                           // This send the addresss to the openInGoogleMaps function to be able to then search.
                           onClick={() => {
                             if (booking.customer) {
@@ -241,37 +257,53 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
                             Payment Information
                           </AccordionTrigger>
                           <AccordionContent>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Invoice#</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Invoice#
+                              </p>
                               <p>{InvoiceDummy.invoiceNum}</p>
                             </div>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Date:</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Date:
+                              </p>
                               <p>{InvoiceDummy.datePaid}</p>
                             </div>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Type:</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Type:
+                              </p>
                               <p>{InvoiceDummy.cardType}</p>
                             </div>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Date:</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Date:
+                              </p>
                               <p>{InvoiceDummy.datePaid}</p>
                             </div>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Service:</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Service:
+                              </p>
                               <p>{InvoiceDummy.serviceType}</p>
                             </div>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Qty:</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Qty:
+                              </p>
                               <p>{InvoiceDummy.quantity}</p>
                             </div>
-                            <div className="mb-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Pricing:</p>
+                            <div className="mb-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Pricing:
+                              </p>
                               <p>{InvoiceDummy.pricing}</p>
                             </div>
                             <Separator />
-                            <div className="my-4 flex justify-between w-full">
-                              <p className="w-16 font-semibold text-primary">Total:</p>
+                            <div className="my-4 flex w-full justify-between">
+                              <p className="text-primary w-16 font-semibold">
+                                Total:
+                              </p>
                               <p>{InvoiceDummy.totalPaid}</p>
                             </div>
                           </AccordionContent>
@@ -279,7 +311,7 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
                       </Accordion>
                     </div>
                   </div>
-                  <SheetFooter className="h-40 border-t">
+                  <SheetFooter className="h-fit border-t">
                     <div className="flex flex-col items-center justify-center gap-4">
                       {booking.status === "PENDING" ? (
                         <>
@@ -290,9 +322,12 @@ export default function AppointmentTable({ filter, bookingInfo }: Props) {
                             Decline
                           </Button>
                         </>
-                      ) : (
-                        " "
-                      )}
+                        // add the choice to be able to change that state to inprogress "Start Work Order"
+                      ) : booking.status === "CONFIRMED" ? (
+                          <Button variant="secondary" className="w-full hover:bg-gray-200">
+                            Being Work
+                          </Button>
+                      ) : " "}
                     </div>
                   </SheetFooter>
                 </SheetContent>
