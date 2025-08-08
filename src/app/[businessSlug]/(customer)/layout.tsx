@@ -47,11 +47,6 @@ export default async function Layout({ children, params }: LayoutProps) {
       icon: Calendar,
     },
     {
-      title: "Payments",
-      url: `/${businessSlug}/payments`,
-      icon: CreditCard,
-    },
-    {
       title: "Settings",
       url: `/${businessSlug}/settings`,
       icon: Settings,
@@ -77,7 +72,7 @@ export default async function Layout({ children, params }: LayoutProps) {
         <AppSidebar
           items={loggedOutItems}
           loggedIn={false}
-          title={`${businessSlug.split('-').join(' ').toUpperCase()}`}
+          title={`${businessSlug.split("-").join(" ").toUpperCase()}`}
         />
         <main className="w-full">
           <SidebarTrigger />
@@ -92,7 +87,7 @@ export default async function Layout({ children, params }: LayoutProps) {
       <AppSidebar
         items={loggedInItems}
         loggedIn={true}
-        title={`${businessSlug.split('-').join(' ').toUpperCase()}`}
+        title={`${businessSlug.split("-").join(" ").toUpperCase()}`}
       />
       <main className="w-full">
         <SidebarTrigger />
