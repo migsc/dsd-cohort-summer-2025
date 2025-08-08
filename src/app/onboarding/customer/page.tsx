@@ -28,7 +28,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   usStates,
   preferredContactMethods,
-  CustomerOnboardingSchema,
   defaultCustomerValues,
 } from "./schema/customer.schema";
 
