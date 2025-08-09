@@ -33,6 +33,7 @@ import { BookingStatus } from "prisma/generated";
 import { Separator } from "./ui/separator";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UpdateStatusButton } from "./UpdateStatusButton";
 
 
 type Customer = {
@@ -198,7 +199,7 @@ export default function AppointmentTable({ bookingInfo }: Props) {
                     <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
                       <div className="flex w-full gap-3">
                         <p className="w-16 font-semibold">Order#:</p>
-                        <p>{booking.serviceID}</p>
+                        <p>{booking.id}</p>
                       </div>
                       <div className="flex w-full gap-3">
                         <p className="w-16 font-semibold">Status:</p>
@@ -250,6 +251,7 @@ export default function AppointmentTable({ bookingInfo }: Props) {
                     </div>
                     <Separator className="mt-10" />
                     <div className="mt-2 w-full">
+
                       {/* Payment Accordian */}
                       <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="1">
@@ -312,21 +314,15 @@ export default function AppointmentTable({ bookingInfo }: Props) {
                     </div>
                   </div>
                   <SheetFooter className="h-fit border-t">
-                    <div className="flex flex-col items-center justify-center gap-4">
+                    <div>
                       {booking.status === "PENDING" ? (
-                        <>
-                          <Button variant="default" className="w-full">
-                            Accept
-                          </Button>
-                          <Button variant="destructive" className="w-full">
-                            Decline
-                          </Button>
-                        </>
+                        <div className="flex flex-col gap-3">
+                          <UpdateStatusButton newStatus="CONFIRMED" bookingId={booking.id} currentStatus={booking.status} />
+                          <UpdateStatusButton newStatus="CANCELLED" bookingId={booking.id} currentStatus={booking.status} />
+                        </div>
                         // add the choice to be able to change that state to inprogress "Start Work Order"
                       ) : booking.status === "CONFIRMED" ? (
-                          <Button variant="secondary" className="w-full hover:bg-gray-200">
-                            Being Work
-                          </Button>
+                        <UpdateStatusButton newStatus="IN_PROGRESS" bookingId={booking.id} currentStatus={booking.status} />
                       ) : " "}
                     </div>
                   </SheetFooter>

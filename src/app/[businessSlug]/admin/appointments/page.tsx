@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { UpdateStatusButton } from "@/components/UpdateStatusButton";
 
 type Props = {
   params: {
@@ -38,13 +39,15 @@ export default async function Appointments({ params }: Props) {
       <Separator className="my-6" />
 
       <main className="flex flex-col gap-6 pr-6">
-        <section className="bg-secondary no-scrollbar h-80 w-full overflow-x-scroll rounded-xl p-4">
+
+        {/* This section display the "In_Progress Orders" */}
+        <section className="bg-secondary no-scrollbar h-80 overflow-x-auto overflow-y-hidden rounded-xl p-4 flex gap-4">
           {bookings
             .filter(booking => booking.status === "IN_PROGRESS")
             .map(booking => (
               <Card
                 key={booking.id}
-                className="w-full max-w-lg bg-background h-full rounded-xl"
+                className="w-xl min-w-[20rem] bg-background h-full rounded-xl"
               >
                 <CardHeader>
                   <CardTitle>
@@ -54,7 +57,7 @@ export default async function Appointments({ params }: Props) {
                     <div className="flex w-full mb-6">
                       <div className="flex w-full gap-1">
                         <p className="font-semibold">Order#:</p>
-                        <p  className="text-primary">{booking.service.id}</p>
+                        <p  className="text-primary">{booking.id}</p>
                       </div>
                       <div className="flex gap-1 w-1/2">
                         <p className="font-semibold">Status:</p>
@@ -82,10 +85,8 @@ export default async function Appointments({ params }: Props) {
                       <p className="text-xs text-gray-400">{booking.customer.user.phone ?? "No Phone"}</p>
                     </div>
                     <div className="w-full flex items-end justify-end">
-                      <Button variant={"outline"}>
-                        {/* Update Status */}
-                        Complete
-                      </Button>
+
+                      <UpdateStatusButton newStatus="COMPLETED" bookingId={booking.id} currentStatus={booking.status} />
                     </div>
                   </CardContent>
                 </CardHeader>
