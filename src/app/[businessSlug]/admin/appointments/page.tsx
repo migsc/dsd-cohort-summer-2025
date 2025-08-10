@@ -82,11 +82,11 @@ export default async function Appointments({ params }: Props) {
                       <h2 className=" text-xl text-primary mb-2">{booking.customer.user.name}</h2>
                       <p className="text-xs text-gray-400">{booking.customer.id}</p>
                       <p className="text-xs text-gray-400">{booking.customer.user.email}</p>
-                      <p className="text-xs text-gray-400">{booking.customer.user.phone ?? "No Phone"}</p>
+                      <p className="text-xs text-gray-400">{booking.customer.phoneNumber ?? "No Phone"}</p>
                     </div>
                     <div className="w-full flex items-end justify-end">
 
-                      <UpdateStatusButton newStatus="COMPLETED" bookingId={booking.id} currentStatus={booking.status} />
+                      <UpdateStatusButton newStatus="COMPLETED" bookingId={booking.id} currentStatus={booking.status} businessSlug={paramsAwait.businessSlug}/>
                     </div>
                   </CardContent>
                 </CardHeader>
@@ -97,6 +97,7 @@ export default async function Appointments({ params }: Props) {
         {/* Table Orders */}
         <section className="bg-background height-full w-full rounded-md p-4">
           <AppointmentTable
+            businessSlug={paramsAwait.businessSlug}
             bookingInfo={bookings.map(booking => ({
               id: booking.id,
               date: booking.date,

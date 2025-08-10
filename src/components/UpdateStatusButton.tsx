@@ -1,6 +1,8 @@
 "use client";
+
 import React from "react";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogTrigger,
@@ -18,43 +20,70 @@ type props = {
   bookingId: string;
   newStatus: string;
   currentStatus: string;
+  businessSlug: string;
 };
 
 export const UpdateStatusButton = ({
   newStatus,
   bookingId,
   currentStatus,
+  businessSlug,
 }: props) => {
-  let update = (status: string, booking: string, message: string) => {
-    if(status === "COMPLETED"){
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #00bc7d",
-            color: "#00bc7d",
-            backgroundColor: "#ddfff4"
-        }});
-    }else if(status === "IN_PROGRESS"){
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #ad46ff",
-            color: "#ad46ff",
-            backgroundColor: "#f0deff"
-        }});
-    }else if(status === "CONFIRMED"){
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #2b7fff",
-            color: "#2b7fff",
-            backgroundColor: "#d1e4ff"
-        }});
-    }else{
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #e7000b",
-            color: "#e7000b",
-            backgroundColor: "#fad3d5"
-        }});
+  let router = useRouter();
+  let update = async (status: string, booking: string, message: string) => {
+    if (status === "COMPLETED") {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #00bc7d",
+          color: "#00bc7d",
+          backgroundColor: "#ddfff4",
+        },
+      });
+    } else if (status === "IN_PROGRESS") {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #ad46ff",
+          color: "#ad46ff",
+          backgroundColor: "#f0deff",
+        },
+      });
+    } else if (status === "CONFIRMED") {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #2b7fff",
+          color: "#2b7fff",
+          backgroundColor: "#d1e4ff",
+        },
+      });
+    } else {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #e7000b",
+          color: "#e7000b",
+          backgroundColor: "#fad3d5",
+        },
+      });
     }
     // SEND INFORMATION TO API HERE!
     // Status is the new updated status, booking is the bookingId.
+    try {
+      const res = await fetch(`/api/${businessSlug}/business/bookings`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId, status: newStatus }),
+      });
+      if (!res.ok) {
+        throw new Error("Error Updating Status");
+      }
 
-    
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -63,27 +92,27 @@ export const UpdateStatusButton = ({
           {/* Update Status To Completed */}
           {currentStatus === "IN_PROGRESS" && (
             <div className="flex justify-end">
-              <Button variant="outline" className="">
-                Complete
+              <Button variant="outline" asChild>
+               <span>Complete</span>
               </Button>
             </div>
           )}
           {/* Update status to In Progress */}
           {currentStatus === "CONFIRMED" && (
-            <Button variant="outline" className="w-full hover:bg-gray-200">
-              Begin Work
+            <Button variant="outline" className="w-full hover:bg-gray-200" asChild>
+              <span>Begin Work</span>
             </Button>
           )}
 
           {/* Update status to either Confirmed or Cancelled */}
           {newStatus === "CONFIRMED" && (
-            <Button variant="default" className="w-full">
-              Confirm
+            <Button variant="default" className="w-full" asChild>
+              <span>Confirm</span>
             </Button>
           )}
-          {newStatus === "CANCELLED" && (
-            <Button variant="destructive" className="w-full">
-              Cancel
+          {newStatus === "CANCELED" && (
+            <Button variant="destructive" className="w-full" asChild>
+              <span>Cancel</span>
             </Button>
           )}
         </DialogTrigger>
@@ -96,7 +125,7 @@ export const UpdateStatusButton = ({
           </DialogHeader>
           <DialogFooter>
             <DialogClose className="flex gap-3">
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" asChild><span>Cancel</span></Button>
               {currentStatus === "IN_PROGRESS" && (
                 <Button
                   onClick={() =>
@@ -106,8 +135,9 @@ export const UpdateStatusButton = ({
                       "Work Order has Been Completed!"
                     )
                   }
+                  asChild
                 >
-                  Update Status
+                  <span>Update Status</span>
                 </Button>
               )}
               {currentStatus === "CONFIRMED" && (
@@ -115,8 +145,9 @@ export const UpdateStatusButton = ({
                   onClick={() =>
                     update(newStatus, bookingId, "Order Is in Progress")
                   }
+                  asChild
                 >
-                  Update Status
+                  <span>Update Status</span>
                 </Button>
               )}
               {currentStatus === "PENDING" && (
@@ -124,8 +155,9 @@ export const UpdateStatusButton = ({
                   onClick={() =>
                     update(newStatus, bookingId, `This Has Been ${newStatus}`)
                   }
+                  asChild
                 >
-                  Update Status
+                   <span>Update Status</span>
                 </Button>
               )}
             </DialogClose>
