@@ -19,13 +19,25 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries";
+import { Button } from "@/components/ui/button";
+import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries"; // THIS NEEDS TO BE A CUSTOMER ONE
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 /* TODO:
 1. Make sure database is connected to this might be able to use the same database for getting bookings with service and customer but not sure.
 2. this works like the sheet in the appointments page almost idenical but just focused on the customer data. 
 3. On the sheet we will add another smaller table and this will be the booking table infomraiton but this time indeas of opening on the side when clicked we will be able to view information of the booking order as a dialog box.
 */
+
+const InvoiceDummy = {
+  invoiceNum: "INV-001",
+  datePaid: "2024-06-01",
+  cardType: "Visa",
+  serviceType: "General Cleaning",
+  quantity: 1,
+  pricing: "$100",
+  totalPaid: "$100"
+};
 
 export const customerTable = () => {
   return (

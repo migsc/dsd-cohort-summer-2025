@@ -123,7 +123,7 @@ export function ServiceCard({
             {service.durationMin}-{service.durationMax} hours
           </p>
           <p className="text-xl font-bold text-lime-500">
-            ${service.priceMin}-${service.priceMax} {service.pricingModel}
+            ${service.priceMin}-${service.priceMax} per {service.pricingModel.toLowerCase()}
           </p>
         </CardContent>
         <CardFooter>

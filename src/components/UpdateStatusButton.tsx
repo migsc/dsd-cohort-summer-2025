@@ -26,34 +26,34 @@ export const UpdateStatusButton = ({
   currentStatus,
 }: props) => {
   let update = (status: string, booking: string, message: string) => {
-    if(status === "COMPLETED"){
-        toast(message, { position: "top-center", style:{
+    const styles =
+      status === "COMPLETED"
+        ? {
             border: "1px solid #00bc7d",
             color: "#00bc7d",
-            backgroundColor: "#ddfff4"
-        }});
-    }else if(status === "IN_PROGRESS"){
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #ad46ff",
-            color: "#ad46ff",
-            backgroundColor: "#f0deff"
-        }});
-    }else if(status === "CONFIRMED"){
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #2b7fff",
-            color: "#2b7fff",
-            backgroundColor: "#d1e4ff"
-        }});
-    }else{
-        toast(message, { position: "top-center", style:{
-            border: "1px solid #e7000b",
-            color: "#e7000b",
-            backgroundColor: "#fad3d5"
-        }});
-    }
+            backgroundColor: "#ddfff4",
+          }
+        : status === "IN_PROGRESS"
+          ? {
+              border: "1px solid #ad46ff",
+              color: "#ad46ff",
+              backgroundColor: "#f0deff",
+            }
+          : status === "CONFIRMED"
+            ? {
+                border: "1px solid #2b7fff",
+                color: "#2b7fff",
+                backgroundColor: "#d1e4ff",
+              }
+            : {
+                border: "1px solid #e7000b",
+                color: "#e7000b",
+                backgroundColor: "#fad3d5",
+              };
+
+    toast(message, { position: "top-center", style: styles });
     // SEND INFORMATION TO API HERE!
     // Status is the new updated status, booking is the bookingId.
-
     
   };
   return (
@@ -63,27 +63,31 @@ export const UpdateStatusButton = ({
           {/* Update Status To Completed */}
           {currentStatus === "IN_PROGRESS" && (
             <div className="flex justify-end">
-              <Button variant="outline" className="">
-                Complete
+              <Button variant="outline" asChild>
+                <span>Complete</span>
               </Button>
             </div>
           )}
           {/* Update status to In Progress */}
           {currentStatus === "CONFIRMED" && (
-            <Button variant="outline" className="w-full hover:bg-gray-200">
-              Begin Work
+            <Button
+              variant="outline"
+              className="w-full hover:bg-gray-200"
+              asChild
+            >
+              <span>Begin Work</span>
             </Button>
           )}
 
           {/* Update status to either Confirmed or Cancelled */}
           {newStatus === "CONFIRMED" && (
-            <Button variant="default" className="w-full">
-              Confirm
+            <Button variant="default" className="w-full" asChild>
+              <span>Confirm</span>
             </Button>
           )}
           {newStatus === "CANCELLED" && (
-            <Button variant="destructive" className="w-full">
-              Cancel
+            <Button variant="destructive" className="w-full" asChild>
+              <span>Cancel</span>
             </Button>
           )}
         </DialogTrigger>
@@ -96,7 +100,9 @@ export const UpdateStatusButton = ({
           </DialogHeader>
           <DialogFooter>
             <DialogClose className="flex gap-3">
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" asChild>
+                <span>Cancel</span>
+              </Button>
               {currentStatus === "IN_PROGRESS" && (
                 <Button
                   onClick={() =>
@@ -106,8 +112,9 @@ export const UpdateStatusButton = ({
                       "Work Order has Been Completed!"
                     )
                   }
+                  asChild
                 >
-                  Update Status
+                  <span>Update Status</span>
                 </Button>
               )}
               {currentStatus === "CONFIRMED" && (
@@ -115,8 +122,9 @@ export const UpdateStatusButton = ({
                   onClick={() =>
                     update(newStatus, bookingId, "Order Is in Progress")
                   }
+                  asChild
                 >
-                  Update Status
+                  <span>Update Status</span>
                 </Button>
               )}
               {currentStatus === "PENDING" && (
@@ -124,8 +132,9 @@ export const UpdateStatusButton = ({
                   onClick={() =>
                     update(newStatus, bookingId, `This Has Been ${newStatus}`)
                   }
+                  asChild
                 >
-                  Update Status
+                  <span>Update Status</span>
                 </Button>
               )}
             </DialogClose>
