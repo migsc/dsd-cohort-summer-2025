@@ -1,6 +1,8 @@
 "use client";
+
 import React from "react";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogTrigger,
@@ -18,13 +20,16 @@ type props = {
   bookingId: string;
   newStatus: string;
   currentStatus: string;
+  businessSlug: string;
 };
 
 export const UpdateStatusButton = ({
   newStatus,
   bookingId,
   currentStatus,
+  businessSlug,
 }: props) => {
+<<<<<<< HEAD
   let update = (status: string, booking: string, message: string) => {
     const styles =
       status === "COMPLETED"
@@ -55,6 +60,63 @@ export const UpdateStatusButton = ({
     // SEND INFORMATION TO API HERE!
     // Status is the new updated status, booking is the bookingId.
     
+=======
+  let router = useRouter();
+  let update = async (status: string, booking: string, message: string) => {
+    if (status === "COMPLETED") {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #00bc7d",
+          color: "#00bc7d",
+          backgroundColor: "#ddfff4",
+        },
+      });
+    } else if (status === "IN_PROGRESS") {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #ad46ff",
+          color: "#ad46ff",
+          backgroundColor: "#f0deff",
+        },
+      });
+    } else if (status === "CONFIRMED") {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #2b7fff",
+          color: "#2b7fff",
+          backgroundColor: "#d1e4ff",
+        },
+      });
+    } else {
+      toast(message, {
+        position: "top-center",
+        style: {
+          border: "1px solid #e7000b",
+          color: "#e7000b",
+          backgroundColor: "#fad3d5",
+        },
+      });
+    }
+    // SEND INFORMATION TO API HERE!
+    // Status is the new updated status, booking is the bookingId.
+    try {
+      const res = await fetch(`/api/${businessSlug}/business/bookings`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId, status: newStatus }),
+      });
+      if (!res.ok) {
+        throw new Error("Error Updating Status");
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
   };
   return (
     <>
@@ -64,17 +126,25 @@ export const UpdateStatusButton = ({
           {currentStatus === "IN_PROGRESS" && (
             <div className="flex justify-end">
               <Button variant="outline" asChild>
+<<<<<<< HEAD
                 <span>Complete</span>
+=======
+               <span>Complete</span>
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
               </Button>
             </div>
           )}
           {/* Update status to In Progress */}
           {currentStatus === "CONFIRMED" && (
+<<<<<<< HEAD
             <Button
               variant="outline"
               className="w-full hover:bg-gray-200"
               asChild
             >
+=======
+            <Button variant="outline" className="w-full hover:bg-gray-200" asChild>
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
               <span>Begin Work</span>
             </Button>
           )}
@@ -85,7 +155,11 @@ export const UpdateStatusButton = ({
               <span>Confirm</span>
             </Button>
           )}
+<<<<<<< HEAD
           {newStatus === "CANCELLED" && (
+=======
+          {newStatus === "CANCELED" && (
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
             <Button variant="destructive" className="w-full" asChild>
               <span>Cancel</span>
             </Button>
@@ -100,9 +174,13 @@ export const UpdateStatusButton = ({
           </DialogHeader>
           <DialogFooter>
             <DialogClose className="flex gap-3">
+<<<<<<< HEAD
               <Button variant="outline" asChild>
                 <span>Cancel</span>
               </Button>
+=======
+              <Button variant="outline" asChild><span>Cancel</span></Button>
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
               {currentStatus === "IN_PROGRESS" && (
                 <Button
                   onClick={() =>
@@ -134,7 +212,11 @@ export const UpdateStatusButton = ({
                   }
                   asChild
                 >
+<<<<<<< HEAD
                   <span>Update Status</span>
+=======
+                   <span>Update Status</span>
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
                 </Button>
               )}
             </DialogClose>

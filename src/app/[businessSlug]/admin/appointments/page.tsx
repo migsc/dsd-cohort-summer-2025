@@ -80,6 +80,7 @@ export default async function Appointments({ params }: Props) {
                   <Separator className="my-2" />
                   <CardContent className="flex items-stretch p-0">
                     <div className="w-1/2">
+<<<<<<< HEAD
                       <h2 className=" text-primary mb-2 text-xl">
                         {booking.customer.user.name}
                       </h2>
@@ -99,6 +100,16 @@ export default async function Appointments({ params }: Props) {
                         bookingId={booking.id}
                         currentStatus={booking.status}
                       />
+=======
+                      <h2 className=" text-xl text-primary mb-2">{booking.customer.user.name}</h2>
+                      <p className="text-xs text-gray-400">{booking.customer.id}</p>
+                      <p className="text-xs text-gray-400">{booking.customer.user.email}</p>
+                      <p className="text-xs text-gray-400">{booking.customer.phoneNumber ?? "No Phone"}</p>
+                    </div>
+                    <div className="w-full flex items-end justify-end">
+
+                      <UpdateStatusButton newStatus="COMPLETED" bookingId={booking.id} currentStatus={booking.status} businessSlug={paramsAwait.businessSlug}/>
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
                     </div>
                   </CardContent>
                 </CardHeader>
@@ -109,6 +120,7 @@ export default async function Appointments({ params }: Props) {
         {/* Table Orders */}
         <section className="bg-background height-full w-full rounded-md p-4">
           <AppointmentTable
+            businessSlug={paramsAwait.businessSlug}
             bookingInfo={bookings.map(booking => ({
               id: booking.id,
               date: booking.date,

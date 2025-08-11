@@ -67,6 +67,7 @@ type Invoice = {
 };
 
 type Props = {
+  businessSlug: string;
   bookingInfo: BookingInfo[]; // ✅ Not Booking[]
 };
 // NEED TO MAKE IT TYPE SAFE
@@ -74,7 +75,7 @@ const colorMapping = {
   CONFIRMED: "bg-blue-600",
   PENDING: "bg-blue-400",
   IN_PROGRESS: "bg-purple-600",
-  CANCELLED: "bg-red-500",
+  CANCELED: "bg-red-500",
   COMPLETED: "bg-green-500",
 };
 
@@ -99,8 +100,15 @@ function openInGoogleMaps(address: string) {
   window.open(url, "_blank"); // Opens in a new tab/window
 }
 
+<<<<<<< HEAD:src/app/[businessSlug]/admin/appointments/AppointmentTable.tsx
 export default function AppointmentTable({ bookingInfo }: Props) {
+=======
+export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
+
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1:src/components/AppointmentTable.tsx
   const [filter, setFilter] = useState("CONFIRMED"); // default tab
+
+  let router
 
   return (
     <div>
@@ -110,7 +118,7 @@ export default function AppointmentTable({ bookingInfo }: Props) {
           <TabsList>
             <TabsTrigger value="CONFIRMED">Confirmed</TabsTrigger>
             <TabsTrigger value="PENDING">Pending</TabsTrigger>
-            <TabsTrigger value="CANCELLED">Cancelled</TabsTrigger>
+            <TabsTrigger value="CANCELED">Canceled</TabsTrigger>
             <TabsTrigger value="COMPLETED">Completed</TabsTrigger>
           </TabsList>
         </Tabs>
@@ -315,6 +323,7 @@ export default function AppointmentTable({ bookingInfo }: Props) {
                     <div>
                       {booking.status === "PENDING" ? (
                         <div className="flex flex-col gap-3">
+<<<<<<< HEAD:src/app/[businessSlug]/admin/appointments/AppointmentTable.tsx
                           <UpdateStatusButton
                             newStatus="CONFIRMED"
                             bookingId={booking.id}
@@ -336,6 +345,15 @@ export default function AppointmentTable({ bookingInfo }: Props) {
                       ) : (
                         " "
                       )}
+=======
+                          <UpdateStatusButton newStatus="CONFIRMED" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug} />
+                          <UpdateStatusButton newStatus="CANCELED" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug}/>
+                        </div>
+                        // add the choice to be able to change that state to inprogress "Start Work Order"
+                      ) : booking.status === "CONFIRMED" ? (
+                        <UpdateStatusButton newStatus="IN_PROGRESS" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug}/>
+                      ) : " "}
+>>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1:src/components/AppointmentTable.tsx
                     </div>
                   </SheetFooter>
                 </SheetContent>
