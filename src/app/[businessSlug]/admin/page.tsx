@@ -64,9 +64,7 @@ export default function Calendar({ params }: AdminPageProps) {
     if (!session && !isPending) {
       router.push("/login");
     }
-  }, [session, isPending]);
 
-  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
@@ -134,9 +132,9 @@ export default function Calendar({ params }: AdminPageProps) {
 
   console.log(appointments);
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       <p className="mb-4 text-xl font-bold">Welcome {session?.user.name}</p>
-      <div>
+      <div className="w-full max-w-[95%]">
         <AppCalendar
           events={appointments}
           operatingHours={apiData.operatingHours}

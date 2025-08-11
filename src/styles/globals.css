@@ -148,3 +148,73 @@ body {
     transition: ease 0.5s;
   }
 }
+
+/* Calendar Styles */
+.rbc-calendar-custom {
+  width: 100%;
+}
+
+/* Calendar header cells */
+.rbc-calendar-custom .rbc-header {
+  padding: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Calendar events */
+.rbc-calendar-custom .rbc-event {
+  margin: 0.25rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+}
+
+/* Calendar day background */
+.rbc-calendar-custom .rbc-day-bg {
+  padding: 0.5rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+}
+
+/* Date cells */
+.rbc-calendar-custom .rbc-date-cell {
+  padding: 0.5rem;
+  font-weight: 500;
+}
+
+/* Time slots */
+.rbc-calendar-custom .rbc-timeslot-group {
+  padding: 0.25rem 0;
+}
+
+/* Day slots in week view */
+.rbc-calendar-custom .rbc-day-slot {
+  padding: 0 0.5rem;
+}
+
+/* Month view rows */
+.rbc-calendar-custom .rbc-month-row {
+  padding: 0.25rem 0;
+}
+
+/* Event content */
+.rbc-calendar-custom .rbc-event-content {
+  padding: 0.25rem;
+}
+
+/* Toolbar buttons */
+.rbc-calendar-custom .rbc-toolbar button {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  border: 1px solid var(--border);
+}
+
+.rbc-calendar-custom .rbc-toolbar button.rbc-active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}

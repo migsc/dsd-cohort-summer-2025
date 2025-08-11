@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Calendar, Views, type View } from "react-big-calendar";
 import localizer from "@/lib/calendar-localizer";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "@/styles/calendar.css";
 import moment from "moment-timezone";
 import type { DayOperatingHours, OperatingHours } from "prisma/generated";
 
@@ -70,10 +69,10 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
 
   const eventStyleGetter = (event: CalendarEvent) => {
     let style: React.CSSProperties = {
-      backgroundColor: "#3b82f6",
-      borderRadius: "4px",
+      backgroundColor: "var(--primary)",
+      borderRadius: "0.25rem",
       opacity: 0.9,
-      color: "white",
+      color: "var(--primary-foreground)",
       border: "none",
       display: "block",
     };
@@ -81,31 +80,40 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
     const eventMoment = moment(event.start);
     const dailyHours = getHoursForDay(event.start);
 
-    if (!dailyHours) {
-      style.backgroundColor = "#6b7280";
+    if (!dailyHours || !eventWithinHours(eventMoment, dailyHours)) {
+      style.backgroundColor = "var(--muted)";
       style.opacity = 0.6;
-    } else {
-      if (!eventWithinHours(eventMoment, dailyHours)) {
-        style.backgroundColor = "#6b7280";
-        style.opacity = 0.6;
-      }
+      style.color = "var(--muted-foreground)";
     }
 
     return { style };
   };
 
   return (
-    <div style={{ height: 500 }}>
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        eventPropGetter={eventStyleGetter}
-        view={view}
-        onView={view => setView(view)}
-        style={{ height: "100%" }}
-      />
+    <div className="bg-background flex h-screen w-full flex-col">
+      <main className="flex w-full flex-1 overflow-hidden">
+        <div className="w-full flex-1 overflow-auto p-6">
+          <div className="h-full w-full">
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              eventPropGetter={eventStyleGetter}
+              view={view}
+              onView={view => setView(view)}
+              style={{ height: "100%", width: "100%" }}
+              className="rbc-calendar-custom"
+              formats={{
+                dayFormat: "ddd DD",
+                eventTimeRangeFormat: ({ start, end }) => {
+                  return `${moment(start).format("h:mm A")} - ${moment(end).format("h:mm A")}`;
+                },
+              }}
+            />
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
