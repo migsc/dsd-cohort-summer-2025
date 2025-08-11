@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Providers from "@/providers";
 
 import "../styles/globals.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

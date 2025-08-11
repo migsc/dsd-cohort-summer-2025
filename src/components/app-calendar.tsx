@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Calendar, Views, type View } from "react-big-calendar";
 import localizer from "@/lib/calendar-localizer";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment-timezone";
 import type { DayOperatingHours, OperatingHours } from "prisma/generated";
 
