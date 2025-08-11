@@ -2,7 +2,6 @@ import React from "react";
 import AppointmentTable from "@/components/AppointmentTable";
 import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries";
 import { Separator } from "@/components/ui/separator";
-
 import {
   Card,
   CardHeader,

@@ -122,7 +122,7 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
 
       <Table>
         <TableHeader>
-          <TableRow className="border-b-gray-300 hover:bg-white">
+          <TableRow className="border-b-gray-300 hover:bg-transparent">
             <TableHead>Customer Name</TableHead>
             <TableHead>Phone Number</TableHead>
             <TableHead>Email</TableHead>
