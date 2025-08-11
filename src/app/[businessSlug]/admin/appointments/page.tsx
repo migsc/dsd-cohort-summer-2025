@@ -21,9 +21,9 @@ type Props = {
 };
 
 export default async function Appointments({ params }: Props) {
-  const paramsAwait = params; //Params must await before being used
+  const paramsAwait = await params; //Params must await before being used
   const bookings = await getBookingsWithServiceAndCustomer(
-    (await paramsAwait).businessSlug
+    paramsAwait.businessSlug
   );
 
   if (!bookings || bookings.length === 0) {
