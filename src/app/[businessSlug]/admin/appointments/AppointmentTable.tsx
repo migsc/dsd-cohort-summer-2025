@@ -28,7 +28,7 @@ import {
 } from "../../../../components/ui/accordion";
 
 import { Badge } from "../../../../components/ui/badge";
-import { Button, buttonVariants } from "../../../../components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { BookingStatus } from "prisma/generated";
 import { Separator } from "../../../../components/ui/separator";
 import { useState } from "react";
