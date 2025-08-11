@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default async function Appointments({ params }: Props) {
-  const paramsAwait = await params; //Params must await before being used
+  const paramsAwait = params; //Params must await before being used
   const bookings = await getBookingsWithServiceAndCustomer(
     paramsAwait.businessSlug
   );
@@ -80,27 +80,6 @@ export default async function Appointments({ params }: Props) {
                   <Separator className="my-2" />
                   <CardContent className="flex items-stretch p-0">
                     <div className="w-1/2">
-<<<<<<< HEAD
-                      <h2 className=" text-primary mb-2 text-xl">
-                        {booking.customer.user.name}
-                      </h2>
-                      <p className="text-xs text-gray-400">
-                        {booking.customer.id}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {booking.customer.user.email}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {booking.customer.user.phone ?? "No Phone"}
-                      </p>
-                    </div>
-                    <div className="flex w-full items-end justify-end">
-                      <UpdateStatusButton
-                        newStatus="COMPLETED"
-                        bookingId={booking.id}
-                        currentStatus={booking.status}
-                      />
-=======
                       <h2 className=" text-xl text-primary mb-2">{booking.customer.user.name}</h2>
                       <p className="text-xs text-gray-400">{booking.customer.id}</p>
                       <p className="text-xs text-gray-400">{booking.customer.user.email}</p>
@@ -109,7 +88,6 @@ export default async function Appointments({ params }: Props) {
                     <div className="w-full flex items-end justify-end">
 
                       <UpdateStatusButton newStatus="COMPLETED" bookingId={booking.id} currentStatus={booking.status} businessSlug={paramsAwait.businessSlug}/>
->>>>>>> 8f4cc00d8f6dfda79f435c558341765ef8811ef1
                     </div>
                   </CardContent>
                 </CardHeader>
