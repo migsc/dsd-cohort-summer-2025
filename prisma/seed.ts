@@ -414,7 +414,7 @@ async function main() {
           serviceId: services[4].id,
           duration: minutesToHalfHours(480), // 8 hours
           price: 1500,
-          status: BookingStatus.CANCELLED,
+          status: BookingStatus.CANCELED,
           customerId: customersAndProfiles[0].customerProfile.id,
           businessId: adminBusiness.id,
           paymentIntentId: "pi_fake_canceled_1",
