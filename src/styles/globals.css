@@ -173,8 +173,7 @@ body {
   background-color: var(--primary);
   color: var(--primary-foreground);
   border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  font-weight: 500;
+  box-shadow: 0 1px 3px var(--border);
 }
 
 /* Calendar day background */
@@ -195,8 +194,8 @@ body {
 
 /* Today's cell */
 .rbc-calendar-custom .rbc-today {
-  background-color: var(--accent-foreground);
-  opacity: 0.2;
+  background-color: var(--accent);
+  opacity: 0.15;
 }
 
 /* Date cells */
@@ -251,8 +250,6 @@ body {
   background-color: var(--primary);
   color: var(--primary-foreground);
   border-color: var(--primary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  font-weight: 500;
 }
 
 /* Toolbar */
