@@ -10,6 +10,7 @@ type APIResponse = {
   operatingHours: OperatingHours;
 };
 
+
 const tempEvents: CalendarEvent[] = [
   {
     title: "Standard Clean",
@@ -71,6 +72,7 @@ export default function Calendar() {
   if (!data) {
     return <div>Loading bookings data...</div>;
   }
+
 
   return (
     <div className="flex flex-col items-center">

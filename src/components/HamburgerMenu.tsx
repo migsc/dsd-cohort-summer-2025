@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Menu } from "lucide-react";
 import React from "react";
@@ -6,9 +6,7 @@ import { useRouter } from "next/navigation";
 
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -22,7 +20,7 @@ export function HamburgerMenu() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-blue-600 text-white hover:bg-blue-700">
+        <Button className={buttonVariants({ variant: "default" })}>
           <Menu />
         </Button>
       </SheetTrigger>
@@ -33,6 +31,7 @@ export function HamburgerMenu() {
             <p className="ml-2 text-2xl font-bold text-blue-600">CleanHub</p>
           </SheetTitle>
         </SheetHeader>
+        {/* create a map to be able to recieve all the links and contact that get passed a props. */}
         <nav className="w-full p-3 text-black">
           <Link href="/" className="hover:text-blue-600">
             Contact
@@ -43,7 +42,7 @@ export function HamburgerMenu() {
             onClick={() => {
               router.push("/login");
             }}
-            className="cursor-pointer rounded-md bg-blue-600 py-3 font-light text-white hover:text-black"
+            className={buttonVariants({ variant: "default" })}
           >
             Login
           </Button>
