@@ -170,10 +170,17 @@ body {
   margin: 0.25rem 0;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-sm);
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  border: none;
-  box-shadow: 0 1px 3px var(--border);
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border: none !important;
+  box-shadow: 0 2px 5px var(--border);
+  font-weight: 500;
+}
+
+/* Selected events */
+.rbc-calendar-custom .rbc-event.rbc-selected {
+  background-color: var(--primary) !important;
+  box-shadow: 0 3px 7px oklch(from var(--border) 1 c h / 0.3);
 }
 
 /* Calendar day background */
@@ -195,7 +202,7 @@ body {
 /* Today's cell */
 .rbc-calendar-custom .rbc-today {
   background-color: var(--accent);
-  opacity: 0.15;
+  opacity: 0.2;
 }
 
 /* Date cells */

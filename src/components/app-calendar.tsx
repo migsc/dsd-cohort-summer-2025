@@ -21,7 +21,7 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
   events,
   operatingHours,
 }) => {
-  const [view, setView] = useState<View>(Views.WEEK);
+  const [view, setView] = useState<View>(Views.MONTH);
 
   const getHoursForDay = (date: Date): DayOperatingHours | null => {
     if (!operatingHours) return null;
@@ -70,7 +70,7 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
     let style: React.CSSProperties = {
       backgroundColor: "var(--primary)",
       borderRadius: "0.25rem",
-      opacity: 0.9,
+      opacity: 1,
       color: "var(--primary-foreground)",
       border: "none",
       display: "block",
@@ -99,6 +99,7 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
               startAccessor="start"
               endAccessor="end"
               eventPropGetter={eventStyleGetter}
+              views={["month", "agenda"]}
               view={view}
               onView={view => setView(view)}
               style={{ height: "100%", width: "100%" }}
