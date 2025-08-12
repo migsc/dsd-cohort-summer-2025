@@ -36,7 +36,7 @@ export async function findBusinessByService(serviceId: string) {
   });
 }
 
-export async function findService(id: string) {
+export async function findService(id: string | undefined) {
   return prisma.coreService.findUnique({ where: { id } });
 }
 
@@ -65,4 +65,19 @@ export async function calculatePrice(
     default:
       throw new Error("Pricing Model is not used");
   }
+}
+
+export async function parseTimeSlot(timeslot: string) {
+  const m = timeslot?.match(
+    /^\s*(\d{1,2}:\d{2}\s*[AP]M)\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)\s*$/i
+  );
+  if (!m) throw new Error("Invalid timeSlot format");
+  const to24 = (t: string) => {
+    const [time, ap] = t.trim().toUpperCase().split(/\s+/);
+    let [h, m] = time.split(":").map(Number);
+    if (ap === "PM" && h !== 12) h += 12;
+    if (ap === "AM" && h === 12) h = 0;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  };
+  return { startTime: to24(m[1]), endTime: to24(m[2]) };
 }

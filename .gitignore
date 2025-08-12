@@ -66,3 +66,4 @@ dev-dist
 
 # Dependencies
 prisma/generated
+.env*.local

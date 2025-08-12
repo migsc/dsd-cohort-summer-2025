@@ -9,6 +9,7 @@ import {
   findService,
   calculatePrice,
   findBooking,
+  parseTimeSlot,
 } from "@/lib/bookings";
 
 export async function GET(request: Request) {
@@ -50,7 +51,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const service = await findService(formData.serviceId);
+  const serviceId = formData.service.id;
+
+  const service = await findService(serviceId);
+  console.log("Service found = ", service);
 
   if (!service) {
     return NextResponse.json({ message: "Service not found" }, { status: 404 });
@@ -60,28 +64,30 @@ export async function POST(request: Request) {
   const price = await calculatePrice(
     service.pricingModel,
     service.rate,
-    formData.duration,
-    formData.rooms,
-    formData.squareFootage
+    Number(formData.duration),
+    Number(formData.rooms) ?? 0,
+    Number(formData.squareFootage) ?? 0
   );
+
+  const { startTime, endTime } = await parseTimeSlot(formData.timeSlot);
 
   // create new booking
   try {
     const booking = await prisma.booking.create({
       data: {
         date: formData.date,
-        startTime: formData.startTime,
-        endTime: formData.endTime,
-        notes: formData.notes,
-        serviceId: formData.serviceId,
+        startTime: startTime,
+        endTime: endTime,
+        notes: formData.notes ?? "",
+        serviceId: serviceId,
         businessId: business.id,
         customerId: customer.id,
         price,
         rooms: formData.rooms,
         squareFootage: formData.squareFootage,
         status: "PENDING",
-        duration: formData.duration,
-        originalBookingId: formData.originalBookingId || null,
+        duration: Number(formData.duration),
+        originalBookingId: formData.originalBookingId ?? null,
         paymentIntentId: null,
         completedAt: null,
         receiptUrl: null,
