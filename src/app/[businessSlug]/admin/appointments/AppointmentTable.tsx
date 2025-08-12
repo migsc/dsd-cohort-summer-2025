@@ -101,10 +101,9 @@ function openInGoogleMaps(address: string) {
 }
 
 export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
-
   const [filter, setFilter] = useState("CONFIRMED"); // default tab
 
-  let router
+  let router;
 
   return (
     <div>
@@ -319,13 +318,30 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                     <div>
                       {booking.status === "PENDING" ? (
                         <div className="flex flex-col gap-3">
-                          <UpdateStatusButton newStatus="CONFIRMED" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug} />
-                          <UpdateStatusButton newStatus="CANCELED" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug}/>
+                          <UpdateStatusButton
+                            newStatus="CONFIRMED"
+                            bookingId={booking.id}
+                            currentStatus={booking.status}
+                            businessSlug={businessSlug}
+                          />
+                          <UpdateStatusButton
+                            newStatus="CANCELED"
+                            bookingId={booking.id}
+                            currentStatus={booking.status}
+                            businessSlug={businessSlug}
+                          />
                         </div>
-                        // add the choice to be able to change that state to inprogress "Start Work Order"
-                      ) : booking.status === "CONFIRMED" ? (
-                        <UpdateStatusButton newStatus="IN_PROGRESS" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug}/>
-                      ) : " "}
+                      ) : // add the choice to be able to change that state to inprogress "Start Work Order"
+                      booking.status === "CONFIRMED" ? (
+                        <UpdateStatusButton
+                          newStatus="IN_PROGRESS"
+                          bookingId={booking.id}
+                          currentStatus={booking.status}
+                          businessSlug={businessSlug}
+                        />
+                      ) : (
+                        " "
+                      )}
                     </div>
                   </SheetFooter>
                 </SheetContent>

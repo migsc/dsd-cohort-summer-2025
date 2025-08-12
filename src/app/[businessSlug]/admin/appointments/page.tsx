@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { UpdateStatusButton } from "@/components/UpdateStatusButton";
 
 type Props = {
-  params: Promise<{businessSlug: string}>
+  params: Promise<{ businessSlug: string }>;
 };
 
 export default async function Appointments({ params }: Props) {
@@ -37,29 +37,32 @@ export default async function Appointments({ params }: Props) {
       <Separator className="my-6" />
 
       <main className="flex flex-col gap-6 pr-6">
-
         {/* This section display the "In_Progress Orders" */}
-        <section className="bg-secondary no-scrollbar h-80 overflow-x-auto overflow-y-hidden rounded-xl p-4 flex gap-4">
+        <section className="bg-secondary no-scrollbar flex h-80 gap-4 overflow-x-auto overflow-y-hidden rounded-xl p-4">
           {bookings
             .filter(booking => booking.status === "IN_PROGRESS")
             .map(booking => (
               <Card
                 key={booking.id}
-                className="w-xl min-w-[20rem] bg-background h-full rounded-xl"
+                className="w-xl bg-background h-full min-w-[20rem] rounded-xl"
               >
                 <CardHeader>
                   <CardTitle>
-                    <Badge variant="outline" className="text-xl mb-2">{booking.service.name}</Badge>
+                    <Badge variant="outline" className="mb-2 text-xl">
+                      {booking.service.name}
+                    </Badge>
                   </CardTitle>
                   <CardDescription>
-                    <div className="flex w-full mb-6">
+                    <div className="mb-6 flex w-full">
                       <div className="flex w-full gap-1">
                         <p className="font-semibold">Order#:</p>
-                        <p  className="text-primary">{booking.id}</p>
+                        <p className="text-primary">{booking.id}</p>
                       </div>
-                      <div className="flex gap-1 w-1/2">
+                      <div className="flex w-1/2 gap-1">
                         <p className="font-semibold">Status:</p>
-                        <Badge variant="default" className="bg-purple-600">{booking.status}</Badge>
+                        <Badge variant="default" className="bg-purple-600">
+                          {booking.status}
+                        </Badge>
                       </div>
                     </div>
 
@@ -68,23 +71,35 @@ export default async function Appointments({ params }: Props) {
                         <p className="font-semibold">Time:</p>
                         <p className="text-foreground">{booking.startTime}</p>
                       </div>
-                      <div className="flex gap-1 w-1/2">
+                      <div className="flex w-1/2 gap-1">
                         <p className="font-semibold">Date:</p>
                         <p className="text-foreground">{booking.date}</p>
                       </div>
                     </div>
                   </CardDescription>
                   <Separator className="my-2" />
-                  <CardContent className="p-0 flex items-stretch">
+                  <CardContent className="flex items-stretch p-0">
                     <div className="w-1/2">
-                      <h2 className=" text-xl text-primary mb-2">{booking.customer.user.name}</h2>
-                      <p className="text-xs text-gray-400">{booking.customer.id}</p>
-                      <p className="text-xs text-gray-400">{booking.customer.user.email}</p>
-                      <p className="text-xs text-gray-400">{booking.customer.phoneNumber ?? "No Phone"}</p>
+                      <h2 className=" text-primary mb-2 text-xl">
+                        {booking.customer.user.name}
+                      </h2>
+                      <p className="text-xs text-gray-400">
+                        {booking.customer.id}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {booking.customer.user.email}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {booking.customer.phoneNumber ?? "No Phone"}
+                      </p>
                     </div>
-                    <div className="w-full flex items-end justify-end">
-
-                      <UpdateStatusButton newStatus="COMPLETED" bookingId={booking.id} currentStatus={booking.status} businessSlug={paramsAwait.businessSlug}/>
+                    <div className="flex w-full items-end justify-end">
+                      <UpdateStatusButton
+                        newStatus="COMPLETED"
+                        bookingId={booking.id}
+                        currentStatus={booking.status}
+                        businessSlug={paramsAwait.businessSlug}
+                      />
                     </div>
                   </CardContent>
                 </CardHeader>
