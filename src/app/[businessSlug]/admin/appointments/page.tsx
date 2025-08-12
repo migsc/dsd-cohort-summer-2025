@@ -14,9 +14,7 @@ import { Button } from "@/components/ui/button";
 import { UpdateStatusButton } from "@/components/UpdateStatusButton";
 
 type Props = {
-  params: {
-    businessSlug: string;
-  };
+  params: Promise<{businessSlug: string}>
 };
 
 export default async function Appointments({ params }: Props) {
