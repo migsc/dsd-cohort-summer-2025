@@ -21,7 +21,11 @@ type Props = {
 
 export default async function Appointments({ params }: Props) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const paramsAwait = await params; //Params must await before being used
+=======
+  const paramsAwait = params instanceof Promise ? await params : params; //Params must await before being used
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise)
 =======
   const paramsAwait = params instanceof Promise ? await params : params; //Params must await before being used
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise)

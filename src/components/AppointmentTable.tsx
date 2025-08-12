@@ -43,6 +43,9 @@ import { BookingStatus } from "prisma/generated";
 import { useState } from "react";
 import { Map } from "lucide-react"
 import { UpdateStatusButton } from "../../../../components/UpdateStatusButton";
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
+=======
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
 
@@ -145,6 +148,52 @@ const colorMapping = {
   COMPLETED: "bg-green-500",
 };
 
+type Customer = {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  addressStreet: string;
+  addressCity: string;
+  addressState: string;
+  addressZip: string;
+  preferredContactMethod: string;
+  squareFootage: number;
+  rooms: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type BookingInfo = {
+  id: string;
+  date: string;
+  startTime: string;
+  status: BookingStatus;
+  timeSlot: string;
+  notes: string | null;
+  serviceName: string;
+  serviceID: string;
+  customer: Customer;
+  //Add the type of what ever the invoice is, as something like pricing: Invoice; to lead into the invoice information.
+};
+
+type Props = {
+  businessSlug: string;
+  bookingInfo: BookingInfo[]; // ✅ Not Booking[]
+};
+
+
+
+// NEED TO MAKE IT TYPE SAFE
+const colorMapping = {
+  CONFIRMED: "bg-blue-600",
+  PENDING: "bg-blue-400",
+  IN_PROGRESS: "bg-purple-600",
+  CANCELED: "bg-red-500",
+  COMPLETED: "bg-green-500",
+};
+
 const InvoiceDummy = {
   invoiceNum: "INV-001",
   datePaid: "2024-06-01",
@@ -155,6 +204,9 @@ const InvoiceDummy = {
   totalPaid: "$100"
 };
 
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
+=======
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 //GOOGLE MAPS FUNCTION
 function openInGoogleMaps(address: string) {
@@ -164,6 +216,7 @@ function openInGoogleMaps(address: string) {
   window.open(url, "_blank"); // Opens in a new tab/window
 }
 
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
 export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
 
@@ -175,11 +228,17 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
 
   const [filter, setFilter] = useState("CONFIRMED");
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
+=======
+export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
+
+  const [filter, setFilter] = useState("CONFIRMED");
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
   return (
     
     <div>
       {/* Tabs to switch filters */}
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
       <section className="mb-4">
         <Tabs value={filter} onValueChange={setFilter}>
@@ -193,11 +252,14 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
       </section>
 =======
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
+=======
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
       <Table>
         <TableHeader>
           <TableRow className="border-b-gray-300 hover:bg-white">
             <TableHead>Customer Name</TableHead>
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
             <TableHead>Phone Number</TableHead>
             <TableHead>Email</TableHead>
@@ -205,11 +267,16 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
             <TableHead>Date & Time</TableHead>
             <TableHead>Status</TableHead>
 =======
+=======
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
             <TableHead>Preferred Contact Method</TableHead>
             <TableHead>Square Footage</TableHead>
             <TableHead>Rooms</TableHead>
             <TableHead>Created</TableHead>
             <TableHead>Updated</TableHead>
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
+=======
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
           </TableRow>
         </TableHeader>
@@ -263,8 +330,13 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                     <Separator className="mt-4" />
                   </SheetHeader>
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
                   <div className="overflow-y-scroll no-scrollbar px-5">
                     {/* Order details title */}
+=======
+                  <div className="no-scrollbar overflow-y-scroll px-5">
+                    {/* Customer details title */}
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 =======
                   <div className="no-scrollbar overflow-y-scroll px-5">
                     {/* Customer details title */}
@@ -326,8 +398,12 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                     <Separator className="mt-10" />
                     <div className="mt-2 w-full">
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 
                       {/* Payment Accordian */}
+=======
+                      * Payment Accordian 
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 =======
                       * Payment Accordian 
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
@@ -392,6 +468,7 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                     </div>
                   </div>
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
                   <SheetFooter className="h-fit border-t">
                     <div>
                       {booking.status === "PENDING" ? (
@@ -405,6 +482,8 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                       ) : " "}
                     </div>
                   </SheetFooter>
+=======
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 =======
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
                 </SheetContent>
