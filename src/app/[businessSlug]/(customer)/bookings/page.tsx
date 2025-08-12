@@ -117,40 +117,6 @@ export default async function MyBookings({
         <div className="py-8 text-center text-gray-500">
           <p>No previous bookings found.</p>
         </div>
-<<<<<<< HEAD
-        ) : (
-        <Table>
-            <TableHeader className="bg-primary">
-            <TableRow>
-                <TableHead className="w-[100px]">Order No.</TableHead>
-                <TableHead className="w-[100px]">Date Fulfilled</TableHead>
-                <TableHead>Service</TableHead>
-                <TableHead className="text-left w-[200px]">Payment Method</TableHead>
-                <TableHead className="text-left w-[120px]">Amount</TableHead>
-                <TableHead className="text-center w-[120px]">Rating</TableHead>
-                <TableHead className="text-center w-[120px]">Rebook</TableHead>
-            </TableRow>
-            </TableHeader>
-            <TableBody>
-            {/* Map previous bookings to table rows */}
-            {previousBookings.map((booking) => (
-                <PreviousBookingRow 
-                key={booking.id}
-                orderNum={booking.id.slice(-6)}
-                dateFulfilled={new Date(booking.date).toLocaleDateString('en-US', { 
-                    month: '2-digit', 
-                    day: '2-digit', 
-                    year: 'numeric' 
-                })}
-                service={booking.serviceName}
-                paymentMethod="Credit Card" // ***TODO: This needs to come from payment data
-                amount={booking.servicePrice}
-                />
-            ))}
-            </TableBody>
-        </Table>
-        )}
-=======
       ) : (
         <Accordion type="multiple">
           {/* Map previous bookings to accordion */}
@@ -179,7 +145,6 @@ export default async function MyBookings({
           ))}
         </Accordion>
       )}
->>>>>>> 9b5a3c36a4d061eeca3ca1416b3c2416e7e6d76d
     </div>
   );
 }
