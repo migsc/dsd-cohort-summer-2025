@@ -100,7 +100,7 @@ export const defaultCustomerValues: CustomerOnboardingFormData = {
   addressState: "TX",
   addressZip: "",
   addressCountry: "",
-  phoneNumber: "2909028082",
+  phoneNumber: "",
   rooms: 0,
   squareFootage: 0,
 };
