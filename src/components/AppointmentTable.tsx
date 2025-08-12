@@ -28,16 +28,30 @@ import {
 } from "./ui/accordion";
 
 import { Badge } from "@/components/ui/badge";
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 import { Button, buttonVariants } from "./ui/button";
 import { BookingStatus } from "prisma/generated";
 import { Separator } from "./ui/separator";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UpdateStatusButton } from "./UpdateStatusButton";
+=======
+import { Button } from "@/components/ui/button";
+import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries"; // THIS NEEDS TO BE A CUSTOMER ONE
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { BookingStatus } from "prisma/generated";
+import { useState } from "react";
+import { Map } from "lucide-react"
+import { UpdateStatusButton } from "../../../../components/UpdateStatusButton";
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
 
 type Customer = {
   id: string;
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
+=======
+  userId: string;
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
   name: string;
   email: string;
   phoneNumber: string;
@@ -45,6 +59,7 @@ type Customer = {
   addressCity: string;
   addressState: string;
   addressZip: string;
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 };
 
 type BookingInfo = {
@@ -93,6 +108,54 @@ const InvoiceDummy = {
   totalPaid: "214.00",
 };
 
+=======
+  preferredContactMethod: string;
+  squareFootage: number;
+  rooms: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type BookingInfo = {
+  id: string;
+  date: string;
+  startTime: string;
+  status: BookingStatus;
+  timeSlot: string;
+  notes: string | null;
+  serviceName: string;
+  serviceID: string;
+  customer: Customer;
+  //Add the type of what ever the invoice is, as something like pricing: Invoice; to lead into the invoice information.
+};
+
+type Props = {
+  businessSlug: string;
+  bookingInfo: BookingInfo[]; // ✅ Not Booking[]
+};
+
+
+
+// NEED TO MAKE IT TYPE SAFE
+const colorMapping = {
+  CONFIRMED: "bg-blue-600",
+  PENDING: "bg-blue-400",
+  IN_PROGRESS: "bg-purple-600",
+  CANCELED: "bg-red-500",
+  COMPLETED: "bg-green-500",
+};
+
+const InvoiceDummy = {
+  invoiceNum: "INV-001",
+  datePaid: "2024-06-01",
+  cardType: "Visa",
+  serviceType: "General Cleaning",
+  quantity: 1,
+  pricing: "$100",
+  totalPaid: "$100"
+};
+
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 //GOOGLE MAPS FUNCTION
 function openInGoogleMaps(address: string) {
   const url = `https://www.google.com/maps/place/${encodeURIComponent(address)}`;
@@ -101,15 +164,23 @@ function openInGoogleMaps(address: string) {
   window.open(url, "_blank"); // Opens in a new tab/window
 }
 
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
 
   const [filter, setFilter] = useState("CONFIRMED"); // default tab
 
   let router
+=======
+export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
+
+  const [filter, setFilter] = useState("CONFIRMED");
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
   return (
+    
     <div>
       {/* Tabs to switch filters */}
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
       <section className="mb-4">
         <Tabs value={filter} onValueChange={setFilter}>
           <TabsList>
@@ -120,16 +191,26 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
           </TabsList>
         </Tabs>
       </section>
+=======
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
       <Table>
         <TableHeader>
           <TableRow className="border-b-gray-300 hover:bg-white">
             <TableHead>Customer Name</TableHead>
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
             <TableHead>Phone Number</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Date & Time</TableHead>
             <TableHead>Status</TableHead>
+=======
+            <TableHead>Preferred Contact Method</TableHead>
+            <TableHead>Square Footage</TableHead>
+            <TableHead>Rooms</TableHead>
+            <TableHead>Created</TableHead>
+            <TableHead>Updated</TableHead>
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -143,23 +224,18 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                     className="h-11 border-b-gray-100 hover:cursor-pointer"
                   >
                     <TableCell>{booking.customer.name}</TableCell>
-                    <TableCell>{booking.customer.phoneNumber}</TableCell>
-                    <TableCell>{booking.customer.email}</TableCell>
+                    <TableCell>{booking.customer.preferredContactMethod}</TableCell>
+                    <TableCell>{booking.customer.squareFootage}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="text-xs">
-                        {booking.serviceName}
+                        {booking.customer.rooms}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {booking.date} at {booking.timeSlot}
+                      {booking.customer.createdAt.toISOString().slice(11, 19)}
                     </TableCell>
                     <TableCell>
-                      <Badge
-                        variant="default"
-                        className={`${colorMapping[booking.status as keyof typeof colorMapping]} text-xs text-white`}
-                      >
-                        {booking.status}
-                      </Badge>
+                        {booking.customer.updatedAt.toISOString().slice(11, 19)}
                     </TableCell>
                   </TableRow>
                 </SheetTrigger>
@@ -176,13 +252,6 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                         {booking.customer.name}
                       </span>
                       <div className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">
-                        <p>{booking.customer.id}</p>
-                        <a
-                          href={`tel: ${booking.customer.phoneNumber}`}
-                          className="hover:text-primary"
-                        >
-                          {booking.customer.phoneNumber}
-                        </a>
                         <a
                           href={`mailto:${booking.customer.email}`}
                           className="hover:text-primary"
@@ -193,40 +262,46 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                     </SheetTitle>
                     <Separator className="mt-4" />
                   </SheetHeader>
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
                   <div className="overflow-y-scroll no-scrollbar px-5">
                     {/* Order details title */}
+=======
+                  <div className="no-scrollbar overflow-y-scroll px-5">
+                    {/* Customer details title */}
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
                     <h2 className="text-foreground mb-4 text-xl font-bold">
-                      Order Details
+                      Customer Details
                     </h2>
-                    {/* Order details section */}
+                    {/* Customer details section */}
                     <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
                       <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Order#:</p>
-                        <p>{booking.id}</p>
+                        <p className="w-16 font-semibold">Customer Id:</p>
+                        <p>{booking.customer.userId}</p>
                       </div>
+                      
                       <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Status:</p>
-                        <Badge
-                          variant="default"
-                          className={`${colorMapping[booking.status as keyof typeof colorMapping] ?? "bg-gray-600"} text-xs text-white`}
-                        >
-                          {booking.status}
-                        </Badge>
-                      </div>
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Type:</p>
-                        <Badge variant="outline" className="text-xs">
-                          {booking.serviceName}
-                        </Badge>
-                      </div>
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Date:</p>
-                        <p>{booking.date}</p>
+                        <p className="w-16 font-semibold">Customer Name:</p>
+                        <p>{booking.customer.name}</p>
                       </div>
 
                       <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Time:</p>
-                        <p>{booking.timeSlot}</p>
+                        <p className="w-16 font-semibold">Preferred Contact Method:</p>
+                        <p>{booking.customer.preferredContactMethod}</p>
+                      </div>
+
+                      <div className="flex w-full gap-3">
+                        <p className="w-16 font-semibold">Square Footage:</p>
+                        <p>{booking.customer.squareFootage}</p>
+                      </div>
+
+                      <div className="flex w-full gap-3">
+                        <p className="w-16 font-semibold">Created:</p>
+                        <p>{booking.customer.createdAt.toISOString().slice(11, 19)}</p>
+                      </div>
+
+                      <div className="flex w-full gap-3">
+                        <p className="w-16 font-semibold">Updated:</p>
+                        <p>{booking.customer.updatedAt.toISOString().slice(11, 19)}</p>
                       </div>
 
                       <div>
@@ -247,15 +322,15 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                           Open In Google Maps
                         </Button>
                       </div>
-                      <div className="my-2 flex w-full flex-col gap-3">
-                        <p className="w-16 font-semibold">Description:</p>
-                        <p>{booking.notes}</p>
-                      </div>
                     </div>
                     <Separator className="mt-10" />
                     <div className="mt-2 w-full">
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 
                       {/* Payment Accordian */}
+=======
+                      * Payment Accordian 
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
                       <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="1">
                           <AccordionTrigger>
@@ -316,6 +391,7 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                       </Accordion>
                     </div>
                   </div>
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
                   <SheetFooter className="h-fit border-t">
                     <div>
                       {booking.status === "PENDING" ? (
@@ -329,6 +405,8 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                       ) : " "}
                     </div>
                   </SheetFooter>
+=======
+>>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
                 </SheetContent>
               </Sheet>
             ))}
