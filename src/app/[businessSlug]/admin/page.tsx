@@ -22,10 +22,13 @@ interface Booking {
   duration?: string | null;
 }
 
-interface AdminPageProps {
-  params: {
+interface PageProps {
+  params: Promise<{
     businessSlug: string;
-  };
+  }>;
+  searchParams?: Promise<{
+    [key: string]: string | string[] | undefined;
+  }>;
 }
 
 function mapBookingsToCalendarEvents(
@@ -51,14 +54,15 @@ function mapBookingsToCalendarEvents(
   });
 }
 
-export default function Calendar({ params }: AdminPageProps) {
+export default function Calendar({ params }: PageProps) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [apiData, setApiData] = useState<APIResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const businessSlug = params.businessSlug;
+  const unwrappedParams = React.use(params);
+  const businessSlug = unwrappedParams.businessSlug;
 
   useEffect(() => {
     if (!session && !isPending) {
