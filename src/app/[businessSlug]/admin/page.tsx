@@ -31,20 +31,6 @@ interface PageProps {
   }>;
 }
 
-const tempEvents: CalendarEvent[] = [
-  {
-    title: "Standard Clean",
-    start: new Date(2025, 7, 1, 12, 0),
-    end: new Date(2025, 7, 1, 13, 0),
-  },
-  {
-    title: "Premium Clean",
-    start: new Date(2025, 7, 2, 9, 0),
-    end: new Date(2025, 7, 2, 17, 0),
-    allDay: true,
-  },
-];
-
 function mapBookingsToCalendarEvents(
   rawBookings: Booking[] | null
 ): CalendarEvent[] {
@@ -151,7 +137,9 @@ export default function Calendar({ params }: PageProps) {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <p className="mb-4 text-xl font-bold">Welcome {session?.user.name}</p>
+      <p className="text-foreground mb-4 text-xl font-bold">
+        Welcome, {session?.user.name}
+      </p>
       <div className="w-full max-w-[95%]">
         <AppCalendar
           events={appointments}
