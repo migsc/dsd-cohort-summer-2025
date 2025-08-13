@@ -28,6 +28,7 @@ export default async function Appointments({ params }: Props) {
   if (!bookings || bookings.length === 0) {
     return <div>Business Not Found.</div>;
   }
+  
 
   return (
     <>
