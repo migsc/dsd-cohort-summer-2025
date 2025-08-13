@@ -35,7 +35,6 @@ import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UpdateStatusButton } from "./UpdateStatusButton";
 
-
 type Customer = {
   id: string;
   name: string;
@@ -102,10 +101,9 @@ function openInGoogleMaps(address: string) {
 }
 
 export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
-
   const [filter, setFilter] = useState("CONFIRMED"); // default tab
 
-  let router
+  let router;
 
   return (
     <div>
@@ -193,7 +191,7 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                     </SheetTitle>
                     <Separator className="mt-4" />
                   </SheetHeader>
-                  <div className="overflow-y-scroll no-scrollbar px-5">
+                  <div className="no-scrollbar overflow-y-scroll px-5">
                     {/* Order details title */}
                     <h2 className="text-foreground mb-4 text-xl font-bold">
                       Order Details
@@ -234,7 +232,8 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                           <p className="w-16 font-semibold">Address:</p>
                           <p>{`${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState}, ${booking.customer.addressZip}`}</p>
                         </div>
-                        <Button variant= "outline"
+                        <Button
+                          variant="outline"
                           // This send the addresss to the openInGoogleMaps function to be able to then search.
                           onClick={() => {
                             if (booking.customer) {
@@ -254,7 +253,6 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                     </div>
                     <Separator className="mt-10" />
                     <div className="mt-2 w-full">
-
                       {/* Payment Accordian */}
                       <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="1">
@@ -320,13 +318,30 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
                     <div>
                       {booking.status === "PENDING" ? (
                         <div className="flex flex-col gap-3">
-                          <UpdateStatusButton newStatus="CONFIRMED" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug} />
-                          <UpdateStatusButton newStatus="CANCELED" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug}/>
+                          <UpdateStatusButton
+                            newStatus="CONFIRMED"
+                            bookingId={booking.id}
+                            currentStatus={booking.status}
+                            businessSlug={businessSlug}
+                          />
+                          <UpdateStatusButton
+                            newStatus="CANCELED"
+                            bookingId={booking.id}
+                            currentStatus={booking.status}
+                            businessSlug={businessSlug}
+                          />
                         </div>
-                        // add the choice to be able to change that state to inprogress "Start Work Order"
-                      ) : booking.status === "CONFIRMED" ? (
-                        <UpdateStatusButton newStatus="IN_PROGRESS" bookingId={booking.id} currentStatus={booking.status} businessSlug={businessSlug}/>
-                      ) : " "}
+                      ) : // add the choice to be able to change that state to inprogress "Start Work Order"
+                      booking.status === "CONFIRMED" ? (
+                        <UpdateStatusButton
+                          newStatus="IN_PROGRESS"
+                          bookingId={booking.id}
+                          currentStatus={booking.status}
+                          businessSlug={businessSlug}
+                        />
+                      ) : (
+                        " "
+                      )}
                     </div>
                   </SheetFooter>
                 </SheetContent>
