@@ -152,14 +152,14 @@ export default function CustomerTable({ bookingInfo }: Props) {
                 </SheetHeader>
                 <div className="no-scrollbar overflow-y-scroll px-5">
                   {/* Customer details title */}
-                  <h2 className="text-foreground my-2 text-xl  font-bold">
+                  <p className="text-accent-foreground text-[1rem] mb-2 font-semibold">
                     Customer Details
-                  </h2>
+                  </p>
 
                   {/* Customer details section */}
                   <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
                     <div className="flex gap-2 text-sm font-normal">
-                      <p className="w-16 font-semibold">Email:</p>
+                      <p className="w-16 text-muted-foreground">Email:</p>
                       <a
                         href={`mailto:${booking.customer.email}`}
                         className="hover:text-primary"
@@ -168,7 +168,7 @@ export default function CustomerTable({ bookingInfo }: Props) {
                       </a>
                     </div>
                     <div className="flex w-full gap-3">
-                      <p className="w-16 font-semibold">Phone:</p>
+                      <p className="w-16 text-muted-foreground">Phone:</p>
                       <a
                         href={`tel: ${booking.customer.phoneNumber}`}
                         className="hover:text-primary"
@@ -178,33 +178,34 @@ export default function CustomerTable({ bookingInfo }: Props) {
                     </div>
 
                     <div className="flex w-full gap-3">
-                      <p className="w-16 font-semibold">Created:</p>
+                      <p className="w-16 text-muted-foreground">Created:</p>
                       <Badge variant="outline" className="bg-blue-100 text-xs">
                         {`${booking.customer.createdAt.toISOString().slice(0, 10)} ${booking.customer.createdAt.toISOString().slice(11, 19)}`}
                       </Badge>
                     </div>
 
                     <div className="flex w-full gap-3">
-                      <p className="w-16 font-semibold">Updated:</p>
+                      <p className="w-16 text-muted-foreground">Updated:</p>
                       <Badge variant="secondary" className="text-xs">
                         {`${booking.customer.createdAt.toISOString().slice(0, 10)} ${booking.customer.createdAt.toISOString().slice(11, 19)}`}
                       </Badge>
                     </div>
 
-                    <h2 className="text-foreground mt-4 text-xl font-bold">
+                    <p className="text-accent-foreground mt-4 text-[1rem] font-semibold">
                       Address Information
-                    </h2>
+                    </p>
                     <div>
                       <div className="mb-4 flex w-full gap-3">
-                        <p className="w-16 font-semibold">Address:</p>
+                        <p className="w-16 text-muted-foreground">Address:</p>
                         <p>{`${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState}, ${booking.customer.addressZip}`}</p>
                       </div>
                       <div className="mb-4 flex w-full gap-3">
-                        <p className="w-16 font-semibold">Rooms:</p>
-                        <p>{booking.customer.rooms}</p>
+                        <p className="w-16 text-muted-foreground">Rooms:</p>
+                        
+                        <Badge variant="outline" className="text-xs">{booking.customer.rooms}</Badge>
                       </div>
-                      <div className="mb-4 flex w-full gap-3">
-                        <p className="w-16 font-semibold">SQFT:</p>
+                      <div className="mb-6 flex w-full gap-3">
+                        <p className="w-16 text-muted-foreground">SQFT:</p>
                         <p>{booking.customer.squareFootage}</p>
                       </div>
                       <Button
@@ -223,6 +224,7 @@ export default function CustomerTable({ bookingInfo }: Props) {
                     </div>
                   </div>
                   <Separator className="mt-10" />
+                  
                 </div>
               </SheetContent>
             </Sheet>
