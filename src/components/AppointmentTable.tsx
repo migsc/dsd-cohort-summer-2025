@@ -179,10 +179,10 @@ type BookingInfo = {
 };
 
 type Props = {
-  businessSlug: string;
   bookingInfo: BookingInfo[]; // ✅ Not Booking[]
 };
 
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 
 
 // NEED TO MAKE IT TYPE SAFE
@@ -208,6 +208,8 @@ const InvoiceDummy = {
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 =======
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
+=======
+>>>>>>> 9abb406 (CHORE: Updated files to make sure they didn't have repetitive code and unnecessory code from the appointment table):src/app/[businessSlug]/admin/customers/customerTable.tsx
 //GOOGLE MAPS FUNCTION
 function openInGoogleMaps(address: string) {
   const url = `https://www.google.com/maps/place/${encodeURIComponent(address)}`;
@@ -216,6 +218,7 @@ function openInGoogleMaps(address: string) {
   window.open(url, "_blank"); // Opens in a new tab/window
 }
 
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
 export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
@@ -234,6 +237,9 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
   const [filter, setFilter] = useState("CONFIRMED");
 >>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise):src/app/[businessSlug]/admin/customers/customerTable.tsx
 
+=======
+export default function CustomerTable({ bookingInfo }: Props) {
+>>>>>>> 9abb406 (CHORE: Updated files to make sure they didn't have repetitive code and unnecessory code from the appointment table):src/app/[businessSlug]/admin/customers/customerTable.tsx
   return (
     
     <div>
@@ -282,7 +288,6 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
         </TableHeader>
         <TableBody>
           {bookingInfo
-            .filter(booking => booking.status === filter)
             .map(booking => (
               <Sheet key={booking.id}>
                 <SheetTrigger asChild>
@@ -318,14 +323,10 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                       <span className="font-blod text-primary mb-2 text-2xl">
                         {booking.customer.name}
                       </span>
-                      <div className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">
-                        <a
-                          href={`mailto:${booking.customer.email}`}
-                          className="hover:text-primary"
-                        >
-                          {booking.customer.email}
-                        </a>
+                      <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sml">
+                        <p className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">{booking.customer.userId}</p>
                       </div>
+                     
                     </SheetTitle>
                     <Separator className="mt-4" />
                   </SheetHeader>
@@ -346,24 +347,23 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                     </h2>
                     {/* Customer details section */}
                     <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Customer Id:</p>
-                        <p>{booking.customer.userId}</p>
+                       <div className="flex gap-2 text-sm font-normal">
+                        <p className="w-16 font-semibold">Email:</p>
+                        <a
+                          href={`mailto:${booking.customer.email}`}
+                          className="hover:text-primary"
+                        >
+                          {booking.customer.email}
+                        </a>
                       </div>
-                      
                       <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Customer Name:</p>
-                        <p>{booking.customer.name}</p>
-                      </div>
-
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Preferred Contact Method:</p>
-                        <p>{booking.customer.preferredContactMethod}</p>
-                      </div>
-
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Square Footage:</p>
-                        <p>{booking.customer.squareFootage}</p>
+                        <p className="w-16 font-semibold">Phone:</p>
+                        <a
+                          href={`tel: ${booking.customer.phoneNumber}`}
+                          className="hover:text-primary"
+                        >
+                          {booking.customer.phoneNumber}
+                        </a>
                       </div>
 
                       <div className="flex w-full gap-3">
@@ -396,6 +396,7 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                       </div>
                     </div>
                     <Separator className="mt-10" />
+<<<<<<< HEAD:src/components/AppointmentTable.tsx
                     <div className="mt-2 w-full">
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
@@ -466,6 +467,8 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                         </AccordionItem>
                       </Accordion>
                     </div>
+=======
+>>>>>>> 9abb406 (CHORE: Updated files to make sure they didn't have repetitive code and unnecessory code from the appointment table):src/app/[businessSlug]/admin/customers/customerTable.tsx
                   </div>
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
 <<<<<<< HEAD:src/components/AppointmentTable.tsx
