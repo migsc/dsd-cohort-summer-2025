@@ -1,5 +1,5 @@
 import React from "react";
-import AppointmentTable from "@/components/AppointmentTable";
+import AppointmentTable from "./AppointmentTable";
 import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries";
 import { Separator } from "@/components/ui/separator";
 import {
