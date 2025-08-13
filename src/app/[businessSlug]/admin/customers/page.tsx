@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-export default function Customers() {
-  return <div>Customers page</div>;
-=======
-=======
->>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise)
 import React from "react";
 
 import { Separator } from "../../../../components/ui/separator";
@@ -70,9 +63,4 @@ export default async function Customers({ params }: Props) {
         </section>
       </main>
     </>
-  );
-<<<<<<< HEAD
->>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise)
-=======
->>>>>>> bb65c11 (Added more customer data to the customer list page. Added a ternary check to await params only if it's a Promise)
-}
+  );}
