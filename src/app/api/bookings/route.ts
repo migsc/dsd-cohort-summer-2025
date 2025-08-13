@@ -45,33 +45,20 @@ export async function POST(request: Request) {
   const userId = session.user.id;
   const body = await request.json();
 
-  const {
-    businessId,
-    serviceType,
-    date,      // e.g. "2025-08-10"
-    time,      // e.g. "2:00 PM"
-    address,
-    notes
-  } = body;
-
   try {
     const newBooking = await prisma.booking.create({
       data: {
-        customer: {
-          connect: {
-            userId: userId,
-          },
-        },
-        business: {
-          connect: {
-            id: businessId,
-          },
-        },
-        serviceType,
-        date: new Date(date),
-        time,
-        address,
-        notes,
+        date: body.date,
+        startTime: body.startTime,
+        endTime: body.endTime,
+        notes: body.notes,
+        duration: body.duration, // required
+        price: body.price,       // required
+        serviceId: body.serviceId,
+        customerId: body.customerId,
+        businessId: body.businessId,
+        createdAt: body.createdAt ? new Date(body.createdAt) : undefined, //prisma has type DateTime so no toISOString needed
+        updatedAt: body.updatedAt ? new Date(body.updatedAt) : undefined,
       },
     });
 
@@ -81,3 +68,52 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Booking creation failed" }, { status: 500 });
   }
 }
+
+
+
+
+
+
+
+//POST route to create a booking
+
+// src/app/api/bookings/route.ts
+
+// export async function POST(req: Request) {
+//   try {
+//     const body = await req.json();
+
+//     const {
+//       service,
+//       amount,
+//       customerId,
+//       businessId,
+//       scheduledDate,
+//       paymentMethod,
+//     } = body;
+
+//     if (!service || !amount || !customerId || !businessId || !scheduledDate) {
+//       return NextResponse.json(
+//         { error: "Missing required booking fields." },
+//         { status: 400 }
+//       );
+//     }
+
+//     const booking = await prisma.booking.create({
+//       data: {
+//         service,
+//         amount,
+//         paymentMethod,
+//         customerId,
+//         businessId,
+//         scheduledDate: new Date(scheduledDate),
+//         status: "pending", // default status
+//       },
+//     });
+
+//     return NextResponse.json({ booking }, { status: 201 });
+//   } catch (error) {
+//     console.error("Error creating booking:", error);
+//     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+//   }
+// }
