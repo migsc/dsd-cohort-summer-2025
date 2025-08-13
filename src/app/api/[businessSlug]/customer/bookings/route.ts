@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
 import {
   getSessionUser,
   findCustomer,
@@ -9,6 +10,7 @@ import {
   findService,
   calculatePrice,
   findBooking,
+  parseTimeSlot,
 } from "@/lib/bookings";
 
 export async function GET(request: Request) {
@@ -32,7 +34,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const formData = await request.json();
   const userId = await getSessionUser();
-  const business = await findBusinessByService(formData.serviceId);
+  const business = await findBusinessByService(formData.service.id);
 
   if (!business) {
     return NextResponse.json(
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const service = await findService(formData.serviceId);
+  const service = await findService(formData.service.id);
 
   if (!service) {
     return NextResponse.json({ message: "Service not found" }, { status: 404 });
@@ -61,26 +63,28 @@ export async function POST(request: Request) {
     service.pricingModel,
     service.rate,
     formData.duration,
-    formData.rooms,
-    formData.squareFootage
+    customer.rooms,
+    customer.squareFootage
   );
+
+  const { startTime, endTime } = await parseTimeSlot(formData.timeSlot);
 
   // create new booking
   try {
     const booking = await prisma.booking.create({
       data: {
         date: formData.date,
-        startTime: formData.startTime,
-        endTime: formData.endTime,
+        startTime: startTime,
+        endTime: endTime,
         notes: formData.notes,
-        serviceId: formData.serviceId,
+        serviceId: formData.service.id,
         businessId: business.id,
         customerId: customer.id,
         price,
-        rooms: formData.rooms,
-        squareFootage: formData.squareFootage,
+        rooms: customer.rooms,
+        squareFootage: customer.squareFootage,
         status: "PENDING",
-        duration: formData.duration,
+        duration: Number(formData.duration),
         originalBookingId: formData.originalBookingId || null,
         paymentIntentId: null,
         completedAt: null,
@@ -89,10 +93,35 @@ export async function POST(request: Request) {
       },
     });
     console.log("Booking created", booking);
-    return NextResponse.json(
-      { message: "Booking is successful" },
-      { status: 200 }
-    );
+
+    const origin = (await headers()).get("origin");
+
+    const newCustomer = await stripe.customers.create({
+      metadata: {
+        userId: customer.id,
+      },
+    });
+
+    const checkout = await stripe.checkout.sessions.create({
+      customer: newCustomer.id,
+      success_url: `${origin}/${business.businessSlug}/bookings`,
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: `Cleaning Service: ${service.name}`,
+              description: `Bedrooms: ${customer.rooms} & SquareFootage: ${customer.squareFootage}`,
+            },
+            unit_amount: Math.round(price * 100),
+          },
+          quantity: 1,
+        },
+      ],
+    });
+
+    return NextResponse.json({ url: checkout.url });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

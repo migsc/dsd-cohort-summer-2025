@@ -29,6 +29,7 @@ import {
   createInclusiveRange,
   getFormattedTimeSlots,
 } from "@/app/[businessSlug]/(customer)/utils";
+import { useRouter } from "next/navigation";
 
 export interface BookingFormProps {
   isOpen: boolean;
@@ -46,6 +47,7 @@ export default function BookingForm({
   businessSlug,
 }: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   // Helper function to get valid durations from durationMin and durationMax
   // returns array, (e.g. If the durationMin = "3" and durationMax = "7" this returns ["3", "4", "5", "6", "7"])
@@ -79,6 +81,12 @@ export default function BookingForm({
           },
           body: JSON.stringify(bookingFormValues),
         });
+
+        const { url } = await response.json();
+
+        console.log(url);
+
+        router.replace(url);
       } catch (error) {
         console.log(error);
       }
