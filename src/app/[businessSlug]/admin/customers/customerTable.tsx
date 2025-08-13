@@ -64,29 +64,7 @@ type BookingInfo = {
 };
 
 type Props = {
-  businessSlug: string;
   bookingInfo: BookingInfo[]; // ✅ Not Booking[]
-};
-
-
-
-// NEED TO MAKE IT TYPE SAFE
-const colorMapping = {
-  CONFIRMED: "bg-blue-600",
-  PENDING: "bg-blue-400",
-  IN_PROGRESS: "bg-purple-600",
-  CANCELED: "bg-red-500",
-  COMPLETED: "bg-green-500",
-};
-
-const InvoiceDummy = {
-  invoiceNum: "INV-001",
-  datePaid: "2024-06-01",
-  cardType: "Visa",
-  serviceType: "General Cleaning",
-  quantity: 1,
-  pricing: "$100",
-  totalPaid: "$100"
 };
 
 //GOOGLE MAPS FUNCTION
@@ -97,10 +75,7 @@ function openInGoogleMaps(address: string) {
   window.open(url, "_blank"); // Opens in a new tab/window
 }
 
-export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
-
-  const [filter, setFilter] = useState("CONFIRMED");
-
+export default function CustomerTable({ bookingInfo }: Props) {
   return (
     
     <div>
@@ -119,7 +94,6 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
         </TableHeader>
         <TableBody>
           {bookingInfo
-            .filter(booking => booking.status === filter)
             .map(booking => (
               <Sheet key={booking.id}>
                 <SheetTrigger asChild>
@@ -155,14 +129,10 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                       <span className="font-blod text-primary mb-2 text-2xl">
                         {booking.customer.name}
                       </span>
-                      <div className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">
-                        <a
-                          href={`mailto:${booking.customer.email}`}
-                          className="hover:text-primary"
-                        >
-                          {booking.customer.email}
-                        </a>
+                      <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sml">
+                        <p className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">{booking.customer.userId}</p>
                       </div>
+                     
                     </SheetTitle>
                     <Separator className="mt-4" />
                   </SheetHeader>
@@ -173,24 +143,23 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                     </h2>
                     {/* Customer details section */}
                     <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Customer Id:</p>
-                        <p>{booking.customer.userId}</p>
+                       <div className="flex gap-2 text-sm font-normal">
+                        <p className="w-16 font-semibold">Email:</p>
+                        <a
+                          href={`mailto:${booking.customer.email}`}
+                          className="hover:text-primary"
+                        >
+                          {booking.customer.email}
+                        </a>
                       </div>
-                      
                       <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Customer Name:</p>
-                        <p>{booking.customer.name}</p>
-                      </div>
-
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Preferred Contact Method:</p>
-                        <p>{booking.customer.preferredContactMethod}</p>
-                      </div>
-
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Square Footage:</p>
-                        <p>{booking.customer.squareFootage}</p>
+                        <p className="w-16 font-semibold">Phone:</p>
+                        <a
+                          href={`tel: ${booking.customer.phoneNumber}`}
+                          className="hover:text-primary"
+                        >
+                          {booking.customer.phoneNumber}
+                        </a>
                       </div>
 
                       <div className="flex w-full gap-3">
@@ -224,67 +193,6 @@ export default function CustomerTable({ bookingInfo, businessSlug }: Props) {
                       </div>
                     </div>
                     <Separator className="mt-10" />
-                    <div className="mt-2 w-full">
-                      * Payment Accordian 
-                      <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="1">
-                          <AccordionTrigger>
-                            Payment Information
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Invoice#
-                              </p>
-                              <p>{InvoiceDummy.invoiceNum}</p>
-                            </div>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Date:
-                              </p>
-                              <p>{InvoiceDummy.datePaid}</p>
-                            </div>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Type:
-                              </p>
-                              <p>{InvoiceDummy.cardType}</p>
-                            </div>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Date:
-                              </p>
-                              <p>{InvoiceDummy.datePaid}</p>
-                            </div>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Service:
-                              </p>
-                              <p>{InvoiceDummy.serviceType}</p>
-                            </div>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Qty:
-                              </p>
-                              <p>{InvoiceDummy.quantity}</p>
-                            </div>
-                            <div className="mb-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Pricing:
-                              </p>
-                              <p>{InvoiceDummy.pricing}</p>
-                            </div>
-                            <Separator />
-                            <div className="my-4 flex w-full justify-between">
-                              <p className="text-primary w-16 font-semibold">
-                                Total:
-                              </p>
-                              <p>{InvoiceDummy.totalPaid}</p>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
