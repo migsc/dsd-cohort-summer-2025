@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Providers from "@/providers";
 
 import "../styles/globals.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export const metadata: Metadata = {
   title: "client",
