@@ -65,8 +65,8 @@ export async function POST(request: Request) {
     service.pricingModel,
     service.rate,
     Number(formData.duration),
-    Number(formData.rooms) ?? 0,
-    Number(formData.squareFootage) ?? 0
+    isNaN(Number(formData.rooms)) ? 0 : Number(formData.rooms),
+    isNaN(Number(formData.squareFootage)) ? 0 : Number(formData.squareFootage)
   );
 
   const { startTime, endTime } = await parseTimeSlot(formData.timeSlot);

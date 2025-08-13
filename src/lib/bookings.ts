@@ -67,17 +67,32 @@ export async function calculatePrice(
   }
 }
 
-export async function parseTimeSlot(timeslot: string) {
-  const m = timeslot?.match(
-    /^\s*(\d{1,2}:\d{2}\s*[AP]M)\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)\s*$/i
-  );
-  if (!m) throw new Error("Invalid timeSlot format");
-  const to24 = (t: string) => {
-    const [time, ap] = t.trim().toUpperCase().split(/\s+/);
-    let [h, m] = time.split(":").map(Number);
-    if (ap === "PM" && h !== 12) h += 12;
-    if (ap === "AM" && h === 12) h = 0;
-    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-  };
-  return { startTime: to24(m[1]), endTime: to24(m[2]) };
+export async function parseTimeSlot(timeSlot: string) {
+  // string comes in as 'hh:mm [AM|PM]  - HH:MM [AM|PM]'
+  const times = timeSlot.split(" - ");
+  if (times.length !== 2) {
+    throw new Error(`Timeslot format error: ${timeSlot}`);
+  }
+
+  const [startTimeSlot, endTimeSlot] = times;
+
+  return { startTime: timeTo24(startTimeSlot), endTime: timeTo24(endTimeSlot) };
+}
+
+function timeTo24(time: string) {
+  // time is in the 12 hour format of HH:MM [AM|PM]
+  const ampm = time.includes("AM") ? "AM" : "PM";
+  let [hourString, minutesString] = time.split(":");
+
+  // convert both hour and minutes to an integer so it can be padded into a string
+  let hour = parseInt(hourString, 10);
+  const minutes = parseInt(minutesString, 10);
+
+  if (hour === 12 && ampm === "AM") {
+    hour = 0;
+  }
+  if (hour !== 12 && ampm === "PM") {
+    hour += 12;
+  }
+  return `${String(hour).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
