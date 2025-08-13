@@ -20,10 +20,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 > ⚠️ **Important:** Please read [the wiki](../../wiki) for guidelines on how to contribute to this project.
 
-## Features
-
-- [ ] List of features that the project will have
-
 ## Prerequisites
 
 Before you start, ensure you have the following installed on your machine:
