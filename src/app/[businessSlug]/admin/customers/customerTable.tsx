@@ -21,10 +21,15 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries"; // THIS NEEDS TO BE A CUSTOMER ONE
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { BookingStatus } from "prisma/generated";
 import { useState } from "react";
-import { Map } from "lucide-react"
+import { Map } from "lucide-react";
 import { UpdateStatusButton } from "../../../../components/UpdateStatusButton";
 
 /* TODO:
@@ -77,7 +82,6 @@ function openInGoogleMaps(address: string) {
 
 export default function CustomerTable({ bookingInfo }: Props) {
   return (
-    
     <div>
       {/* Tabs to switch filters */}
 
@@ -94,122 +98,137 @@ export default function CustomerTable({ bookingInfo }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bookingInfo
-            .map(booking => (
-              <Sheet key={booking.id}>
-                <SheetTrigger asChild>
-                  <TableRow
-                    key={booking.id}
-                    className="h-11 border-b-gray-100 hover:cursor-pointer"
-                  >
-                    <TableCell>{booking.customer.name}</TableCell>
-                    <TableCell>{booking.customer.phoneNumber}</TableCell>
-                    <TableCell>{booking.customer.email}</TableCell>
-                    <TableCell>
-                      <Badge variant="default" className="text-xs">
-                         {booking.customer.createdAt.toISOString().slice(0, 10)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className="text-xs">
-                         {booking.customer.createdAt.toISOString().slice(0, 10)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                         {booking.serviceName}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                         {booking.date}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                </SheetTrigger>
-
-                {/* POP UP SHEET FROM SIDE */}
-                <SheetContent
-                  side="right"
-                  className=" w-full rounded-lg border-b-0 [&>button:first-of-type]:hidden"
+          {bookingInfo.map(booking => (
+            <Sheet key={booking.id}>
+              <SheetTrigger asChild>
+                <TableRow
+                  key={booking.id}
+                  className="h-11 border-b-gray-100 hover:cursor-pointer"
                 >
-                  <SheetHeader>
-                    {/* Sheet title with customer Name, Phone number, customer id, and email. */}
-                    <SheetTitle>
-                      <span className="font-blod text-primary mb-2 text-2xl">
-                        {booking.customer.name}
-                      </span>
-                      <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sml">
-                        <p className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">{booking.customer.userId}</p>
-                      </div>
-                     
-                    </SheetTitle>
-                    <Separator className="mt-4" />
-                  </SheetHeader>
-                  <div className="no-scrollbar overflow-y-scroll px-5">
-                    {/* Customer details title */}
-                    <h2 className="text-foreground mb-4 text-xl font-bold">
-                      Customer Details
-                    </h2>
-                    
-                    {/* Customer details section */}
-                    <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
-                       <div className="flex gap-2 text-sm font-normal">
-                        <p className="w-16 font-semibold">Email:</p>
-                        <a
-                          href={`mailto:${booking.customer.email}`}
-                          className="hover:text-primary"
-                        >
-                          {booking.customer.email}
-                        </a>
-                      </div>
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Phone:</p>
-                        <a
-                          href={`tel: ${booking.customer.phoneNumber}`}
-                          className="hover:text-primary"
-                        >
-                          {booking.customer.phoneNumber}
-                        </a>
-                      </div>
+                  <TableCell>{booking.customer.name}</TableCell>
+                  <TableCell>{booking.customer.phoneNumber}</TableCell>
+                  <TableCell>{booking.customer.email}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className="bg-blue-100 text-xs">
+                      {booking.customer.createdAt.toISOString().slice(0, 10)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className="text-xs">
+                      {booking.customer.createdAt.toISOString().slice(0, 10)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-xs">
+                      {booking.serviceName}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-xs">
+                      {booking.date}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              </SheetTrigger>
 
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Created:</p>
-                        <p>{booking.customer.createdAt.toISOString().slice(11, 19)}</p>
-                      </div>
-
-                      <div className="flex w-full gap-3">
-                        <p className="w-16 font-semibold">Updated:</p>
-                        <p>{booking.customer.updatedAt.toISOString().slice(11, 19)}</p>
-                      </div>
-
-                      <div>
-                        <div className="mb-4 flex w-full gap-3">
-                          <p className="w-16 font-semibold">Address:</p>
-                          <p>{`${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState}, ${booking.customer.addressZip}`}</p>
-                        </div>
-                        <Button
-                          variant="outline"
-                          // This send the addresss to the openInGoogleMaps function to be able to then search.
-                          onClick={() => {
-                            if (booking.customer) {
-                              const address = `${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState} ${booking.customer.addressZip}`;
-                              openInGoogleMaps(address);
-                            }
-                          }}
-                        >
-                          <Map />
-                          Open In Google Maps
-                        </Button>
-                      </div>
+              {/* POP UP SHEET FROM SIDE */}
+              <SheetContent
+                side="right"
+                className=" w-full rounded-lg border-b-0 [&>button:first-of-type]:hidden"
+              >
+                <SheetHeader>
+                  {/* Sheet title with customer Name, Phone number, customer id, and email. */}
+                  <SheetTitle>
+                    <span className="font-blod text-primary mb-2 text-2xl">
+                      {booking.customer.name}
+                    </span>
+                    <div className="min-w-2xs text-sml flex w-full flex-col gap-3 text-left">
+                      <p className="text-muted-foreground flex flex-col gap-2 text-sm font-normal">
+                        ID: {booking.customer.id}
+                      </p>
                     </div>
-                    <Separator className="mt-10" />
+                  </SheetTitle>
+                  <Separator className="mt-4" />
+                </SheetHeader>
+                <div className="no-scrollbar overflow-y-scroll px-5">
+                  {/* Customer details title */}
+                  <h2 className="text-foreground my-2 text-xl  font-bold">
+                    Customer Details
+                  </h2>
+
+                  {/* Customer details section */}
+                  <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
+                    <div className="flex gap-2 text-sm font-normal">
+                      <p className="w-16 font-semibold">Email:</p>
+                      <a
+                        href={`mailto:${booking.customer.email}`}
+                        className="hover:text-primary"
+                      >
+                        {booking.customer.email}
+                      </a>
+                    </div>
+                    <div className="flex w-full gap-3">
+                      <p className="w-16 font-semibold">Phone:</p>
+                      <a
+                        href={`tel: ${booking.customer.phoneNumber}`}
+                        className="hover:text-primary"
+                      >
+                        {booking.customer.phoneNumber}
+                      </a>
+                    </div>
+
+                    <div className="flex w-full gap-3">
+                      <p className="w-16 font-semibold">Created:</p>
+                      <Badge variant="outline" className="bg-blue-100 text-xs">
+                        {`${booking.customer.createdAt.toISOString().slice(0, 10)} ${booking.customer.createdAt.toISOString().slice(11, 19)}`}
+                      </Badge>
+                    </div>
+
+                    <div className="flex w-full gap-3">
+                      <p className="w-16 font-semibold">Updated:</p>
+                      <Badge variant="secondary" className="text-xs">
+                        {`${booking.customer.createdAt.toISOString().slice(0, 10)} ${booking.customer.createdAt.toISOString().slice(11, 19)}`}
+                      </Badge>
+                    </div>
+
+                    <h2 className="text-foreground mt-4 text-xl font-bold">
+                      Address Information
+                    </h2>
+                    <div>
+                      <div className="mb-4 flex w-full gap-3">
+                        <p className="w-16 font-semibold">Address:</p>
+                        <p>{`${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState}, ${booking.customer.addressZip}`}</p>
+                      </div>
+                      <div className="mb-4 flex w-full gap-3">
+                        <p className="w-16 font-semibold">Rooms:</p>
+                        <p>{booking.customer.rooms}</p>
+                      </div>
+                      <div className="mb-4 flex w-full gap-3">
+                        <p className="w-16 font-semibold">SQFT:</p>
+                        <p>{booking.customer.squareFootage}</p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        // This send the addresss to the openInGoogleMaps function to be able to then search.
+                        onClick={() => {
+                          if (booking.customer) {
+                            const address = `${booking.customer.addressStreet}, ${booking.customer.addressCity}, ${booking.customer.addressState} ${booking.customer.addressZip}`;
+                            openInGoogleMaps(address);
+                          }
+                        }}
+                      >
+                        <Map />
+                        Open In Google Maps
+                      </Button>
+                    </div>
                   </div>
-                </SheetContent>
-              </Sheet>
-            ))}
+                  <Separator className="mt-10" />
+                </div>
+              </SheetContent>
+            </Sheet>
+          ))}
         </TableBody>
       </Table>
     </div>
   );
-};
+}
