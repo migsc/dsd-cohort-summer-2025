@@ -16,8 +16,8 @@ export default function Home() {
 
   return (
     <>
-      {/* Header section */}
-      {/* <div className="grid-patterns"></div> */}
+    {/* Header section */}
+    {/* <div className="grid-patterns"></div> */}
       <header className="grid-patterns flex h-screen w-screen flex-col items-center md:gap-7">
         {/* Desktop Navigation */}
         <nav className="flex w-full max-w-[2000px] justify-center p-4 px-20 md:justify-between">
@@ -51,17 +51,14 @@ export default function Home() {
               </h1>
               <p className="mb-5 max-w-[700px] leading-8">
                 Our app is a comprehensive software platform that empowers
-                cleaning businesses to launch and manage their operations
-                online. From initial setup to customer bookings and payment
-                processing, we provide everything cleaning professionals need to
-                run their business efficiently.
+                cleaning businesses to launch and manage their operations online.
+                From initial setup to customer bookings and payment processing, we
+                provide everything cleaning professionals need to run their
+                business efficiently.
               </p>
 
               {/* UPDATE: a to be Link component. And add some JSX conditionals for when to show something based on screen size. */}
-              <a
-                href="/login"
-                className={buttonVariants({ variant: "default" })}
-              >
+              <a href="/login" className={buttonVariants({ variant: "default" })}>
                 Get Started
                 <span className="hidden md:inline">Managing Your Business</span>
                 <SquareChevronRight />
