@@ -32,6 +32,9 @@ export async function POST(request: Request) {
           addressState: formData.addressState,
           addressZip: formData.addressZip,
           addressCountry: formData.addressCountry,
+          phoneNumber: formData.phoneNumber,
+          rooms: formData.rooms,
+          squareFootage: formData.squareFootage,
         },
       });
       return newCustomer;

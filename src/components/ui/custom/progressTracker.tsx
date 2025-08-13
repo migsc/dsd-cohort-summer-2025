@@ -12,8 +12,8 @@ import { Progress } from '@/components/ui/progress';
 interface BookingProgressTrackerProps {
   orderNum: string;
   service: string;
-  amount: string;
-  currentStatus: 'received' | 'confirmed' | 'on_way' | 'in_progress' | 'completed';
+  servicePrice: number;
+  currentStatus: 'PENDING' | 'CONFIRMED' | 'ON_WAY' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';
   expectedCompletion?: string;
   placedDate?: string;
 }
@@ -21,31 +21,32 @@ interface BookingProgressTrackerProps {
 export default function BookingProgressTracker({ 
   orderNum, 
   service, 
-  amount, 
+  servicePrice, 
   currentStatus, 
   expectedCompletion,
   placedDate 
 }: BookingProgressTrackerProps){
   const steps = [
-    { status: 'received', label: 'Order placed successfully', shortLabel: 'Received' },
-    { status: 'confirmed', label: 'Booking Confirmed', shortLabel: 'Confirmed' },
-    { status: 'on_way', label: 'Team dispatched', shortLabel: 'On Way' },
-    { status: 'in_progress', label: 'Service in progress', shortLabel: 'In Progress' },
-    { status: 'completed', label: 'Service completed', shortLabel: 'Completed' }
+    { status: 'PENDING', label: 'Order placed successfully', shortLabel: 'PENDING' },
+    { status: 'CONFIRMED', label: 'Booking confirmed', shortLabel: 'confirmed' },
+    { status: 'ON_WAY', label: 'Team dispatched', shortLabel: 'On Way' },
+    { status: 'IN_PROGRESS', label: 'Service in progress', shortLabel: 'In Progress' },
+    { status: 'COMPLETED', label: 'Service completed', shortLabel: 'completed' }
   ];
 
   const statusOrder = {
-    'received': 0,
-    'confirmed': 1,
-    'on_way': 2,
-    'in_progress': 3,
-    'completed': 4
+    'PENDING': 0,
+    'CONFIRMED': 1,
+    'ON_WAY': 2,
+    'IN_PROGRESS': 3,
+    'COMPLETED': 4,
+    'CANCELED': -1
   };
 
   const currentStepIndex = statusOrder[currentStatus] || 0;
 
   return (
-    <Card className="border border-gray-500 p-3 sm:p-6 mb-6 shadow-sm">
+    <Card className="border border-gray-500 shadow-sm px-2 md:p-6 mb-5 w-full">
       {/* Order Header */}
       <CardHeader>
         <CardTitle className="text-center text-base">
@@ -58,7 +59,7 @@ export default function BookingProgressTracker({
       
       <CardContent className="text-center px-0 sm:px-6 pb-3 sm:pb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-4 text-sm">
-          <span className="font-semibold text-base sm:text-lg">{amount}</span>
+          <span className="font-semibold text-sm md:text-lg">${servicePrice}</span>
           {placedDate && <span className="text-xs sm:text-sm">Placed: {placedDate}</span>}
         </div>
         {expectedCompletion && (
@@ -79,7 +80,7 @@ export default function BookingProgressTracker({
             />
             
             <div className="flex justify-between text-xs text-gray-200">
-              <span>Order Received</span>
+              <span>Order Pending</span>
               <span>Confirmed</span>
               <span>On The Way</span>
               <span>In Progress</span>
@@ -91,14 +92,14 @@ export default function BookingProgressTracker({
           <div className="text-center">
             <div className={`
               inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium
-              ${currentStatus === 'received' ? 'bg-gray-100 text-gray-900' :
-                currentStatus === 'confirmed' ? 'bg-purple-100 text-purple-900' :
-                currentStatus === 'on_way' ? 'bg-yellow-100 text-yellow-900' :
-                currentStatus === 'in_progress' ? 'bg-blue-100 text-blue-900' :
+              ${currentStatus === 'PENDING' ? 'bg-gray-100 text-gray-900' :
+                currentStatus === 'CONFIRMED' ? 'bg-purple-100 text-purple-900' :
+                currentStatus === 'ON_WAY' ? 'bg-yellow-100 text-yellow-900' :
+                currentStatus === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-900' :
                 'bg-green-100 text-green-800'
               }
             `}>
-              {currentStatus === 'completed' && <Check size={14} className="sm:w-4 sm:h-4" />}
+              {currentStatus === 'COMPLETED' && <Check size={14} className="sm:w-4 sm:h-4" />}
               <span className="whitespace-nowrap">
                 {steps.find(step => step.status === currentStatus)?.label}
               </span>

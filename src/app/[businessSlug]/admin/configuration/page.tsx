@@ -5,7 +5,9 @@ import {
   BusinessOnboardingSchema,
   type BusinessFormData,
   defaultBusinessValues,
+  contactTitles,
 } from "@/app/onboarding/business/schema/business.schema";
+import { mapPricingModelEnumToString } from "@/app/api/onboarding/business/utils";
 
 import Configuration from "./Configuration";
 
@@ -23,7 +25,13 @@ export default async function Cofiguration() {
   try {
     const result = await prisma.user.findUnique({
       where: { id: sessionUserId },
-      include: { business: true },
+      include: {
+        business: {
+          include: {
+            coreServices: true,
+          },
+        },
+      },
     });
 
     if (!result) {
@@ -38,8 +46,53 @@ export default async function Cofiguration() {
       );
     }
 
-    const { id, userId, createdAt, updatedAt, ...formFields } = result.business;
-    const validatedData = BusinessOnboardingSchema.parse(formFields);
+    const { id, userId, createdAt, updatedAt, ...formFieldsFromDb } =
+      result.business;
+
+    const transformedDataForForm = {
+      businessName: formFieldsFromDb.businessName,
+      contactPersonName: formFieldsFromDb.contactPersonName,
+      contactPersonTitle: formFieldsFromDb.contactPersonTitle,
+      contactPersonEmail: formFieldsFromDb.contactPersonEmail,
+      contactPersonPhone: formFieldsFromDb.contactPersonPhone,
+      businessAddressStreet: formFieldsFromDb.businessAddressStreet,
+      businessAddressCity: formFieldsFromDb.businessAddressCity,
+      businessAddressState: formFieldsFromDb.businessAddressState,
+      businessAddressZip: formFieldsFromDb.businessAddressZip,
+      businessAddressCountry: formFieldsFromDb.businessAddressCountry,
+      serviceAreaRadius: formFieldsFromDb.serviceAreaRadius,
+      yearsInBusiness: formFieldsFromDb.yearsInBusiness,
+      businessDescription: formFieldsFromDb.businessDescription,
+
+      coreServices: formFieldsFromDb.coreServices.map(cs => ({
+        id: cs.id,
+        name: cs.name,
+        description: cs.description,
+        durationMin: cs.durationMin,
+        durationMax: cs.durationMax,
+        typicalCleanersAssigned: cs.typicalCleanersAssigned,
+        pricingModel: mapPricingModelEnumToString(cs.pricingModel),
+        priceMin: cs.priceMin,
+        priceMax: cs.priceMax,
+        rate: cs.rate,
+      })),
+
+      operatingHours: formFieldsFromDb.operatingHours,
+
+      averageTravelTimeMinutes: formFieldsFromDb.averageTravelTimeMinutes,
+      currentSchedulingMethod: formFieldsFromDb.currentSchedulingMethod,
+
+      logoUrl: formFieldsFromDb.logoUrl,
+      brandColorPrimary: formFieldsFromDb.brandColorPrimary,
+      brandColorSecondary: formFieldsFromDb.brandColorSecondary,
+      preferredCustomerCommunicationMethods:
+        formFieldsFromDb.preferredCustomerCommunicationMethods,
+      additionalNotes: formFieldsFromDb.additionalNotes,
+    };
+
+    const validatedData = BusinessOnboardingSchema.parse(
+      transformedDataForForm
+    );
     businessData = validatedData;
   } catch (err) {
     console.log(err);

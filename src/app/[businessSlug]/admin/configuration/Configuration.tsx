@@ -101,11 +101,9 @@ export default function Cofiguration({
     }
   };
 
+  // TODO: Form validation turned off for demo purposes.
   const form = useForm({
     defaultValues: initialData,
-    validators: {
-      onSubmit: BusinessOnboardingSchema,
-    },
     onSubmit: async ({ value }) => {
       try {
         const response = await fetch("/api/business/update-configuration", {
@@ -134,6 +132,7 @@ export default function Cofiguration({
   return (
     <form
       onSubmit={e => {
+        console.log("on submit");
         e.preventDefault();
         e.stopPropagation();
         void form.handleSubmit();
@@ -144,7 +143,7 @@ export default function Cofiguration({
           <div className="">
             <div className="text-xl font-bold">Business Profile</div>
             <div className="text-md">
-              Manage your business inforamtion, services, and settings.
+              Manage your business information, services, and settings.
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -241,14 +240,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -292,14 +291,14 @@ export default function Cofiguration({
                             disabled={!isEditing}
                             rows={4}
                           />
-                          {field.state.meta.errors &&
+                          {/* {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
                               <ul className="text-sm text-red-500">
                                 {field.state.meta.errors.map((error, i) => (
                                   <li key={i}>{error?.message}</li>
                                 ))}
                               </ul>
-                            )}
+                            )} */}
                         </div>
                       )}
                     />
@@ -323,14 +322,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -360,14 +359,14 @@ export default function Cofiguration({
                             ))}
                           </SelectContent>
                         </Select>
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -385,14 +384,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -410,14 +409,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -441,14 +440,14 @@ export default function Cofiguration({
                             onChange={e => field.handleChange(e.target.value)}
                             disabled={!isEditing}
                           />
-                          {field.state.meta.errors &&
+                          {/* {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
                               <ul className="text-sm text-red-500">
                                 {field.state.meta.errors.map((error, i) => (
                                   <li key={i}>{error?.message}</li>
                                 ))}
                               </ul>
-                            )}
+                            )} */}
                         </div>
                       )}
                     />
@@ -466,14 +465,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -503,14 +502,14 @@ export default function Cofiguration({
                             ))}
                           </SelectContent>
                         </Select>
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -527,14 +526,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -551,14 +550,14 @@ export default function Cofiguration({
                           onChange={e => field.handleChange(e.target.value)}
                           disabled={!isEditing}
                         />
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -591,6 +590,8 @@ export default function Cofiguration({
             <div>
               {activeTab === "services" && (
                 <div>
+                  <h3 className="mb-4 text-lg font-semibold">Core Services</h3>
+
                   <form.Field
                     name="coreServices"
                     mode="array"
@@ -604,7 +605,10 @@ export default function Cofiguration({
                         ) : (
                           coreServicesField.state.value.map(
                             (serviceItem, index) => (
-                              <div key={serviceItem.id} className="mb-8">
+                              <div
+                                key={serviceItem.id}
+                                className="bg-accent/20 mt-6 rounded-md border p-4"
+                              >
                                 <div className="flex items-center justify-between">
                                   <h4 className="mb-3 font-semibold">
                                     Core Service {index + 1}
@@ -639,7 +643,7 @@ export default function Cofiguration({
                                           }
                                           disabled={!isEditing}
                                         />
-                                        {field.state.meta.errors &&
+                                        {/* {field.state.meta.errors &&
                                           field.state.meta.errors.length >
                                             0 && (
                                             <ul className="text-sm text-red-500">
@@ -651,7 +655,7 @@ export default function Cofiguration({
                                                 )
                                               )}
                                             </ul>
-                                          )}
+                                          )} */}
                                       </div>
                                     )}
                                   />
@@ -672,7 +676,7 @@ export default function Cofiguration({
                                           }
                                           disabled={!isEditing}
                                         />
-                                        {field.state.meta.errors &&
+                                        {/* {field.state.meta.errors &&
                                           field.state.meta.errors.length >
                                             0 && (
                                             <ul className="text-sm text-red-500">
@@ -684,7 +688,7 @@ export default function Cofiguration({
                                                 )
                                               )}
                                             </ul>
-                                          )}
+                                          )} */}
                                       </div>
                                     )}
                                   />
@@ -762,6 +766,7 @@ export default function Cofiguration({
                                       </div>
                                     )}
                                   />
+
                                   <form.Field
                                     name={`coreServices[${index}].pricingModel`}
                                     children={field => (
@@ -793,7 +798,7 @@ export default function Cofiguration({
                                             ))}
                                           </SelectContent>
                                         </Select>
-                                        {field.state.meta.errors &&
+                                        {/* {field.state.meta.errors &&
                                           field.state.meta.errors.length >
                                             0 && (
                                             <ul className="text-sm text-red-500">
@@ -805,60 +810,96 @@ export default function Cofiguration({
                                                 )
                                               )}
                                             </ul>
-                                          )}
+                                          )} */}
                                       </div>
                                     )}
                                   />
+
                                   <form.Field
-                                    name={`coreServices[${index}].priceMin`}
-                                    children={field => (
-                                      <div className="space-y-2">
-                                        <Label htmlFor={field.name}>
-                                          Minimum Price ($)
-                                        </Label>
-                                        <Input
-                                          id={field.name}
-                                          name={field.name}
-                                          type="number"
-                                          step="1"
-                                          min={0}
-                                          value={field.state.value}
-                                          onBlur={field.handleBlur}
-                                          onChange={e =>
-                                            field.handleChange(
-                                              Number(e.target.value)
-                                            )
-                                          }
-                                          disabled={!isEditing}
-                                        />
-                                      </div>
-                                    )}
+                                    name={`coreServices[${index}].rate`}
+                                    children={field => {
+                                      return (
+                                        <div className="space-y-2">
+                                          <Label htmlFor={field.name}>
+                                            Rate
+                                          </Label>
+                                          <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            type="number"
+                                            min={0}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={e =>
+                                              field.handleChange(
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            disabled={!isEditing}
+                                          />
+                                        </div>
+                                      );
+                                    }}
                                   />
-                                  <form.Field
-                                    name={`coreServices[${index}].priceMax`}
-                                    children={field => (
-                                      <div className="space-y-2">
-                                        <Label htmlFor={field.name}>
-                                          Maximum Price ($)
-                                        </Label>
-                                        <Input
-                                          id={field.name}
-                                          name={field.name}
-                                          type="number"
-                                          step="1"
-                                          min={0}
-                                          value={field.state.value}
-                                          onBlur={field.handleBlur}
-                                          onChange={e =>
-                                            field.handleChange(
-                                              Number(e.target.value)
-                                            )
-                                          }
-                                          disabled={!isEditing}
-                                        />
-                                      </div>
-                                    )}
-                                  />
+                                </div>
+
+                                {/* Marketing Prices Section */}
+                                <div className="mt-8 rounded-md border border-dashed p-4">
+                                  <h4 className="mb-4 text-center text-lg font-semibold text-gray-700">
+                                    Marketing Prices (Display Only)
+                                  </h4>
+                                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <form.Field
+                                      name={`coreServices[${index}].priceMin`}
+                                      children={field => (
+                                        <div className="space-y-2">
+                                          <Label htmlFor={field.name}>
+                                            Minimum Price ($)
+                                          </Label>
+                                          <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            type="number"
+                                            step="1"
+                                            min={0}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={e =>
+                                              field.handleChange(
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            disabled={!isEditing}
+                                          />
+                                        </div>
+                                      )}
+                                    />
+                                    <form.Field
+                                      name={`coreServices[${index}].priceMax`}
+                                      children={field => (
+                                        <div className="space-y-2">
+                                          <Label htmlFor={field.name}>
+                                            Maximum Price ($)
+                                          </Label>
+                                          <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            type="number"
+                                            step="1"
+                                            min={0}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={e =>
+                                              field.handleChange(
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            disabled={!isEditing}
+                                          />
+                                        </div>
+                                      )}
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             )
@@ -879,6 +920,7 @@ export default function Cofiguration({
                               priceMin: 0,
                               priceMax: 10,
                               id: crypto.randomUUID(),
+                              rate: 0,
                             })
                           }
                           disabled={!isEditing}
@@ -1044,14 +1086,14 @@ export default function Cofiguration({
                             ))}
                           </SelectContent>
                         </Select>
-                        {field.state.meta.errors &&
+                        {/* {field.state.meta.errors &&
                           field.state.meta.errors.length > 0 && (
                             <ul className="text-sm text-red-500">
                               {field.state.meta.errors.map((error, i) => (
                                 <li key={i}>{error?.message}</li>
                               ))}
                             </ul>
-                          )}
+                          )} */}
                       </div>
                     )}
                   />
@@ -1156,14 +1198,14 @@ export default function Cofiguration({
                               </div>
                             ))}
                           </div>
-                          {field.state.meta.errors &&
+                          {/* {field.state.meta.errors &&
                             field.state.meta.errors.length > 0 && (
                               <ul className="text-sm text-red-500">
                                 {field.state.meta.errors.map((error, i) => (
                                   <li key={i}>{error?.message}</li>
                                 ))}
                               </ul>
-                            )}
+                            )} */}
                         </div>
                       )}
                     />

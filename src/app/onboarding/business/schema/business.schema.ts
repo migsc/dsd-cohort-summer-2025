@@ -66,7 +66,6 @@ export const pricingModels = [
   "Per Job",
   "Per SqFt",
   "Per Room",
-  "Custom Quote",
 ] as const;
 
 export const schedulingMethods = [
@@ -95,9 +94,10 @@ export const CoreServiceSchema = z.object({
   priceMin: z.number().min(0, "Min Price must be non-negative."),
   priceMax: z.number().min(0, "Max Price must be non-negative."),
   id: z.string(),
+  rate: z.number().min(0, "Rate must be non-negative."),
 });
 
-export type CoreService = z.infer<typeof CoreServiceSchema>;
+export type CoreServiceForm = z.infer<typeof CoreServiceSchema>;
 
 export const DayOperatingHoursSchema = z
   .object({
@@ -231,10 +231,11 @@ export const defaultBusinessValues: BusinessFormData = {
       durationMin: 0,
       durationMax: 1,
       typicalCleanersAssigned: 1,
-      pricingModel: "Custom Quote",
+      pricingModel: "Hourly",
       priceMin: 0,
       priceMax: 10,
       id: crypto.randomUUID(),
+      rate: 0,
     },
   ],
   operatingHours: {

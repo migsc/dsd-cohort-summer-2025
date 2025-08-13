@@ -72,6 +72,21 @@ export const CustomerOnboardingSchema = z.object({
     .regex(/^\d{5}(?:[-\s]\d{4})?$/, "Invalid zip code format")
     .nonempty("Zip code is required."),
   addressCountry: z.string().nonempty("Country is required."),
+  phoneNumber: z
+    .string()
+    .min(1, "Phone number is required.")
+    .regex(
+      /^(\+\d{1,2}\s?)?1?\-?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+      "Invalid phone number format."
+    ),
+  rooms: z.coerce
+    .number()
+    .min(0.5, "Number of rooms must be at least 0.5.")
+    .max(50, "Number of rooms cannot exceed 50."),
+  squareFootage: z.coerce
+    .number()
+    .min(50, "Square footage must be at least 50 sqft.")
+    .max(100000, "Square footage cannot exceed 100,000 sqft."),
 });
 
 export type CustomerOnboardingFormData = z.infer<
@@ -85,4 +100,7 @@ export const defaultCustomerValues: CustomerOnboardingFormData = {
   addressState: "TX",
   addressZip: "",
   addressCountry: "",
+  phoneNumber: "",
+  rooms: 0,
+  squareFootage: 0,
 };

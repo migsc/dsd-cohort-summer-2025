@@ -2,20 +2,18 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-
-async function findCustomer(userId: string) {
-  return prisma.customer.findUnique({
-    where: { userId },
-  });
-}
+import {
+  getSessionUser,
+  findCustomer,
+  findBusinessByService,
+  findService,
+  calculatePrice,
+  findBooking,
+} from "@/lib/bookings";
 
 export async function GET(request: Request) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  const customer = await findCustomer(session.user.id);
+  const userId = await getSessionUser();
+  const customer = await findCustomer(userId);
 
   if (!customer) {
     return NextResponse.json(
@@ -32,22 +30,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const session = await auth.api.getSession({ headers: await headers() });
   const formData = await request.json();
-
-  if (!session || !session.user || !session.user.id) {
-    console.log("Unauthorized");
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  // get business tied to service
-  const business = await prisma.business.findFirst({
-    where: {
-      coreServices: {
-        some: { id: formData.serviceId },
-      },
-    },
-  });
+  const userId = await getSessionUser();
+  const business = await findBusinessByService(formData.serviceId);
 
   if (!business) {
     return NextResponse.json(
@@ -56,10 +41,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // find the customer
-  const customer = await prisma.customer.findUnique({
-    where: { userId: session.user.id },
-  });
+  const customer = await findCustomer(userId);
 
   if (!customer) {
     return NextResponse.json(
@@ -68,23 +50,45 @@ export async function POST(request: Request) {
     );
   }
 
+  const service = await findService(formData.serviceId);
+
+  if (!service) {
+    return NextResponse.json({ message: "Service not found" }, { status: 404 });
+  }
+
+  // calculate price for booking first
+  const price = await calculatePrice(
+    service.pricingModel,
+    service.rate,
+    formData.duration,
+    formData.rooms,
+    formData.squareFootage
+  );
+
   // create new booking
   try {
-    const newBooking = await prisma.booking.create({
+    const booking = await prisma.booking.create({
       data: {
-        serviceName: formData.serviceName,
         date: formData.date,
-        timeSlot: formData.timeSlot,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
         notes: formData.notes,
         serviceId: formData.serviceId,
         businessId: business.id,
         customerId: customer.id,
+        price,
+        rooms: formData.rooms,
+        squareFootage: formData.squareFootage,
         status: "PENDING",
-        serviceDuration: formData.serviceDuration,
-        servicePrice: formData.servicePrice,
+        duration: formData.duration,
+        originalBookingId: formData.originalBookingId || null,
+        paymentIntentId: null,
+        completedAt: null,
+        receiptUrl: null,
+        checkoutUrl: null,
       },
     });
-    console.log("Booking created", newBooking);
+    console.log("Booking created", booking);
     return NextResponse.json(
       { message: "Booking is successful" },
       { status: 200 }
@@ -92,27 +96,16 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      {
-        message: "Server error booking appointment",
-      },
+      { message: "Server error booking appointment" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function PATCH(request: Request) {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  // Parse the incoming JSON
-  const body = await request.json();
-  const { bookingId, date, timeSlot, notes, status } = body;
-
+  const userId = await getSessionUser();
+  const { bookingId, date, startTime, endTime, notes, status } =
+    await request.json();
   // Validate required field
   if (!bookingId) {
     return NextResponse.json(
@@ -121,7 +114,15 @@ export async function PATCH(request: Request) {
     );
   }
 
-  const customer = await findCustomer(session.user.id);
+  // customers may only cancel status
+  if (status && status.toUpperCase() !== "CANCELED") {
+    return NextResponse.json(
+      { message: "Customers can only cancel their bookings" },
+      { status: 403 }
+    );
+  }
+
+  const customer = await findCustomer(userId);
 
   if (!customer) {
     return NextResponse.json(
@@ -130,10 +131,7 @@ export async function PATCH(request: Request) {
     );
   }
 
-  // Check if the booking exists and belongs to this customer
-  const booking = await prisma.booking.findUnique({
-    where: { id: bookingId },
-  });
+  const booking = await findBooking(bookingId);
 
   if (!booking) {
     return NextResponse.json({ message: "Booking not found" }, { status: 404 });
@@ -146,21 +144,14 @@ export async function PATCH(request: Request) {
     );
   }
 
-  // customers may only cancel status
-  if (status && status.toUpperCase() !== "CANCELED") {
-    return NextResponse.json(
-      { message: "Customers can only cancel their bookings" },
-      { status: 403 }
-    );
-  }
-
   // Perform the update
   try {
     const updatedBooking = await prisma.booking.update({
       where: { id: bookingId },
       data: {
         date: date ?? booking.date,
-        timeSlot: timeSlot ?? booking.timeSlot,
+        startTime: startTime ?? booking.startTime,
+        endTime: endTime ?? booking.endTime,
         notes: notes ?? booking.notes,
         ...(status ? { status: "CANCELED" } : {}),
       },
@@ -173,7 +164,5 @@ export async function PATCH(request: Request) {
       { message: "Error updating booking" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

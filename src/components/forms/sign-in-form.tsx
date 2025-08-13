@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod/v4";
@@ -17,6 +17,10 @@ export default function SignInForm({
 }) {
   const router = useRouter();
   const { isPending } = authClient.useSession();
+  const searchParams = useSearchParams();
+
+  const business = searchParams.get("business");
+  console.log("sign-in, searchParams: ", business);
 
   const form = useForm({
     defaultValues: {
@@ -30,8 +34,26 @@ export default function SignInForm({
           password: value.password,
         },
         {
-          onSuccess: () => {
-            router.push("/business/");
+          onSuccess: async value => {
+            console.log("sign-in, success, value: ", value.data.user);
+
+            const response = await fetch("/api/role");
+
+            if (!response.ok) {
+              router.push("/");
+            }
+            const data = await response.json();
+
+            if (data.message.role === "user") {
+              if (business) {
+                router.push(`/${business}`);
+                return;
+              }
+              router.push("/business-list");
+              return;
+            }
+
+            router.push(`${data.message.businessSlug}/admin`);
             toast.success("Sign in successful");
           },
           onError: error => {
@@ -53,85 +75,86 @@ export default function SignInForm({
   }
 
   return (
-    <div className="animate-in fade-in-0 slide-in-from-bottom-20 duration-800 mx-auto mt-10 w-full max-w-md p-6">
-      <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+    <>
+        <div className="animate-in fade-in-0 slide-in-from-bottom-20 duration-800 mx-auto mt-10 md:mt-0 w-full max-w-md p-6">
+          <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              void form.handleSubmit();
+            }}
+            className="space-y-4"
+          >
+            <div>
+              <form.Field name="email">
+                {field => (
+                  <div className="space-y-2">
+                    <Label htmlFor={field.name}>Email</Label>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="email"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={e => field.handleChange(e.target.value)}
+                    />
+                    {field.state.meta.errors.map(error => (
+                      <p key={error?.message} className="text-red-500">
+                        {error?.message}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </form.Field>
+            </div>
 
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          void form.handleSubmit();
-        }}
-        className="space-y-4"
-      >
-        <div>
-          <form.Field name="email">
-            {field => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Email</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="email"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={e => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.map(error => (
-                  <p key={error?.message} className="text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </form.Field>
-        </div>
+            <div>
+              <form.Field name="password">
+                {field => (
+                  <div className="space-y-2">
+                    <Label htmlFor={field.name}>Password</Label>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="password"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={e => field.handleChange(e.target.value)}
+                    />
+                    {field.state.meta.errors.map(error => (
+                      <p key={error?.message} className="text-red-500">
+                        {error?.message}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </form.Field>
+            </div>
 
-        <div>
-          <form.Field name="password">
-            {field => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Password</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={e => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.map(error => (
-                  <p key={error?.message} className="text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </form.Field>
-        </div>
+            <form.Subscribe>
+              {state => (
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={!state.canSubmit || state.isSubmitting}
+                >
+                  {state.isSubmitting ? "Submitting..." : "Sign In"}
+                </Button>
+              )}
+            </form.Subscribe>
+          </form>
 
-        <form.Subscribe>
-          {state => (
+          <div className="mt-4 text-center">
             <Button
-              type="submit"
-              className="w-full"
-              disabled={!state.canSubmit || state.isSubmitting}
+              variant="link"
+              onClick={onSwitchToSignUp}
+              className="text-secondary-foreground"
             >
-              {state.isSubmitting ? "Submitting..." : "Sign In"}
+              Need an account? Sign Up
             </Button>
-          )}
-        </form.Subscribe>
-      </form>
-
-      <div className="mt-4 text-center">
-        <Button
-          variant="link"
-          onClick={onSwitchToSignUp}
-          className="text-indigo-600 hover:text-indigo-800"
-        >
-          Need an account? Sign Up
-        </Button>
-      </div>
-    </div>
+          </div>
+        </div>
+    </>
   );
 }

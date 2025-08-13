@@ -23,24 +23,27 @@ import {
 } from "@/components/ui/select";
 
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   usStates,
   preferredContactMethods,
-  CustomerOnboardingSchema,
   defaultCustomerValues,
 } from "./schema/customer.schema";
 
 export default function CustomerOnboarding() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const business = searchParams.get("business");
+
+  let redirectURL = "/business-list";
+  if (business) {
+    redirectURL = `/${business}`;
+  }
 
   const form = useForm({
     defaultValues: defaultCustomerValues,
-
-    validators: {
-      onSubmit: CustomerOnboardingSchema,
-    },
 
     onSubmit: async ({ value }) => {
       try {
@@ -54,12 +57,14 @@ export default function CustomerOnboarding() {
 
         if (response.ok) {
           toast.success("Customer onboarding successful!");
-          router.push("/customer");
+          router.push(redirectURL);
         } else {
           const responseError = await response.json();
+          toast.error(responseError.error || "Onboarding failed.");
         }
       } catch (err) {
         console.error(err);
+        toast.error("An unexpected error occurred during onboarding.");
       }
     },
   });
@@ -82,43 +87,53 @@ export default function CustomerOnboarding() {
         <CardContent className="space-y-8">
           <div>
             <h3 className="mb-4 text-lg font-semibold">Contact Preferences</h3>
-            <form.Field
-              name="preferredContactMethod"
-              children={field => (
-                <div className="space-y-2">
-                  <Label htmlFor={field.name}>Preferred Contact Method</Label>
-                  <Select
-                    name={field.name}
-                    value={field.state.value || ""}
-                    onValueChange={value => {
-                      field.handleChange(
-                        value as (typeof preferredContactMethods)[number]
-                      );
-                    }}
-                    onOpenChange={field.handleBlur}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a method" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {preferredContactMethods.map(method => (
-                        <SelectItem key={method} value={method}>
-                          {method}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {field.state.meta.errors &&
-                    field.state.meta.errors.length > 0 && (
-                      <ul className="text-sm text-red-500">
-                        {field.state.meta.errors.map((error, i) => (
-                          <li key={i}>{error?.message}</li>
+            <div className="space-y-4">
+              <form.Field
+                name="phoneNumber"
+                children={field => (
+                  <div className="space-y-2">
+                    <Label htmlFor={field.name}>Phone Number</Label>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="tel"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={e => field.handleChange(e.target.value)}
+                    />
+                  </div>
+                )}
+              />
+              <form.Field
+                name="preferredContactMethod"
+                children={field => (
+                  <div className="space-y-2">
+                    <Label htmlFor={field.name}>Preferred Contact Method</Label>
+                    <Select
+                      name={field.name}
+                      value={field.state.value || ""}
+                      onValueChange={value => {
+                        field.handleChange(
+                          value as (typeof preferredContactMethods)[number]
+                        );
+                      }}
+                      onOpenChange={field.handleBlur}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a method" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {preferredContactMethods.map(method => (
+                          <SelectItem key={method} value={method}>
+                            {method}
+                          </SelectItem>
                         ))}
-                      </ul>
-                    )}
-                </div>
-              )}
-            />
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              />
+            </div>
           </div>
           <Separator />
 
@@ -138,14 +153,6 @@ export default function CustomerOnboarding() {
                         onBlur={field.handleBlur}
                         onChange={e => field.handleChange(e.target.value)}
                       />
-                      {field.state.meta.errors &&
-                        field.state.meta.errors.length > 0 && (
-                          <ul className="text-sm text-red-500">
-                            {field.state.meta.errors.map((error, i) => (
-                              <li key={i}>{error?.message}</li>
-                            ))}
-                          </ul>
-                        )}
                     </div>
                   )}
                 />
@@ -162,14 +169,6 @@ export default function CustomerOnboarding() {
                       onBlur={field.handleBlur}
                       onChange={e => field.handleChange(e.target.value)}
                     />
-                    {field.state.meta.errors &&
-                      field.state.meta.errors.length > 0 && (
-                        <ul className="text-sm text-red-500">
-                          {field.state.meta.errors.map((error, i) => (
-                            <li key={i}>{error?.message}</li>
-                          ))}
-                        </ul>
-                      )}
                   </div>
                 )}
               />
@@ -197,14 +196,6 @@ export default function CustomerOnboarding() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {field.state.meta.errors &&
-                      field.state.meta.errors.length > 0 && (
-                        <ul className="text-sm text-red-500">
-                          {field.state.meta.errors.map((error, i) => (
-                            <li key={i}>{error?.message}</li>
-                          ))}
-                        </ul>
-                      )}
                   </div>
                 )}
               />
@@ -220,14 +211,6 @@ export default function CustomerOnboarding() {
                       onBlur={field.handleBlur}
                       onChange={e => field.handleChange(e.target.value)}
                     />
-                    {field.state.meta.errors &&
-                      field.state.meta.errors.length > 0 && (
-                        <ul className="text-sm text-red-500">
-                          {field.state.meta.errors.map((error, i) => (
-                            <li key={i}>{error?.message}</li>
-                          ))}
-                        </ul>
-                      )}
                   </div>
                 )}
               />
@@ -243,14 +226,56 @@ export default function CustomerOnboarding() {
                       onBlur={field.handleBlur}
                       onChange={e => field.handleChange(e.target.value)}
                     />
-                    {field.state.meta.errors &&
-                      field.state.meta.errors.length > 0 && (
-                        <ul className="text-sm text-red-500">
-                          {field.state.meta.errors.map((error, i) => (
-                            <li key={i}>{error?.message}</li>
-                          ))}
-                        </ul>
-                      )}
+                  </div>
+                )}
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">Property Details</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <form.Field
+                name="rooms"
+                children={field => (
+                  <div className="space-y-2">
+                    <Label htmlFor={field.name}>Number of Rooms</Label>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="number"
+                      step="0.5"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={e =>
+                        field.handleChange(
+                          e.target.value ? parseFloat(e.target.value) : 0
+                        )
+                      }
+                    />
+                  </div>
+                )}
+              />
+              <form.Field
+                name="squareFootage"
+                children={field => (
+                  <div className="space-y-2">
+                    <Label htmlFor={field.name}>Square Footage</Label>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="text"
+                      step="any"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={e =>
+                        field.handleChange(
+                          e.target.value ? parseFloat(e.target.value) : 0
+                        )
+                      }
+                    />
                   </div>
                 )}
               />
@@ -284,7 +309,7 @@ export default function CustomerOnboarding() {
                       <path
                         className="opacity-75"
                         fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
                     Submitting...
