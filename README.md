@@ -6,7 +6,7 @@ This is the repository for team David & Miguel in the **Dallas Software Develope
 
 Link to demo website: https://dsd-cohort-summer-2025.vercel.app/
 
-Demo credentials:
+Demo business credentials:
 - Email: admin@example.com
 - Password: password123
 
