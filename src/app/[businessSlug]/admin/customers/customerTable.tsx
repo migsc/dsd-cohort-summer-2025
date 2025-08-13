@@ -85,11 +85,12 @@ export default function CustomerTable({ bookingInfo }: Props) {
         <TableHeader>
           <TableRow className="border-b-gray-300 hover:bg-white">
             <TableHead>Customer Name</TableHead>
-            <TableHead>Preferred Contact Method</TableHead>
-            <TableHead>Square Footage</TableHead>
-            <TableHead>Rooms</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead>Updated</TableHead>
+            <TableHead>Phone</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Created On</TableHead>
+            <TableHead>Last Updated On</TableHead>
+            <TableHead>Most Recent Booking</TableHead>
+            <TableHead>Most Recent Booking Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -102,18 +103,27 @@ export default function CustomerTable({ bookingInfo }: Props) {
                     className="h-11 border-b-gray-100 hover:cursor-pointer"
                   >
                     <TableCell>{booking.customer.name}</TableCell>
-                    <TableCell>{booking.customer.preferredContactMethod}</TableCell>
-                    <TableCell>{booking.customer.squareFootage}</TableCell>
+                    <TableCell>{booking.customer.phoneNumber}</TableCell>
+                    <TableCell>{booking.customer.email}</TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                        {booking.customer.rooms}
+                      <Badge variant="default" className="text-xs">
+                         {booking.customer.createdAt.toISOString().slice(0, 10)}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {booking.customer.createdAt.toISOString().slice(11, 19)}
+                      <Badge variant="secondary" className="text-xs">
+                         {booking.customer.createdAt.toISOString().slice(0, 10)}
+                      </Badge>
                     </TableCell>
                     <TableCell>
-                        {booking.customer.updatedAt.toISOString().slice(11, 19)}
+                      <Badge variant="outline" className="text-xs">
+                         {booking.serviceName}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="text-xs">
+                         {booking.date}
+                      </Badge>
                     </TableCell>
                   </TableRow>
                 </SheetTrigger>
@@ -141,6 +151,7 @@ export default function CustomerTable({ bookingInfo }: Props) {
                     <h2 className="text-foreground mb-4 text-xl font-bold">
                       Customer Details
                     </h2>
+                    
                     {/* Customer details section */}
                     <div className="min-w-2xs flex w-full flex-col gap-3 text-left text-sm">
                        <div className="flex gap-2 text-sm font-normal">
