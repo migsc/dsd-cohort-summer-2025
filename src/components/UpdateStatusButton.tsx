@@ -93,13 +93,17 @@ export const UpdateStatusButton = ({
           {currentStatus === "IN_PROGRESS" && (
             <div className="flex justify-end">
               <Button variant="outline" asChild>
-               <span>Complete</span>
+                <span>Complete</span>
               </Button>
             </div>
           )}
           {/* Update status to In Progress */}
           {currentStatus === "CONFIRMED" && (
-            <Button variant="outline" className="w-full hover:bg-gray-200" asChild>
+            <Button
+              variant="outline"
+              className="w-full hover:bg-gray-200"
+              asChild
+            >
               <span>Begin Work</span>
             </Button>
           )}
@@ -125,7 +129,9 @@ export const UpdateStatusButton = ({
           </DialogHeader>
           <DialogFooter>
             <DialogClose className="flex gap-3">
-              <Button variant="outline" asChild><span>Cancel</span></Button>
+              <Button variant="outline" asChild>
+                <span>Cancel</span>
+              </Button>
               {currentStatus === "IN_PROGRESS" && (
                 <Button
                   onClick={() =>
@@ -157,7 +163,7 @@ export const UpdateStatusButton = ({
                   }
                   asChild
                 >
-                   <span>Update Status</span>
+                  <span>Update Status</span>
                 </Button>
               )}
             </DialogClose>
