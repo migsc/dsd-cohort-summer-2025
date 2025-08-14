@@ -137,9 +137,7 @@ export default function Calendar({ params }: PageProps) {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <p className="text-foreground mb-4 text-xl font-bold">
-        Welcome, {session?.user.name}
-      </p>
+      <p className="mb-4 text-xl font-bold">Welcome, {session?.user.name}</p>
       <div className="w-full max-w-[95%]">
         <AppCalendar
           events={appointments}
