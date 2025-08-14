@@ -1,5 +1,5 @@
 import React from "react";
-import AppointmentTable from "@/components/AppointmentTable";
+import AppointmentTable from "./AppointmentTable";
 import { getBookingsWithServiceAndCustomer } from "@/lib/queries/queries";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default async function Appointments({ params }: Props) {
-  const paramsAwait = await params; //Params must await before being used
+  const paramsAwait = params instanceof Promise ? await params : params; //Params must await before being used
   const bookings = await getBookingsWithServiceAndCustomer(
     paramsAwait.businessSlug
   );
@@ -28,6 +28,7 @@ export default async function Appointments({ params }: Props) {
   if (!bookings || bookings.length === 0) {
     return <div>Business Not Found.</div>;
   }
+  
 
   return (
     <>

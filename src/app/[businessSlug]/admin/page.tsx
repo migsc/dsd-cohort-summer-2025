@@ -135,6 +135,7 @@ export default function Calendar({ params }: PageProps) {
     ? mapBookingsToCalendarEvents(apiData.bookings)
     : [];
 
+  console.log(appointments);
   return (
     <div className="flex w-full flex-col items-center">
       <p className="mb-4 text-xl font-bold">Welcome, {session?.user.name}</p>
