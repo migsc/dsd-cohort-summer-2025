@@ -5,8 +5,8 @@
 
 @theme {
   --font-sans:
-    "Inter", "Geist", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    "Inter", "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
@@ -24,7 +24,6 @@ body {
   -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
   scrollbar-width: none; /* Hides scrollbar in Firefox */
 }
-
 
 :root {
   --radius: 0.65rem;
@@ -156,4 +155,118 @@ body {
     transform: translateY(5%);
     transition: ease 0.5s;
   }
+}
+
+/* Calendar Styles */
+.rbc-calendar-custom {
+  width: 100%;
+}
+
+/* Calendar header cells */
+.rbc-calendar-custom .rbc-header {
+  padding: 0.75rem;
+  font-weight: 600;
+  background-color: var(--secondary);
+  border-bottom: 1px solid var(--border);
+  color: var(--secondary-foreground);
+}
+
+/* Calendar events */
+.rbc-calendar-custom .rbc-event {
+  margin: 0.25rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border: none !important;
+  box-shadow: 0 2px 5px var(--border);
+  font-weight: 500;
+}
+
+/* Selected events */
+.rbc-calendar-custom .rbc-event.rbc-selected {
+  background-color: var(--primary) !important;
+  box-shadow: 0 3px 7px oklch(from var(--border) 1 c h / 0.3);
+}
+
+/* Calendar day background */
+.rbc-calendar-custom .rbc-day-bg {
+  padding: 0.5rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+}
+
+/* Off-range days */
+.rbc-calendar-custom .rbc-off-range-bg {
+  background-color: var(--muted);
+}
+
+.rbc-calendar-custom .rbc-off-range {
+  color: var(--muted-foreground);
+}
+
+/* Today's cell */
+.rbc-calendar-custom .rbc-today {
+  background-color: var(--accent);
+  opacity: 0.2;
+}
+
+/* Date cells */
+.rbc-calendar-custom .rbc-date-cell {
+  padding: 0.5rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/* Time slots */
+.rbc-calendar-custom .rbc-timeslot-group {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Time gutter */
+.rbc-calendar-custom .rbc-time-gutter {
+  color: var(--muted-foreground);
+}
+
+/* Day slots in week view */
+.rbc-calendar-custom .rbc-day-slot {
+  padding: 0 0.5rem;
+}
+
+/* Month view rows */
+.rbc-calendar-custom .rbc-month-row {
+  padding: 0.25rem 0;
+}
+
+/* Event content */
+.rbc-calendar-custom .rbc-event-content {
+  padding: 0.25rem;
+}
+
+/* Toolbar buttons */
+.rbc-calendar-custom .rbc-toolbar button {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.rbc-calendar-custom .rbc-toolbar button:hover {
+  background-color: var(--muted);
+  border-color: var(--border);
+}
+
+.rbc-calendar-custom .rbc-toolbar button.rbc-active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+/* Toolbar */
+.rbc-calendar-custom .rbc-toolbar {
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
 }
