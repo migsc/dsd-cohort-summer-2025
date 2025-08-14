@@ -25,15 +25,15 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../../../components/ui/accordion";
+} from "./ui/accordion";
 
-import { Badge } from "../../../../components/ui/badge";
-import { Button } from "../../../../components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button, buttonVariants } from "./ui/button";
 import { BookingStatus } from "prisma/generated";
-import { Separator } from "../../../../components/ui/separator";
+import { Separator } from "./ui/separator";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UpdateStatusButton } from "../../../../components/UpdateStatusButton";
+import { UpdateStatusButton } from "./UpdateStatusButton";
 
 type Customer = {
   id: string;
@@ -121,7 +121,7 @@ export default function AppointmentTable({ bookingInfo, businessSlug }: Props) {
 
       <Table>
         <TableHeader>
-          <TableRow className="border-b-gray-300 hover:bg-transparent">
+          <TableRow className="border-b-gray-300 hover:bg-white">
             <TableHead>Customer Name</TableHead>
             <TableHead>Phone Number</TableHead>
             <TableHead>Email</TableHead>

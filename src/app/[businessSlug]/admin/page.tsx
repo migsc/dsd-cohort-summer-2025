@@ -53,7 +53,6 @@ function mapBookingsToCalendarEvents(
     };
   });
 }
-
 export default function Calendar({ params }: PageProps) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
@@ -92,7 +91,9 @@ export default function Calendar({ params }: PageProps) {
         }
         const hoursJson = await hoursRes.json();
 
-        const bookingsRes = await fetch(`/api/${businessSlug}/bookings`);
+        const bookingsRes = await fetch(
+          `/api/${businessSlug}/business/bookings`
+        );
         if (!bookingsRes.ok) {
           const bookingsErr = await bookingsRes.json();
           throw new Error(bookingsErr.error || `Error fetching bookings!`);
@@ -127,7 +128,7 @@ export default function Calendar({ params }: PageProps) {
     return <div>Error: {error}</div>;
   }
   if (!apiData) {
-    return <div>Loadng bookings data...</div>;
+    return <div>Loading bookings data...</div>;
   }
 
   const appointments: CalendarEvent[] = apiData
@@ -137,7 +138,7 @@ export default function Calendar({ params }: PageProps) {
   console.log(appointments);
   return (
     <div className="flex w-full flex-col items-center">
-      <p className="mb-4 text-xl font-bold">Welcome {session?.user.name}</p>
+      <p className="mb-4 text-xl font-bold">Welcome, {session?.user.name}</p>
       <div className="w-full max-w-[95%]">
         <AppCalendar
           events={appointments}

@@ -36,7 +36,7 @@ export async function findBusinessByService(serviceId: string) {
   });
 }
 
-export async function findService(id: string) {
+export async function findService(id: string | undefined) {
   return prisma.coreService.findUnique({ where: { id } });
 }
 
@@ -65,4 +65,34 @@ export async function calculatePrice(
     default:
       throw new Error("Pricing Model is not used");
   }
+}
+
+export async function parseTimeSlot(timeSlot: string) {
+  // string comes in as 'hh:mm [AM|PM]  - HH:MM [AM|PM]'
+  const times = timeSlot.split(" - ");
+  if (times.length !== 2) {
+    throw new Error(`Timeslot format error: ${timeSlot}`);
+  }
+
+  const [startTimeSlot, endTimeSlot] = times;
+
+  return { startTime: timeTo24(startTimeSlot), endTime: timeTo24(endTimeSlot) };
+}
+
+function timeTo24(time: string) {
+  // time is in the 12 hour format of HH:MM [AM|PM]
+  const ampm = time.includes("AM") ? "AM" : "PM";
+  let [hourString, minutesString] = time.split(":");
+
+  // convert both hour and minutes to an integer so it can be padded into a string
+  let hour = parseInt(hourString, 10);
+  const minutes = parseInt(minutesString, 10);
+
+  if (hour === 12 && ampm === "AM") {
+    hour = 0;
+  }
+  if (hour !== 12 && ampm === "PM") {
+    hour += 12;
+  }
+  return `${String(hour).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
