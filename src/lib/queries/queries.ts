@@ -40,3 +40,15 @@ export async function getBookingsWithServiceAndCustomer(businessSlug: string) {
 
   return bookings;
 }
+
+export async function getBusinessWithRelations(slug: string) {
+  return prisma.business.findUnique({
+    where: {
+      businessSlug: slug, // Find the business by slug
+    },
+    include: {
+      bookings: true,
+      coreServices: true,
+    },
+  });
+}
