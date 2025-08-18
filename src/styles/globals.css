@@ -5,8 +5,8 @@
 
 @theme {
   --font-sans:
-    "Inter", "Geist", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    "Inter", "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
@@ -24,7 +24,6 @@ body {
   -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
   scrollbar-width: none; /* Hides scrollbar in Firefox */
 }
-
 
 :root {
   --radius: 0.65rem;

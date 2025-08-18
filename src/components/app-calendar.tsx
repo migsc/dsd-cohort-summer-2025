@@ -78,7 +78,6 @@ const AppCalendar: React.FC<AppCalendarProps> = ({
 
     const eventMoment = moment(event.start);
     const dailyHours = getHoursForDay(event.start);
-
     if (!dailyHours || !eventWithinHours(eventMoment, dailyHours)) {
       style.backgroundColor = "var(--muted)";
       style.opacity = 0.6;
