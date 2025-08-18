@@ -18,7 +18,7 @@ import { UpdateStatusButton } from "@/components/UpdateStatusButton";
 type Props = {
   params: Promise<{ businessSlug: string }>;
 };
-
+// this is using a font
 export default async function Appointments({ params }: Props) {
   const paramsAwait = params instanceof Promise ? await params : params; //Params must await before being used
   const bookings = await getBookingsWithServiceAndCustomer(
